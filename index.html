@@ -257,6 +257,16 @@ td:first-child{font-weight:700;white-space:nowrap}
 .recipe dt{font-family:var(--f-mono);font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding-top:3px}
 .recipe dd{margin:0}
 .confirm{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+
+/* sign-in */
+#signin{display:none}
+body.signin-on #signin{display:block;position:fixed;inset:0;z-index:50;background:var(--bg);overflow-y:auto}
+body.signin-on .wrap, body.signin-on .nav{display:none}
+.signin-box{max-width:440px;margin:0 auto;padding:calc(48px + env(safe-area-inset-top,0px)) 20px 40px}
+.signin-box h1{font-size:30px}
+.si-msg{margin:0;min-height:1.2em;color:var(--bad);font-size:15px}
+.si-msg:empty{display:none}
+.acct{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;font-size:15px;color:var(--muted)}
 </style>
 
 <div class="wrap">
@@ -267,6 +277,7 @@ td:first-child{font-weight:700;white-space:nowrap}
   </header>
   <main id="app" aria-live="polite"></main>
 </div>
+<div id="signin"></div>
 
 <nav class="nav" aria-label="Secciones">
   <ul>
@@ -281,11 +292,131 @@ td:first-child{font-weight:700;white-space:nowrap}
 (function(){
 "use strict";
 
-/* ---------- storage (per device) ---------- */
+/* ---------- storage (on the device, synced to Supabase when signed in) ---------- */
 const KEY = "escuela-a6500-v1";
+// Supabase project. Both values are public by design; row-level security keeps each account's row private.
+const SB_URL = "https://otvfeelczdudtsytxbpl.supabase.co";
+const SB_KEY = "sb_publishable_1Dvje4lqtDSEwvcqfmRlAw_geSndvrC";
 function load(){ try{ const v = JSON.parse(localStorage.getItem(KEY)); if(v && typeof v === "object") return {done:v.done||{}, steps:v.steps||{}, last:v.last||null, notes:v.notes||{}, zoom:v.zoom||1, rev:v.rev||0}; }catch(e){} return {done:{}, steps:{}, last:null, notes:{}, zoom:1, rev:0}; }
-function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} Sync.changed(); }
 let S = load();
+
+/* ---------- account and sync ---------- */
+// Talks to Supabase's REST endpoints directly so the app needs no library and keeps working offline.
+// Local changes are saved first and pushed shortly after; when she opens the app the cloud copy is pulled.
+// If both sides changed since the last sync (two devices, or progress from before she signed in), they are merged.
+const Sync = (() => {
+  const AUTH = "escuela-a6500-auth", META = "escuela-a6500-sync";
+  const on = !!(SB_URL && SB_KEY);
+  const get = k => { try{ return JSON.parse(localStorage.getItem(k)); }catch(e){ return null; } };
+  const put = (k, v) => { try{ v == null ? localStorage.removeItem(k) : localStorage.setItem(k, JSON.stringify(v)); }catch(e){} };
+  let auth = get(AUTH), meta = get(META) || {dirty: Object.keys(S.done).length + Object.keys(S.notes).length + Object.keys(S.steps).length > 0};
+  let timer = null, busy = Promise.resolve(), state = "idle", listeners = [];
+  const setState = v => { state = v; listeners.forEach(f => f(v)); };
+  const setMeta = m => { meta = {...meta, ...m}; put(META, meta); };
+
+  async function call(path, opts = {}, token){
+    const res = await fetch(SB_URL + path, {...opts, headers: {apikey: SB_KEY, "Content-Type": "application/json", ...(token ? {Authorization: "Bearer " + token} : {}), ...(opts.headers || {})}});
+    let body = null; try{ body = await res.json(); }catch(e){}
+    if(!res.ok){ const err = new Error((body && (body.msg || body.message || body.error_description)) || ("HTTP " + res.status)); err.status = res.status; err.code = body && (body.error_code || body.code); throw err; }
+    return body;
+  }
+  function keep(t){
+    auth = {access: t.access_token, refresh: t.refresh_token, exp: Date.now() + (t.expires_in || 3600) * 1000, email: t.user ? t.user.email : auth && auth.email, uid: t.user ? t.user.id : auth && auth.uid};
+    put(AUTH, auth);
+  }
+  async function token(){
+    if(!auth) return null;
+    if(Date.now() < auth.exp - 60000) return auth.access;
+    try{ keep(await call("/auth/v1/token?grant_type=refresh_token", {method: "POST", body: JSON.stringify({refresh_token: auth.refresh})})); }
+    catch(e){ if(e.status === 400 || e.status === 401){ signOut(true); } throw e; }
+    return auth.access;
+  }
+
+  const DATA = o => ({done: o.done || {}, steps: o.steps || {}, last: o.last || null, notes: o.notes || {}, rev: o.rev || 0});
+  function merge(a, b){
+    // a = this device, b = cloud. Lessons and steps done anywhere stay done; notes keep both texts when they differ.
+    const m = DATA(b);
+    Object.keys(a.done).forEach(k => { if(a.done[k]) m.done[k] = true; });
+    Object.keys(a.steps).forEach(k => { m.steps[k] = [...new Set([...(m.steps[k] || []), ...a.steps[k]])].sort((x, y) => x - y); });
+    Object.keys(a.notes).forEach(k => {
+      const x = (a.notes[k] || "").trim(), y = (m.notes[k] || "").trim();
+      if(!y || y.includes(x)) m.notes[k] = y ? m.notes[k] : a.notes[k];
+      else if(x.includes(y)) m.notes[k] = a.notes[k];
+      else m.notes[k] = a.notes[k] + "\n\n" + m.notes[k];
+    });
+    m.last = a.last || m.last; m.rev = Math.max(a.rev || 0, m.rev);
+    return m;
+  }
+
+  async function push(){
+    const t = await token(); if(!t) return;
+    const sent = JSON.stringify(DATA(S));
+    await call("/rest/v1/progress?on_conflict=user_id", {method: "POST", headers: {Prefer: "resolution=merge-duplicates,return=minimal"}, body: JSON.stringify({user_id: auth.uid, data: JSON.parse(sent), updated_at: new Date().toISOString()})}, t);
+    if(JSON.stringify(DATA(S)) === sent) setMeta({dirty: false});
+  }
+  async function pull(){
+    const t = await token(); if(!t) return false;
+    const rows = await call("/rest/v1/progress?select=data&user_id=eq." + auth.uid, {}, t);
+    const remote = rows && rows[0] ? DATA(rows[0].data || {}) : null;
+    const before = JSON.stringify(DATA(S));
+    if(!remote){ await push(); return false; }
+    const next = meta.dirty ? merge(DATA(S), remote) : remote;
+    S = {...S, ...next};
+    try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){}
+    if(meta.dirty || JSON.stringify(next) !== JSON.stringify(remote)) await push(); else setMeta({dirty: false});
+    return JSON.stringify(DATA(S)) !== before;
+  }
+  // Runs one network job at a time so a pull never overlaps a push.
+  function run(job){
+    busy = busy.then(async () => {
+      if(!on || !auth) return false;
+      if(!navigator.onLine){ setState(meta.dirty ? "offline" : "idle"); return false; }
+      setState("syncing");
+      try{ const r = await job(); setState(meta.dirty ? "pending" : "ok"); return r; }
+      catch(e){ setState(auth ? "error" : "idle"); return false; }
+    });
+    return busy;
+  }
+  function changed(){
+    setMeta({dirty: true});
+    if(!on || !auth) return;
+    setState("pending");
+    clearTimeout(timer); timer = setTimeout(() => run(push), 1500);
+  }
+  // Email + password: works entirely inside the home-screen app, with Supabase's default emails.
+  async function signIn(email, password){
+    keep(await call("/auth/v1/token?grant_type=password", {method: "POST", body: JSON.stringify({email, password})}));
+  }
+  async function signUp(email, password){
+    const r = await call("/auth/v1/signup", {method: "POST", body: JSON.stringify({email, password})});
+    if(!r || !r.access_token){ const e = new Error("confirm"); e.code = "confirm_needed"; throw e; }
+    keep(r);
+  }
+  async function recover(email){
+    await call("/auth/v1/recover?redirect_to=" + encodeURIComponent(location.origin + location.pathname), {method: "POST", body: JSON.stringify({email})});
+  }
+  // The reset email links back here with the session in the address (#access_token=…&type=recovery).
+  async function fromLink(p){
+    keep({access_token: p.get("access_token"), refresh_token: p.get("refresh_token"), expires_in: +p.get("expires_in") || 3600});
+    const u = await call("/auth/v1/user", {}, auth.access);
+    auth.email = u.email; auth.uid = u.id; put(AUTH, auth);
+  }
+  async function setPassword(password){
+    await call("/auth/v1/user", {method: "PUT", body: JSON.stringify({password})}, await token());
+  }
+  function signOut(expired){
+    const t = auth && auth.access; auth = null; put(AUTH, null);
+    if(t && !expired) fetch(SB_URL + "/auth/v1/logout", {method: "POST", headers: {apikey: SB_KEY, Authorization: "Bearer " + t}}).catch(() => {});
+    if(expired){ setState("expired"); return; } // keep unsynced changes; they merge in when she signs in again
+    // A deliberate sign-out clears this device so the next account starts from its own cloud copy.
+    S = {done: {}, steps: {}, last: null, notes: {}, zoom: S.zoom, rev: 0};
+    try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){}
+    setMeta({dirty: false});
+    setState("idle");
+  }
+  return {on, get user(){ return auth; }, get state(){ return state; }, onState: f => listeners.push(f), changed, pull: () => run(pull), push: () => run(push), signIn, signUp, recover, fromLink, setPassword, signOut};
+})();
 
 /* ---------- text helpers ---------- */
 // [[MENU]] -> button chip ; {{A › B|English}} -> menu path with English label
@@ -1600,7 +1731,7 @@ function viewHome(){
      <div><b>3 · Piénsalo</b>Situaciones reales: decide qué harías antes de ver la respuesta.</div>
      <div><b>4 · Misión y cuaderno</b>Una foto con una intención clara, y una nota de qué querías, qué ajustaste y qué pasó.</div>
     </div>
-    <p class="muted" style="font-size:15px">Ve a tu ritmo, en orden. Tu progreso y tus notas se guardan en este dispositivo.</p>
+    <p class="muted" style="font-size:15px">Ve a tu ritmo, en orden. ${Sync.on && Sync.user ? "Tu progreso y tus notas se guardan en tu cuenta, y también funcionan sin conexión." : "Tu progreso y tus notas se guardan en este dispositivo."}</p>
    </section>
    ${UNITS.map(u => `
    <section class="unit">
@@ -1613,10 +1744,17 @@ function viewHome(){
    ${Object.keys(S.notes).length ? `<section class="stack" style="gap:10px"><h2>Tu cuaderno</h2>${LESSONS.filter(l => S.notes[l.id]).map(l => `<details class="card"><summary style="cursor:pointer;font-weight:700">${l.proj?"★":l.n} · ${esc(l.title)}</summary><p style="white-space:pre-wrap;margin-top:10px">${esc(S.notes[l.id])}</p><a href="#leccion-${l.id}" style="font-size:15px">Abrir ›</a></details>`).join("")}</section>` : ""}
    <section class="stack" style="gap:10px;border-top:1px solid var(--line);padding-top:20px">
     <p class="muted" style="font-size:14px">Contenido comprobado con la Guía de ayuda oficial de la ILCE-6500. Los nombres de menú pueden variar un poco según la versión de software de tu cámara.</p>
+    ${Sync.on && Sync.user ? `<div class="acct"><span>Sesión: <b>${esc(Sync.user.email || "")}</b> · <span data-syncst>${syncLabel()}</span></span><button type="button" class="linkbtn" data-signout>Cerrar sesión</button></div>` : ""}
     <div class="confirm" data-reset><button type="button" class="linkbtn" data-ask>Reiniciar mi progreso</button></div>
    </section>
   </div>`;
   app.querySelector("[data-review]")?.addEventListener("click", e => { if(e.target.closest("[data-nextrev]")){ S.rev++; save(); viewHome(); } });
+  app.querySelector("[data-signout]")?.addEventListener("click", e => {
+    const box = e.target.closest(".acct");
+    box.innerHTML = `<span>${Sync.state === "ok" || Sync.state === "idle" ? "¿Cerrar sesión en este dispositivo?" : "Hay cambios sin subir todavía. Si cierras sesión ahora, se perderán."}</span><button type="button" class="btn btn-ghost" data-so-yes style="min-height:40px;padding:8px 14px">Cerrar sesión</button><button type="button" class="linkbtn" data-so-no>Cancelar</button>`;
+    box.querySelector("[data-so-no]").onclick = () => viewHome();
+    box.querySelector("[data-so-yes]").onclick = () => { Sync.signOut(); showSignIn().login(false); };
+  });
   const r = app.querySelector("[data-reset]");
   r.addEventListener("click", e => {
     if(e.target.closest("[data-ask]")){ r.innerHTML = `<span>¿Borrar todo tu progreso?</span><button type="button" class="btn btn-ghost" data-yes style="min-height:40px;padding:8px 14px">Sí, reiniciar</button><button type="button" class="linkbtn" data-no>Cancelar</button>`; }
@@ -1741,8 +1879,123 @@ function route(){
   window.scrollTo(0, 0);
   updateRing();
 }
-window.addEventListener("hashchange", route);
-route();
+/* ---------- sign-in screen ---------- */
+function syncLabel(){
+  return {syncing: "Guardando…", pending: "Guardando…", ok: "Guardado en tu cuenta", offline: "Sin conexión: se subirá luego", error: "No se pudo guardar, se reintentará", idle: "Guardado"}[Sync.state] || "";
+}
+Sync.onState(st => {
+  if(st === "expired"){ showSignIn().login(false); return; }
+  const el = document.querySelector("[data-syncst]"); if(el) el.textContent = syncLabel();
+});
+
+function showSignIn(){
+  document.body.classList.add("signin-on");
+  const host = document.getElementById("signin");
+  let email = "";
+  const shell = (title, intro, form) => `<div class="signin-box stack">
+      <span class="brand"><span class="brand-mark" aria-hidden="true"></span>Escuela α6500</span>
+      <h1>${title}</h1><p class="muted">${intro}</p>
+      <form class="stack" style="gap:10px" novalidate>${form}<p class="si-msg" role="alert"></p></form></div>`;
+  const field = (id, label, type, ac, extra = "") => `<label for="${id}"><b>${label}</b></label><input id="${id}" class="notes" type="${type}" autocomplete="${ac}" ${extra}>`;
+  const msg = t => { host.querySelector(".si-msg").textContent = t; };
+  const why = (err, signup) => !navigator.onLine ? "Necesitas conexión a internet para entrar."
+    : err.code === "invalid_credentials" ? "El correo o la contraseña no son correctos."
+    : err.code === "user_already_exists" ? "Ya hay una cuenta con este correo. Usa «Entrar»."
+    : err.code === "weak_password" ? "La contraseña es demasiado corta. Usa al menos 6 caracteres."
+    : err.code === "signup_disabled" ? "Ya no se pueden crear cuentas nuevas."
+    : err.code === "confirm_needed" || err.code === "email_not_confirmed" ? "Antes de entrar hay que confirmar el correo. Pide a Jack que desactive «Confirm email» en Supabase."
+    : err.status === 429 ? "Demasiados intentos seguidos. Espera unos minutos."
+    : signup ? "No se pudo crear la cuenta. Inténtalo otra vez." : "No se pudo entrar. Inténtalo otra vez.";
+  const busy = (b, t) => { b.disabled = true; b.dataset.t = b.textContent; b.textContent = t; };
+  const idle = b => { b.disabled = false; b.textContent = b.dataset.t; };
+  const done = async () => { host.innerHTML = `<div class="signin-box stack"><h1>Cargando tu progreso…</h1></div>`; await Sync.pull(); hideSignIn(); };
+
+  const login = (signup) => {
+    host.innerHTML = shell(signup ? "Crea tu cuenta" : "Entra en tu escuela",
+      signup ? "Elige tu correo y una contraseña. Solo tendrás que escribirla una vez en cada dispositivo."
+             : "Así tu progreso y tu cuaderno se guardan en tu cuenta y nadie más puede cambiarlos. Solo tienes que entrar una vez en cada dispositivo.",
+      field("si-email", "Tu correo", "email", "email", `inputmode="email" placeholder="nombre@correo.com" value="${esc(email)}"`) +
+      field("si-pw", signup ? "Elige una contraseña" : "Contraseña", "password", signup ? "new-password" : "current-password", `minlength="6"`) +
+      `<button class="btn btn-primary" type="submit">${signup ? "Crear cuenta" : "Entrar"}</button>
+       <div class="btn-row" style="justify-content:space-between">
+        <button class="linkbtn" type="button" data-switch>${signup ? "Ya tengo cuenta" : "Crear una cuenta"}</button>
+        ${signup ? "" : `<button class="linkbtn" type="button" data-forgot>¿Olvidaste la contraseña?</button>`}
+       </div>`);
+    const f = host.querySelector("form");
+    host.querySelector("[data-switch]").onclick = () => { email = f.querySelector("#si-email").value.trim(); login(!signup); };
+    host.querySelector("[data-forgot]")?.addEventListener("click", () => { email = f.querySelector("#si-email").value.trim(); forgot(); });
+    f.onsubmit = async e => {
+      e.preventDefault();
+      email = f.querySelector("#si-email").value.trim().toLowerCase();
+      const pw = f.querySelector("#si-pw").value, b = f.querySelector("[type=submit]");
+      if(!/^\S+@\S+\.\S+$/.test(email)) return msg("Escribe tu correo completo.");
+      if(pw.length < 6) return msg("La contraseña necesita al menos 6 caracteres.");
+      busy(b, signup ? "Creando…" : "Entrando…");
+      try{ await (signup ? Sync.signUp(email, pw) : Sync.signIn(email, pw)); }
+      catch(err){ idle(b); return msg(why(err, signup)); }
+      done();
+    };
+  };
+  const forgot = () => {
+    host.innerHTML = shell("Recupera tu contraseña", "Te enviaremos un correo con un enlace. Ábrelo, elige una contraseña nueva y después vuelve a la app para entrar con ella.",
+      field("si-email", "Tu correo", "email", "email", `inputmode="email" value="${esc(email)}"`) +
+      `<button class="btn btn-primary" type="submit">Enviar el enlace</button><button class="linkbtn" type="button" data-back>Volver</button>`);
+    const f = host.querySelector("form");
+    host.querySelector("[data-back]").onclick = () => login(false);
+    f.onsubmit = async e => {
+      e.preventDefault();
+      email = f.querySelector("#si-email").value.trim().toLowerCase(); const b = f.querySelector("[type=submit]");
+      busy(b, "Enviando…");
+      try{ await Sync.recover(email); msg(""); b.textContent = "Enviado. Revisa tu correo (y Spam)."; }
+      catch(err){ idle(b); msg(err.status === 429 ? "Has pedido varios correos seguidos. Espera un rato y vuelve a intentarlo." : "No se pudo enviar. Revisa el correo e inténtalo otra vez."); }
+    };
+  };
+  const reset = () => {
+    host.innerHTML = shell("Elige una contraseña nueva", "Después podrás entrar con ella en la app y en cualquier dispositivo.",
+      field("si-pw", "Contraseña nueva", "password", "new-password", `minlength="6"`) + `<button class="btn btn-primary" type="submit">Guardar y entrar</button>`);
+    const f = host.querySelector("form");
+    f.onsubmit = async e => {
+      e.preventDefault();
+      const pw = f.querySelector("#si-pw").value, b = f.querySelector("[type=submit]");
+      if(pw.length < 6) return msg("La contraseña necesita al menos 6 caracteres.");
+      busy(b, "Guardando…");
+      try{ await Sync.setPassword(pw); }
+      catch(err){ idle(b); return msg(why(err, true)); }
+      done();
+    };
+  };
+  return {login, reset};
+}
+function hideSignIn(){
+  document.body.classList.remove("signin-on");
+  document.getElementById("signin").innerHTML = "";
+  startApp();
+}
+
+let started = false;
+function startApp(){
+  route();
+  if(started) return; started = true;
+  window.addEventListener("hashchange", route);
+  // Bring in changes made on another device when the app opens or comes back to the foreground.
+  const refresh = () => Sync.pull().then(ch => { if(ch && !document.activeElement?.matches("textarea, input")) route(); });
+  refresh();
+  document.addEventListener("visibilitychange", () => { if(document.visibilityState === "visible") refresh(); else Sync.push(); });
+  window.addEventListener("online", refresh);
+}
+
+(async () => {
+  const link = new URLSearchParams(location.hash.slice(1));
+  if(Sync.on && (link.has("access_token") || link.has("error_description"))){
+    history.replaceState(null, "", location.pathname);
+    if(link.get("type") === "recovery" && link.has("access_token")){
+      try{ await Sync.fromLink(link); showSignIn().reset(); return; }catch(e){}
+    }
+    if(!Sync.user){ showSignIn().login(false); document.querySelector("#signin .si-msg").textContent = "El enlace ha caducado o ya se usó. Pide otro."; return; }
+  }
+  if(Sync.on && !Sync.user) showSignIn().login(false);
+  else startApp();
+})();
 })();
 </script>
 <script>
