@@ -321,7 +321,7 @@ const Sync = (() => {
   async function call(path, opts = {}, token){
     const res = await fetch(SB_URL + path, {...opts, headers: {apikey: SB_KEY, "Content-Type": "application/json", ...(token ? {Authorization: "Bearer " + token} : {}), ...(opts.headers || {})}});
     let body = null; try{ body = await res.json(); }catch(e){}
-    if(!res.ok){ const err = new Error((body && (body.msg || body.message || body.error_description)) || ("HTTP " + res.status)); err.status = res.status; err.code = body && (body.error_code || body.code); throw err; }
+    if(!res.ok){ const err = new Error((body && (body.msg || body.message || body.error_description)) || ("HTTP " + res.status)); err.status = res.status; err.code = body && (body.error_code || body.code || body.error); throw err; }
     return body;
   }
   function keep(t){
@@ -1900,7 +1900,7 @@ function showSignIn(){
       <h1>${title}</h1><p class="muted">${intro}</p>
       <form class="stack" style="gap:10px" novalidate>${form}<p class="si-msg" role="alert"></p></form></div>`;
   const field = (id, label, type, ac, extra = "") => {
-    const input = `<input id="${id}" class="notes" type="${type}" autocomplete="${ac}" ${extra}>`;
+    const input = `<input id="${id}" class="notes" type="${type}" autocomplete="${ac}" autocapitalize="off" autocorrect="off" spellcheck="false" ${extra}>`;
     return `<label for="${id}"><b>${label}</b></label>` + (type === "password"
       ? `<div class="pw">${input}<button type="button" class="linkbtn" data-peek aria-controls="${id}" aria-pressed="false">Mostrar</button></div>` : input);
   };
@@ -1911,13 +1911,13 @@ function showSignIn(){
   };
   const msg = t => { host.querySelector(".si-msg").textContent = t; };
   const why = (err, signup) => !navigator.onLine ? "Necesitas conexión a internet para entrar."
-    : err.code === "invalid_credentials" ? "El correo o la contraseña no son correctos."
+    : err.code === "invalid_credentials" || err.code === "invalid_grant" ? "El correo o la contraseña no son correctos. La contraseña distingue mayúsculas y minúsculas."
     : err.code === "user_already_exists" ? "Ya hay una cuenta con este correo. Usa «Entrar»."
     : err.code === "weak_password" ? "La contraseña es demasiado corta. Usa al menos 6 caracteres."
     : err.code === "signup_disabled" ? "Ya no se pueden crear cuentas nuevas."
     : err.code === "confirm_needed" || err.code === "email_not_confirmed" ? "Antes de entrar hay que confirmar el correo. Pide a Jack que desactive «Confirm email» en Supabase."
     : err.status === 429 ? "Demasiados intentos seguidos. Espera unos minutos."
-    : signup ? "No se pudo crear la cuenta. Inténtalo otra vez." : "No se pudo entrar. Inténtalo otra vez.";
+    : (signup ? "No se pudo crear la cuenta. Inténtalo otra vez." : "No se pudo entrar. Inténtalo otra vez.") + " (" + err.message + ")";
   const busy = (b, t) => { b.disabled = true; b.dataset.t = b.textContent; b.textContent = t; };
   const idle = b => { b.disabled = false; b.textContent = b.dataset.t; };
   const done = async () => { host.innerHTML = `<div class="signin-box stack"><h1>Cargando tu progreso…</h1></div>`; await Sync.pull(); hideSignIn(); };
