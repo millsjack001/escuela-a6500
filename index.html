@@ -266,6 +266,9 @@ body.signin-on .wrap, body.signin-on .nav{display:none}
 .signin-box h1{font-size:30px}
 .si-msg{margin:0;min-height:1.2em;color:var(--bad);font-size:15px}
 .si-msg:empty{display:none}
+.pw{position:relative}
+.pw input{padding-right:92px}
+.pw [data-peek]{position:absolute;right:6px;top:50%;transform:translateY(-50%);min-height:44px;padding:0 10px;text-decoration:none;font-size:15px}
 .acct{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;font-size:15px;color:var(--muted)}
 </style>
 
@@ -1896,7 +1899,16 @@ function showSignIn(){
       <span class="brand"><span class="brand-mark" aria-hidden="true"></span>Escuela α6500</span>
       <h1>${title}</h1><p class="muted">${intro}</p>
       <form class="stack" style="gap:10px" novalidate>${form}<p class="si-msg" role="alert"></p></form></div>`;
-  const field = (id, label, type, ac, extra = "") => `<label for="${id}"><b>${label}</b></label><input id="${id}" class="notes" type="${type}" autocomplete="${ac}" ${extra}>`;
+  const field = (id, label, type, ac, extra = "") => {
+    const input = `<input id="${id}" class="notes" type="${type}" autocomplete="${ac}" ${extra}>`;
+    return `<label for="${id}"><b>${label}</b></label>` + (type === "password"
+      ? `<div class="pw">${input}<button type="button" class="linkbtn" data-peek aria-controls="${id}" aria-pressed="false">Mostrar</button></div>` : input);
+  };
+  host.onclick = e => {
+    const b = e.target.closest("[data-peek]"); if(!b) return;
+    const i = host.querySelector("#" + b.getAttribute("aria-controls")), show = i.type === "password";
+    i.type = show ? "text" : "password"; b.textContent = show ? "Ocultar" : "Mostrar"; b.setAttribute("aria-pressed", show);
+  };
   const msg = t => { host.querySelector(".si-msg").textContent = t; };
   const why = (err, signup) => !navigator.onLine ? "Necesitas conexión a internet para entrar."
     : err.code === "invalid_credentials" ? "El correo o la contraseña no son correctos."
