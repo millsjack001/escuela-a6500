@@ -266,7 +266,6 @@ body.signin-on .wrap, body.signin-on .nav{display:none}
 .signin-box h1{font-size:30px}
 .si-msg{margin:0;min-height:1.2em;color:var(--bad);font-size:15px}
 .si-msg:empty{display:none}
-.si-code{font:700 24px var(--f-mono);letter-spacing:.2em;text-align:center}
 .acct{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;font-size:15px;color:var(--muted)}
 </style>
 
@@ -296,8 +295,8 @@ body.signin-on .wrap, body.signin-on .nav{display:none}
 /* ---------- storage (on the device, synced to Supabase when signed in) ---------- */
 const KEY = "escuela-a6500-v1";
 // Supabase project. Both values are public by design; row-level security keeps each account's row private.
-const SB_URL = "";
-const SB_KEY = "";
+const SB_URL = "https://otvfeelczdudtsytxbpl.supabase.co";
+const SB_KEY = "sb_publishable_1Dvje4lqtDSEwvcqfmRlAw_geSndvrC";
 function load(){ try{ const v = JSON.parse(localStorage.getItem(KEY)); if(v && typeof v === "object") return {done:v.done||{}, steps:v.steps||{}, last:v.last||null, notes:v.notes||{}, zoom:v.zoom||1, rev:v.rev||0}; }catch(e){} return {done:{}, steps:{}, last:null, notes:{}, zoom:1, rev:0}; }
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} Sync.changed(); }
 let S = load();
@@ -385,11 +384,26 @@ const Sync = (() => {
     setState("pending");
     clearTimeout(timer); timer = setTimeout(() => run(push), 1500);
   }
-  async function sendCode(email){
-    await call("/auth/v1/otp", {method: "POST", body: JSON.stringify({email, create_user: true})});
+  // Email + password: works entirely inside the home-screen app, with Supabase's default emails.
+  async function signIn(email, password){
+    keep(await call("/auth/v1/token?grant_type=password", {method: "POST", body: JSON.stringify({email, password})}));
   }
-  async function verify(email, code){
-    keep(await call("/auth/v1/verify", {method: "POST", body: JSON.stringify({type: "email", email, token: code})}));
+  async function signUp(email, password){
+    const r = await call("/auth/v1/signup", {method: "POST", body: JSON.stringify({email, password})});
+    if(!r || !r.access_token){ const e = new Error("confirm"); e.code = "confirm_needed"; throw e; }
+    keep(r);
+  }
+  async function recover(email){
+    await call("/auth/v1/recover?redirect_to=" + encodeURIComponent(location.origin + location.pathname), {method: "POST", body: JSON.stringify({email})});
+  }
+  // The reset email links back here with the session in the address (#access_token=…&type=recovery).
+  async function fromLink(p){
+    keep({access_token: p.get("access_token"), refresh_token: p.get("refresh_token"), expires_in: +p.get("expires_in") || 3600});
+    const u = await call("/auth/v1/user", {}, auth.access);
+    auth.email = u.email; auth.uid = u.id; put(AUTH, auth);
+  }
+  async function setPassword(password){
+    await call("/auth/v1/user", {method: "PUT", body: JSON.stringify({password})}, await token());
   }
   function signOut(expired){
     const t = auth && auth.access; auth = null; put(AUTH, null);
@@ -401,7 +415,7 @@ const Sync = (() => {
     setMeta({dirty: false});
     setState("idle");
   }
-  return {on, get user(){ return auth; }, get state(){ return state; }, onState: f => listeners.push(f), changed, pull: () => run(pull), push: () => run(push), sendCode, verify, signOut};
+  return {on, get user(){ return auth; }, get state(){ return state; }, onState: f => listeners.push(f), changed, pull: () => run(pull), push: () => run(push), signIn, signUp, recover, fromLink, setPassword, signOut};
 })();
 
 /* ---------- text helpers ---------- */
@@ -1739,7 +1753,7 @@ function viewHome(){
     const box = e.target.closest(".acct");
     box.innerHTML = `<span>${Sync.state === "ok" || Sync.state === "idle" ? "¿Cerrar sesión en este dispositivo?" : "Hay cambios sin subir todavía. Si cierras sesión ahora, se perderán."}</span><button type="button" class="btn btn-ghost" data-so-yes style="min-height:40px;padding:8px 14px">Cerrar sesión</button><button type="button" class="linkbtn" data-so-no>Cancelar</button>`;
     box.querySelector("[data-so-no]").onclick = () => viewHome();
-    box.querySelector("[data-so-yes]").onclick = () => { Sync.signOut(); showSignIn(); };
+    box.querySelector("[data-so-yes]").onclick = () => { Sync.signOut(); showSignIn().login(false); };
   });
   const r = app.querySelector("[data-reset]");
   r.addEventListener("click", e => {
@@ -1870,78 +1884,118 @@ function syncLabel(){
   return {syncing: "Guardando…", pending: "Guardando…", ok: "Guardado en tu cuenta", offline: "Sin conexión: se subirá luego", error: "No se pudo guardar, se reintentará", idle: "Guardado"}[Sync.state] || "";
 }
 Sync.onState(st => {
-  if(st === "expired"){ showSignIn(); return; }
+  if(st === "expired"){ showSignIn().login(false); return; }
   const el = document.querySelector("[data-syncst]"); if(el) el.textContent = syncLabel();
 });
 
 function showSignIn(){
   document.body.classList.add("signin-on");
-  let email = "";
   const host = document.getElementById("signin");
-  const step1 = msg => {
-    host.innerHTML = `<div class="signin-box stack">
+  let email = "";
+  const shell = (title, intro, form) => `<div class="signin-box stack">
       <span class="brand"><span class="brand-mark" aria-hidden="true"></span>Escuela α6500</span>
-      <h1>Entra en tu escuela</h1>
-      <p class="muted">Así tu progreso y tu cuaderno se guardan en tu cuenta y nadie más puede cambiarlos. Solo tienes que entrar una vez en cada dispositivo.</p>
-      <form class="stack" style="gap:10px" data-f1>
-        <label for="si-email"><b>Tu correo</b></label>
-        <input id="si-email" class="notes" type="email" autocomplete="email" inputmode="email" required value="${esc(email)}" placeholder="nombre@correo.com">
-        <p class="si-msg" role="alert">${msg || ""}</p>
-        <button class="btn btn-primary" type="submit">Enviarme un código</button>
-      </form>
-    </div>`;
-    host.querySelector("[data-f1]").onsubmit = async e => {
+      <h1>${title}</h1><p class="muted">${intro}</p>
+      <form class="stack" style="gap:10px" novalidate>${form}<p class="si-msg" role="alert"></p></form></div>`;
+  const field = (id, label, type, ac, extra = "") => `<label for="${id}"><b>${label}</b></label><input id="${id}" class="notes" type="${type}" autocomplete="${ac}" ${extra}>`;
+  const msg = t => { host.querySelector(".si-msg").textContent = t; };
+  const why = (err, signup) => !navigator.onLine ? "Necesitas conexión a internet para entrar."
+    : err.code === "invalid_credentials" ? "El correo o la contraseña no son correctos."
+    : err.code === "user_already_exists" ? "Ya hay una cuenta con este correo. Usa «Entrar»."
+    : err.code === "weak_password" ? "La contraseña es demasiado corta. Usa al menos 6 caracteres."
+    : err.code === "signup_disabled" ? "Ya no se pueden crear cuentas nuevas."
+    : err.code === "confirm_needed" || err.code === "email_not_confirmed" ? "Antes de entrar hay que confirmar el correo. Pide a Jack que desactive «Confirm email» en Supabase."
+    : err.status === 429 ? "Demasiados intentos seguidos. Espera unos minutos."
+    : signup ? "No se pudo crear la cuenta. Inténtalo otra vez." : "No se pudo entrar. Inténtalo otra vez.";
+  const busy = (b, t) => { b.disabled = true; b.dataset.t = b.textContent; b.textContent = t; };
+  const idle = b => { b.disabled = false; b.textContent = b.dataset.t; };
+  const done = async () => { host.innerHTML = `<div class="signin-box stack"><h1>Cargando tu progreso…</h1></div>`; await Sync.pull(); hideSignIn(); };
+
+  const login = (signup) => {
+    host.innerHTML = shell(signup ? "Crea tu cuenta" : "Entra en tu escuela",
+      signup ? "Elige tu correo y una contraseña. Solo tendrás que escribirla una vez en cada dispositivo."
+             : "Así tu progreso y tu cuaderno se guardan en tu cuenta y nadie más puede cambiarlos. Solo tienes que entrar una vez en cada dispositivo.",
+      field("si-email", "Tu correo", "email", "email", `inputmode="email" placeholder="nombre@correo.com" value="${esc(email)}"`) +
+      field("si-pw", signup ? "Elige una contraseña" : "Contraseña", "password", signup ? "new-password" : "current-password", `minlength="6"`) +
+      `<button class="btn btn-primary" type="submit">${signup ? "Crear cuenta" : "Entrar"}</button>
+       <div class="btn-row" style="justify-content:space-between">
+        <button class="linkbtn" type="button" data-switch>${signup ? "Ya tengo cuenta" : "Crear una cuenta"}</button>
+        ${signup ? "" : `<button class="linkbtn" type="button" data-forgot>¿Olvidaste la contraseña?</button>`}
+       </div>`);
+    const f = host.querySelector("form");
+    host.querySelector("[data-switch]").onclick = () => { email = f.querySelector("#si-email").value.trim(); login(!signup); };
+    host.querySelector("[data-forgot]")?.addEventListener("click", () => { email = f.querySelector("#si-email").value.trim(); forgot(); });
+    f.onsubmit = async e => {
       e.preventDefault();
-      const b = e.target.querySelector("button"); email = host.querySelector("#si-email").value.trim().toLowerCase();
-      b.disabled = true; b.textContent = "Enviando…";
-      try{ await Sync.sendCode(email); step2(); }
-      catch(err){ step1(!navigator.onLine ? "Necesitas conexión a internet para entrar." : err.status === 429 ? "Has pedido varios códigos seguidos. Espera unos minutos y vuelve a intentarlo." : "No se pudo enviar el código. Revisa el correo e inténtalo otra vez."); }
+      email = f.querySelector("#si-email").value.trim().toLowerCase();
+      const pw = f.querySelector("#si-pw").value, b = f.querySelector("[type=submit]");
+      if(!/^\S+@\S+\.\S+$/.test(email)) return msg("Escribe tu correo completo.");
+      if(pw.length < 6) return msg("La contraseña necesita al menos 6 caracteres.");
+      busy(b, signup ? "Creando…" : "Entrando…");
+      try{ await (signup ? Sync.signUp(email, pw) : Sync.signIn(email, pw)); }
+      catch(err){ idle(b); return msg(why(err, signup)); }
+      done();
     };
   };
-  const step2 = msg => {
-    host.innerHTML = `<div class="signin-box stack">
-      <span class="brand"><span class="brand-mark" aria-hidden="true"></span>Escuela α6500</span>
-      <h1>Revisa tu correo</h1>
-      <p class="muted">Te hemos enviado un código a <b>${esc(email)}</b>. Escríbelo aquí. Si no llega en un minuto, mira en Spam.</p>
-      <form class="stack" style="gap:10px" data-f2>
-        <label for="si-code"><b>Código</b></label>
-        <input id="si-code" class="notes si-code" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6,10}" maxlength="10" required placeholder="123456">
-        <p class="si-msg" role="alert">${msg || ""}</p>
-        <button class="btn btn-primary" type="submit">Entrar</button>
-        <button class="linkbtn" type="button" data-back>Usar otro correo o pedir otro código</button>
-      </form>
-    </div>`;
-    host.querySelector("#si-code").focus();
-    host.querySelector("[data-back]").onclick = () => step1();
-    host.querySelector("[data-f2]").onsubmit = async e => {
+  const forgot = () => {
+    host.innerHTML = shell("Recupera tu contraseña", "Te enviaremos un correo con un enlace. Ábrelo, elige una contraseña nueva y después vuelve a la app para entrar con ella.",
+      field("si-email", "Tu correo", "email", "email", `inputmode="email" value="${esc(email)}"`) +
+      `<button class="btn btn-primary" type="submit">Enviar el enlace</button><button class="linkbtn" type="button" data-back>Volver</button>`);
+    const f = host.querySelector("form");
+    host.querySelector("[data-back]").onclick = () => login(false);
+    f.onsubmit = async e => {
       e.preventDefault();
-      const b = e.target.querySelector("button[type=submit]"), code = host.querySelector("#si-code").value.replace(/\D/g, "");
-      b.disabled = true; b.textContent = "Entrando…";
-      try{ await Sync.verify(email, code); }
-      catch(err){ step2(!navigator.onLine ? "Necesitas conexión a internet para entrar." : "El código no es correcto o ha caducado. Revísalo o pide otro."); return; }
-      host.innerHTML = `<div class="signin-box stack"><h1>Cargando tu progreso…</h1></div>`;
-      await Sync.pull();
-      hideSignIn();
+      email = f.querySelector("#si-email").value.trim().toLowerCase(); const b = f.querySelector("[type=submit]");
+      busy(b, "Enviando…");
+      try{ await Sync.recover(email); msg(""); b.textContent = "Enviado. Revisa tu correo (y Spam)."; }
+      catch(err){ idle(b); msg(err.status === 429 ? "Has pedido varios correos seguidos. Espera un rato y vuelve a intentarlo." : "No se pudo enviar. Revisa el correo e inténtalo otra vez."); }
     };
   };
-  step1();
+  const reset = () => {
+    host.innerHTML = shell("Elige una contraseña nueva", "Después podrás entrar con ella en la app y en cualquier dispositivo.",
+      field("si-pw", "Contraseña nueva", "password", "new-password", `minlength="6"`) + `<button class="btn btn-primary" type="submit">Guardar y entrar</button>`);
+    const f = host.querySelector("form");
+    f.onsubmit = async e => {
+      e.preventDefault();
+      const pw = f.querySelector("#si-pw").value, b = f.querySelector("[type=submit]");
+      if(pw.length < 6) return msg("La contraseña necesita al menos 6 caracteres.");
+      busy(b, "Guardando…");
+      try{ await Sync.setPassword(pw); }
+      catch(err){ idle(b); return msg(why(err, true)); }
+      done();
+    };
+  };
+  return {login, reset};
 }
 function hideSignIn(){
   document.body.classList.remove("signin-on");
   document.getElementById("signin").innerHTML = "";
-  route();
+  startApp();
 }
 
-window.addEventListener("hashchange", route);
-if(Sync.on && !Sync.user) showSignIn();
-else{
+let started = false;
+function startApp(){
   route();
+  if(started) return; started = true;
+  window.addEventListener("hashchange", route);
   // Bring in changes made on another device when the app opens or comes back to the foreground.
   const refresh = () => Sync.pull().then(ch => { if(ch && !document.activeElement?.matches("textarea, input")) route(); });
   refresh();
   document.addEventListener("visibilitychange", () => { if(document.visibilityState === "visible") refresh(); else Sync.push(); });
   window.addEventListener("online", refresh);
 }
+
+(async () => {
+  const link = new URLSearchParams(location.hash.slice(1));
+  if(Sync.on && (link.has("access_token") || link.has("error_description"))){
+    history.replaceState(null, "", location.pathname);
+    if(link.get("type") === "recovery" && link.has("access_token")){
+      try{ await Sync.fromLink(link); showSignIn().reset(); return; }catch(e){}
+    }
+    if(!Sync.user){ showSignIn().login(false); document.querySelector("#signin .si-msg").textContent = "El enlace ha caducado o ya se usó. Pide otro."; return; }
+  }
+  if(Sync.on && !Sync.user) showSignIn().login(false);
+  else startApp();
+})();
 })();
 </script>
 <script>
