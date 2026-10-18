@@ -1,0 +1,1752 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Escuela α6500</title>
+<meta name="description" content="Curso interactivo en español para aprender a usar la Sony α6500.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Escuela α6500">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#EEF0EC" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0F1214" media="(prefers-color-scheme: dark)">
+<style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@500;700&display=swap">
+</head>
+<body>
+<style>
+/* Layout: a single phone-width column (max 680px) with a fixed bottom tab bar; lessons read top to bottom like a field notebook, with a dark "viewfinder" readout strip as the recurring camera detail. */
+:root{
+  --bg:#EEF0EC; --surface:#FFFFFF; --sunk:#E3E6E1; --ink:#14181B; --muted:#58616A; --line:#D3D8D2;
+  --accent:#2747C9; --accent-ink:#FFFFFF; --accent-soft:#E2E7FA;
+  --ok:#17894A; --ok-soft:#DDF1E4; --warn:#B86B00; --warn-soft:#FBEBD2; --bad:#C2352B;
+  --evf:#101315; --evf-ink:#E9EEE9; --evf-dim:#8C969A; --evf-hot:#FFB020; --evf-green:#3FD07A;
+  --cam:#25292D; --cam-2:#3A4046; --cam-3:#4C535A; --cam-ink:#C9CFD3; --cam-hi:#FF7A1A;
+  --f-display:"Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --r:14px; --nav-h:64px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0F1214; --surface:#171B1E; --sunk:#1F2427; --ink:#E7ECE8; --muted:#9BA4A9; --line:#2B3236;
+  --accent:#8EA2FF; --accent-ink:#0F1214; --accent-soft:#232B4A;
+  --ok:#4CCB80; --ok-soft:#173326; --warn:#F2A93B; --warn-soft:#3A2B12; --bad:#FF7468;
+  --evf:#07090A; --evf-ink:#E9EEE9; --evf-dim:#8C969A; --evf-hot:#FFB020; --evf-green:#3FD07A;
+  --cam:#2C3237; --cam-2:#41484F; --cam-3:#566068; --cam-ink:#D3D9DD; --cam-hi:#FF8A33;
+  color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#0F1214; --surface:#171B1E; --sunk:#1F2427; --ink:#E7ECE8; --muted:#9BA4A9; --line:#2B3236;
+  --accent:#8EA2FF; --accent-ink:#0F1214; --accent-soft:#232B4A;
+  --ok:#4CCB80; --ok-soft:#173326; --warn:#F2A93B; --warn-soft:#3A2B12; --bad:#FF7468;
+  --evf:#07090A; --evf-ink:#E9EEE9; --evf-dim:#8C969A; --evf-hot:#FFB020; --evf-green:#3FD07A;
+  --cam:#2C3237; --cam-2:#41484F; --cam-3:#566068; --cam-ink:#D3D9DD; --cam-hi:#FF8A33;
+  color-scheme:dark }
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.55;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));
+  padding-block:0 calc(var(--nav-h) + 24px + env(safe-area-inset-bottom, 0px))}
+.wrap{max-width:680px;margin:0 auto}
+h1,h2,h3{font-family:var(--f-display);line-height:1.15;text-wrap:balance;margin:0;letter-spacing:-.01em}
+h1{font-size:clamp(30px,8vw,42px);font-weight:800}
+h2{font-size:24px;font-weight:700}
+h3{font-size:19px;font-weight:700}
+p{margin:0}
+a{color:var(--accent)}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.muted{color:var(--muted)}
+.stack{display:flex;flex-direction:column;gap:16px}
+.stack-l{display:flex;flex-direction:column;gap:28px}
+
+/* top bar */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);
+  display:flex;align-items:center;gap:12px;padding-block:12px;border-bottom:1px solid var(--line);margin-bottom:20px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.brand{font-family:var(--f-display);font-weight:800;font-size:18px;display:flex;align-items:center;gap:8px;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand-mark{width:26px;height:26px;border-radius:50%;background:var(--ink);position:relative;flex:none}
+.brand-mark::after{content:"";position:absolute;inset:7px;border-radius:50%;background:var(--bg);box-shadow:0 0 0 2px var(--accent) inset}
+.ring{font-family:var(--f-mono);font-size:13px;color:var(--muted);white-space:nowrap}
+
+/* bottom nav */
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--surface);border-top:1px solid var(--line);
+  padding:6px max(8px, env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(8px, env(safe-area-inset-left,0px))}
+.nav ul{list-style:none;margin:0 auto;padding:0;max-width:680px;display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
+.nav a{display:flex;flex-direction:column;align-items:center;gap:2px;text-decoration:none;color:var(--muted);font-size:12px;font-weight:700;padding:6px 2px;border-radius:10px}
+.nav a[aria-current="page"]{color:var(--accent);background:var(--accent-soft)}
+.nav svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:999px;padding:12px 20px;font-weight:700;cursor:pointer;text-decoration:none;min-height:48px}
+.btn-primary{background:var(--accent);color:var(--accent-ink)}
+.btn-ghost{background:transparent;color:var(--ink);box-shadow:0 0 0 1.5px var(--line) inset}
+.btn-ok{background:var(--ok);color:var(--surface)}
+.btn-row{display:flex;flex-wrap:wrap;gap:10px}
+.linkbtn{background:none;border:0;padding:0;color:var(--accent);font-weight:700;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+
+/* home */
+.hero p{font-size:18px;color:var(--muted);max-width:60ch}
+.progress{height:10px;border-radius:99px;background:var(--sunk);overflow:hidden}
+.progress > i{display:block;height:100%;background:var(--ok);border-radius:99px;transition:width .4s}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.continue{background:var(--evf);color:var(--evf-ink);border-radius:var(--r);padding:20px;display:flex;flex-direction:column;gap:12px}
+.continue .eyebrow{color:var(--evf-dim)}
+.continue h2{color:var(--evf-ink)}
+.howto{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.howto div{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px;font-size:14px;line-height:1.4}
+.howto b{display:block;font-family:var(--f-display);font-size:16px;margin-bottom:2px}
+@media (max-width:460px){.howto{grid-template-columns:1fr}}
+.unit{display:flex;flex-direction:column;gap:10px}
+.unit-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.lessons{list-style:none;margin:0;padding:0;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.lessons li + li{border-top:1px solid var(--line)}
+.lessons a{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:12px;align-items:center;padding:14px 14px;text-decoration:none;color:var(--ink)}
+.lessons a:hover{background:var(--sunk)}
+.num{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-family:var(--f-mono);font-size:13px;font-weight:700;background:var(--sunk);color:var(--muted)}
+.num.done{background:var(--ok);color:var(--surface)}
+.num.proj{background:var(--accent-soft);color:var(--accent);font-size:16px}
+.num.done.proj{background:var(--ok);color:var(--surface)}
+.notes{width:100%;font:16px/1.5 var(--f-body);color:var(--ink);background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;resize:vertical}
+.notes:focus{outline:none;border-color:var(--accent)}
+.num.part{box-shadow:0 0 0 2px var(--ok) inset;color:var(--ok);background:transparent}
+.l-title{font-weight:700;line-height:1.3}
+.l-sub{font-size:14px;color:var(--muted)}
+.chev{color:var(--muted);font-size:20px}
+
+/* lesson */
+.crumbs{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:center}
+.evf{background:var(--evf);color:var(--evf-ink);border-radius:10px;padding:10px 14px;font-family:var(--f-mono);font-size:14px;font-weight:700;letter-spacing:.04em;
+  display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center}
+.evf span{white-space:nowrap}
+.evf .g{color:var(--evf-green)}
+.evf .d{color:var(--evf-dim);font-weight:500}
+.goal{font-size:19px;line-height:1.45}
+.prose{display:flex;flex-direction:column;gap:14px;max-width:65ch}
+.prose h3{margin-top:10px}
+.prose ul,.prose ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:6px}
+.k{display:inline-block;font-family:var(--f-mono);font-size:.78em;font-weight:700;background:var(--cam);color:var(--cam-ink);border-radius:6px;padding:1px 7px;line-height:1.5;white-space:nowrap;vertical-align:1px}
+.path{display:inline;font-family:var(--f-mono);font-size:.82em;background:var(--sunk);border-radius:6px;padding:2px 6px;line-height:1.7;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.path .en{color:var(--muted);font-weight:500}
+.callout{border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.callout .eyebrow{color:inherit;opacity:.8}
+.c-iphone{background:var(--accent-soft)}
+.c-warn{background:var(--warn-soft)}
+.c-warn .eyebrow{color:var(--warn);opacity:1}
+.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+th{font-family:var(--f-mono);font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700;background:var(--sunk)}
+td:first-child{font-weight:700;white-space:nowrap}
+
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;counter-reset:s}
+.steps li{counter-increment:s}
+.steps label{display:grid;grid-template-columns:30px minmax(0,1fr);gap:12px;align-items:start;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;cursor:pointer}
+.steps input{position:absolute;opacity:0;pointer-events:none}
+.steps .box{width:30px;height:30px;border-radius:8px;border:2px solid var(--line);display:grid;place-items:center;font-family:var(--f-mono);font-size:13px;font-weight:700;color:var(--muted);background:var(--bg)}
+.steps .box::before{content:counter(s)}
+.steps input:checked + label{border-color:var(--ok);background:var(--ok-soft)}
+.steps input:checked + label .box{background:var(--ok);border-color:var(--ok);color:var(--surface)}
+.steps input:checked + label .box::before{content:"✓"}
+.steps input:focus-visible + label{outline:3px solid var(--accent);outline-offset:2px}
+.think{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.think summary{cursor:pointer;font-weight:700;line-height:1.4}
+.think[open] summary{margin-bottom:8px}
+.think p{border-left:3px solid var(--accent);padding-left:12px}
+.wrap{zoom:var(--zoom,1)}
+.tsize{border:1.5px solid var(--line);background:var(--surface);border-radius:999px;min-width:44px;height:36px;font-family:var(--f-display);font-weight:800;font-size:14px;cursor:pointer;padding:0 10px}
+.tsize span{font-size:19px;margin-left:1px}
+.outline{display:flex;flex-wrap:wrap;gap:6px}
+.outline .chip{font-size:13px;min-height:32px;padding:4px 10px}
+[id^="sec-"]{scroll-margin-top:80px}
+.practice-btn{align-self:flex-start}
+.practice{position:fixed;inset:0;z-index:50;background:var(--bg);display:flex;flex-direction:column;gap:16px;
+  padding:calc(16px + env(safe-area-inset-top,0px)) max(20px, env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(20px, env(safe-area-inset-left,0px))}
+.pr-top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.pr-x{width:44px;height:44px;border-radius:50%;border:1.5px solid var(--line);background:var(--surface);font-size:18px;cursor:pointer}
+.pr-body{flex:1;display:flex;flex-direction:column;justify-content:center;gap:14px;max-width:600px;margin:0 auto;width:100%;overflow:auto}
+.pr-step{font-family:var(--f-display);font-size:clamp(22px,6vw,30px);line-height:1.3;font-weight:700;text-wrap:pretty}
+.pr-step .path{font-size:.6em}
+.pr-mission{font-size:19px;line-height:1.5}
+.pr-nav{display:grid;grid-template-columns:1fr 2fr;gap:10px;max-width:600px;margin:0 auto;width:100%}
+.pr-nav .btn{min-height:56px;font-size:17px}
+.pr-nav .btn:disabled{opacity:.4}
+.pr-hint{text-align:center;font-size:13px;color:var(--muted)}
+.gloss{display:grid;gap:8px;margin:0}
+.gloss div{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.gloss dt{font-weight:700}
+.gloss dd{margin:2px 0 0;color:var(--muted);font-size:15px}
+.review{border-color:var(--accent)}
+.mission{border:2px dashed var(--accent);border-radius:var(--r);padding:16px 18px;display:flex;flex-direction:column;gap:8px}
+.mission .eyebrow{color:var(--accent)}
+.lesson-foot{display:flex;flex-direction:column;gap:12px;border-top:1px solid var(--line);padding-top:20px}
+.donebar{display:flex;align-items:center;gap:10px;color:var(--ok);font-weight:700}
+
+/* camera map */
+.cam-tabs,.seg{display:flex;gap:4px;background:var(--sunk);border-radius:999px;padding:4px;flex-wrap:wrap}
+.cam-tabs button,.seg button{flex:1;border:0;background:transparent;border-radius:999px;padding:8px 10px;font-weight:700;cursor:pointer;min-height:40px;color:var(--muted);white-space:nowrap}
+.cam-tabs button[aria-pressed="true"],.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.cam-stage{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px}
+.cam-stage svg{display:block;width:100%;height:auto}
+.hs{cursor:pointer}
+.hs .hl{fill:transparent;stroke:transparent;stroke-width:2.5}
+.hs:hover .hl,.hs:focus .hl{stroke:var(--accent)}
+.hs.on .hl{stroke:var(--cam-hi);fill:rgba(255,122,26,.18)}
+.hs:focus{outline:none}
+.pin{fill:var(--cam-hi)}
+.pin-t{fill:#111;font:700 10px var(--f-mono)}
+.cam-label{fill:var(--cam-ink);font:700 9px var(--f-mono);letter-spacing:.04em}
+.cam-info{min-height:120px}
+.cam-info h3{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.cam-info .en{font-family:var(--f-mono);font-size:12px;color:var(--muted);font-weight:500}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 12px;font-size:14px;cursor:pointer;min-height:36px}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+/* simulator */
+.sim-frame{position:relative;border-radius:12px;overflow:hidden;background:#000;aspect-ratio:3/2;max-width:100%}
+.sim-frame svg{position:absolute;inset:0;width:100%;height:100%;display:block;transition:filter .25s}
+.sim-noise{position:absolute;inset:0;mix-blend-mode:overlay;pointer-events:none;background-size:160px 160px}
+.sim-osd{position:absolute;left:0;right:0;bottom:0;padding:6px 10px;background:linear-gradient(transparent,rgba(0,0,0,.65));
+  font:700 13px var(--f-mono);color:#EEF2EE;display:flex;gap:12px;flex-wrap:wrap;letter-spacing:.03em;text-shadow:0 1px 2px #000}
+.sim-osd .blink{color:#FFB020;animation:blink 1s steps(2,start) infinite}
+.sim-mode{position:absolute;left:10px;top:8px;font:800 15px var(--f-mono);color:#EEF2EE;text-shadow:0 1px 2px #000}
+.sim-focus{position:absolute;width:13%;aspect-ratio:1;border:2px solid #3FD07A;border-radius:3px;left:37.5%;top:47%;box-shadow:0 0 0 1px rgba(0,0,0,.4)}
+@keyframes blink{to{visibility:hidden}}
+@media (prefers-reduced-motion: reduce){.sim-osd .blink{animation:none;text-decoration:underline}.progress > i{transition:none}.sim-frame svg{transition:none}}
+.meter{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.meter-bar{position:relative;height:28px;margin-top:22px}
+.meter-ticks{position:absolute;inset:0;display:flex;justify-content:space-between;align-items:flex-end}
+.meter-ticks span{width:1px;height:10px;background:var(--muted);position:relative}
+.meter-ticks span.big{height:16px}
+.meter-ticks span b{position:absolute;top:-16px;left:50%;transform:translateX(-50%);font-weight:700;font-size:11px}
+.meter-mark{position:absolute;bottom:0;width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-bottom:12px solid var(--accent);transform:translateX(-7px);transition:left .25s}
+.ctrls{display:grid;gap:10px}
+.ctrl{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 12px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.ctrl .lab{font-weight:700;line-height:1.25}
+.ctrl .lab small{display:block;font-weight:400;color:var(--muted);font-size:13px}
+.stepper{display:flex;align-items:center;gap:6px}
+.stepper button{width:44px;height:44px;border-radius:50%;border:1.5px solid var(--line);background:var(--bg);font-size:22px;font-weight:700;cursor:pointer;line-height:1}
+.stepper button:disabled{opacity:.35;cursor:default}
+.stepper output{min-width:76px;text-align:center;font:700 18px var(--f-mono)}
+.ctrl.auto output{color:var(--muted)}
+.ctrl input[type=range]{grid-column:1/-1;width:100%;accent-color:var(--accent)}
+.auto-tag{font-family:var(--f-mono);font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.verdict{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.verdict li{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:14px;line-height:1.35}
+.verdict b{display:block;font-family:var(--f-mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.verdict .w{border-color:var(--warn);background:var(--warn-soft)}
+@media (max-width:420px){.verdict{grid-template-columns:1fr}}
+
+/* white balance demo */
+.wb-frame{position:relative;border-radius:12px;overflow:hidden;aspect-ratio:16/9;max-width:100%}
+.wb-frame svg{position:absolute;inset:0;width:100%;height:100%}
+.wb-cast{position:absolute;inset:0;mix-blend-mode:multiply;transition:background .3s,opacity .3s}
+
+/* recipes */
+.recipe{display:flex;flex-direction:column;gap:10px}
+.recipe dl{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;margin:0;font-size:15px}
+.recipe dt{font-family:var(--f-mono);font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding-top:3px}
+.recipe dd{margin:0}
+.confirm{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="#programa" style="text-decoration:none;color:inherit"><span class="brand-mark" aria-hidden="true"></span>Escuela α6500</a>
+    <span class="ring" id="ring"></span>
+    <button type="button" class="tsize" id="tsize" aria-label="Tamaño del texto">A<span>A</span></button>
+  </header>
+  <main id="app" aria-live="polite"></main>
+</div>
+
+<nav class="nav" aria-label="Secciones">
+  <ul>
+    <li><a href="#programa" data-tab="programa"><svg viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h10"/></svg>Programa</a></li>
+    <li><a href="#camara" data-tab="camara"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><circle cx="12" cy="13.5" r="3.5"/><path d="M8 7l1.5-3h5L16 7"/></svg>Cámara</a></li>
+    <li><a href="#simulador" data-tab="simulador"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v4M12 17v4M3 12h4M17 12h4"/><circle cx="12" cy="12" r="2.5"/></svg>Simulador</a></li>
+    <li><a href="#recetas" data-tab="recetas"><svg viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z"/><path d="M9 10h6M9 14h6M9 18h4"/></svg>Recetas</a></li>
+  </ul>
+</nav>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------- storage (per device) ---------- */
+const KEY = "escuela-a6500-v1";
+function load(){ try{ const v = JSON.parse(localStorage.getItem(KEY)); if(v && typeof v === "object") return {done:v.done||{}, steps:v.steps||{}, last:v.last||null, notes:v.notes||{}, zoom:v.zoom||1, rev:v.rev||0}; }catch(e){} return {done:{}, steps:{}, last:null, notes:{}, zoom:1, rev:0}; }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+let S = load();
+
+/* ---------- text helpers ---------- */
+// [[MENU]] -> button chip ; {{A › B|English}} -> menu path with English label
+function fmt(s){
+  return s
+    .replace(/\[\[(.+?)\]\]/g, '<span class="k">$1</span>')
+    .replace(/\{\{(.+?)\}\}/g, (m, inner) => {
+      const [es, en] = inner.split("|");
+      return '<span class="path">' + es + (en ? ' <span class="en">[' + en + ']</span>' : '') + '</span>';
+    });
+}
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+/* ---------- program content ---------- */
+const UNITS = [
+ {id:1, week:"Semana 1", title:"Primeros pasos", lessons:[
+  {id:"preparar", title:"Prepara tu cámara", sub:"Batería, tarjeta, objetivo e idioma", min:15,
+   evf:["BATERÍA","TARJETA","16-50 mm"],
+   goal:"Dejar la cámara lista para usar: batería cargada, tarjeta formateada, objetivo puesto e idioma, fecha y hora correctos.",
+   body:`
+<p>En la caja vienen la cámara, la batería <b>NP-FW50</b>, un cable micro USB con su adaptador de corriente, la correa y el <b>ocular</b> (la gomita del visor, que viene suelta). La <b>tarjeta de memoria no viene incluida</b>: necesitas una tarjeta SD (SDHC o SDXC). Si vas a grabar video 4K, que sea <b>UHS-I U3</b>.</p>
+<p>La batería se carga <b>dentro de la cámara</b>: con la cámara apagada, conecta el cable USB al adaptador y al enchufe. La lucecita naranja junto al puerto indica que está cargando y se apaga cuando termina (unas 2 horas y media desde vacía).</p>
+<p>Tu objetivo es el <b>Sony E 16-50 mm</b>. Es motorizado: al encender la cámara se extiende solo y al apagarla se recoge. No lo fuerces con la mano.</p>
+<div class="callout c-iphone"><span class="eyebrow">Diferencia con el iPhone</span><p>En el iPhone la foto siempre se guarda. Aquí la foto vive en la tarjeta: sin tarjeta no hay foto, y la cámara, de fábrica, ¡te deja disparar igual! Por eso el paso 8 es importante.</p></div>
+<div class="callout c-warn"><span class="eyebrow">Sobre los nombres de los menús</span><p>Cuando pongas la cámara en español verás los menús traducidos. En esta guía te damos el nombre en español y, entre corchetes, el nombre en inglés, por si la traducción de tu cámara es un poco distinta.</p></div>`,
+   steps:[
+    "Abre la tapa de abajo. Mete la batería empujando con su punta la palanquita de bloqueo hasta que encaje.",
+    "Carga: cámara apagada, cable USB al adaptador y al enchufe. Espera a que la luz naranja se apague.",
+    "Inserta la tarjeta SD con la esquina cortada como indica el dibujo de la tapa, hasta oír un clic. Cierra la tapa.",
+    "Quita la tapa del cuerpo y la tapa trasera del objetivo. Alinea los dos puntos blancos y gira el objetivo hasta el clic. Quita la tapa delantera.",
+    "Desliza el ocular en el visor y pon la correa en los dos enganches laterales.",
+    "Enciende con la palanca [[ON/OFF]] que rodea el disparador. Elige idioma, región, fecha y hora. Si ya los pasaste: {{MENU › Configuración › Idioma|Setup › Language}}.",
+    "Formatea la tarjeta (borra todo lo que tenga): {{MENU › Configuración › Formatear|Setup › Format}}.",
+    "Instala en el iPhone la app gratuita <b>Imaging Edge Mobile</b> de Sony. La configuras en la lección «Tus fotos en el iPhone».",
+    "Evita fotos fantasma: {{MENU › Ajustes de cámara 2 › Disparar sin tarjeta › Deshabilitar|Camera Settings2 › Release w/o Card › Disable}}."
+   ],
+   mission:"Pon el dial superior en AUTO y haz tres fotos de cualquier cosa. Pulsa [[▶]] para comprobar que se guardaron.",
+   warn:"Apaga siempre la cámara antes de sacar la batería, la tarjeta o el objetivo. Si la luz de acceso de la tarjeta está encendida, espera a que se apague."
+  },
+  {id:"controles", title:"Recorrido por los controles", sub:"Cada botón, rueda y dial", min:15,
+   evf:["MENU","Fn","DISP","C1 C2 C3"],
+   goal:"Saber qué hace cada botón y encontrarlo sin mirar.",
+   body:`
+<p>Toca cualquier parte del esquema para ver qué es. Cambia entre la vista de atrás, de arriba y del objetivo.</p>
+<div data-widget="camera"></div>
+<h3>Las dos ruedas que más usarás</h3>
+<ul>
+<li><b>Rueda de control</b> (atrás, junto al pulgar): gírala para cambiar valores y púlsala por sus cuatro lados como si fueran botones. De fábrica: arriba [[DISP]] (lo que se ve en pantalla), derecha [[ISO]], abajo [[±]] (compensación de exposición) e izquierda modo de avance (ráfaga y temporizador). El botón del centro activa <b>Eye AF</b> (enfoque en los ojos).</li>
+<li><b>Dial de control</b> (arriba, a la derecha): el que mueves con el pulgar sin soltar el agarre. En los modos A, S y M sirve para cambiar la apertura o la velocidad.</li>
+</ul>
+<h3>MENU o Fn</h3>
+<p>[[MENU]] tiene <b>todos</b> los ajustes, ordenados en pestañas. [[Fn]] abre un menú rápido con 12 ajustes que usarás a menudo (enfoque, ISO, balance de blancos…). Regla práctica: si lo cambias más de una vez al día, búscalo en Fn.</p>
+<div class="callout c-iphone"><span class="eyebrow">Diferencia con el iPhone</span><p>La pantalla es táctil, pero solo para enfocar. Los menús se manejan con la rueda: gira para moverte y pulsa el centro para aceptar. [[MENU]] también sirve para volver atrás.</p></div>`,
+   steps:[
+    "Toca cada parte del esquema de arriba al menos una vez.",
+    "Gira el dial de modos por todas sus posiciones y lee el nombre que aparece en pantalla.",
+    "Pulsa [[DISP]] (arriba de la rueda) varias veces y mira cómo cambia la información en pantalla.",
+    "Abre [[MENU]]. Muévete entre pestañas con los lados izquierdo y derecho de la rueda. Sal con [[MENU]].",
+    "Pulsa [[Fn]], recorre los ajustes con la rueda y sal pulsando [[Fn]] otra vez."
+   ],
+   mission:"Con los ojos cerrados, encuentra el disparador, la rueda trasera, [[MENU]] y [[▶]]. Repite hasta que tu dedo llegue sin mirar. Es lo que te hará rápida cuando la foto no espera.",
+  },
+  {id:"primera", title:"Sujétala y haz tu primera foto", sub:"El disparador de dos tiempos", min:20,
+   evf:["AUTO","AF","16 mm","50 mm"],
+   goal:"Sujetar la cámara con firmeza, usar el visor y dominar el gesto más importante: medio disparador para enfocar, fondo para disparar.",
+   body:`
+<h3>Cómo sujetarla</h3>
+<p>Mano derecha en el agarre, índice sobre el disparador. La mano izquierda va <b>debajo del objetivo</b>, como una bandeja. Codos pegados al cuerpo. Así la cámara tiembla mucho menos que con el brazo estirado.</p>
+<h3>Visor o pantalla</h3>
+<p>Al acercar el ojo al visor, un sensor apaga la pantalla y enciende el visor solo. Si ves los números del visor borrosos, gira la <b>ruedita de dioptrías</b> al lado del visor hasta verlos nítidos. La pantalla se inclina hacia arriba y hacia abajo: muy útil para fotos a ras de suelo o por encima de la gente.</p>
+<h3>El disparador tiene dos tiempos</h3>
+<ol>
+<li><b>Medio presionado:</b> la cámara enfoca. Oirás un pitido y verás un recuadro verde donde enfocó.</li>
+<li><b>Hasta el fondo:</b> hace la foto.</li>
+</ol>
+<p>Si mantienes el medio presionado, el enfoque se queda fijo y puedes <b>recomponer</b>: enfocas en la cara de alguien que está al centro y luego mueves la cámara para dejarlo a un lado, sin soltar.</p>
+<h3>El zoom</h3>
+<p>Usa la palanquita del lado del objetivo (W = gran angular, T = acercar) o el anillo. A <b>16 mm</b> ves más o menos lo mismo que con la cámara principal del iPhone. A <b>50 mm</b> se parece al teleobjetivo 3× del iPhone.</p>
+<div class="callout c-iphone"><span class="eyebrow">Diferencia con el iPhone</span><p>En el iPhone tocas y la foto sale al instante. Aquí primero enfocas (medio disparador) y luego disparas. Al principio se siente lento; en una semana será automático.</p></div>`,
+   steps:[
+    "Pon el dial de modos en AUTO y elige el automático más listo: {{MENU › Ajustes de cámara 1 › Modo automático › Auto superior|Auto Mode › Superior Auto}}.",
+    "Mira por el visor y ajusta la ruedita de dioptrías hasta ver nítidos los números.",
+    "Activa la cuadrícula de tercios para tu ojo de composición: {{MENU › Ajustes de cámara 2 › Línea de cuadrícula › Cuadríc. regla 3 tercios|Grid Line › Rule of 3rds Grid}}.",
+    "Apunta a un objeto cercano, presiona el disparador a la mitad y espera el pitido y el recuadro verde.",
+    "Sin soltar, recompón dejando el objeto a un lado y dispara hasta el fondo.",
+    "Haz la misma foto a 16 mm y a 50 mm."
+   ],
+   mission:"<b>Mismo tamaño, dos zooms.</b> Fotografía a una persona a 16 mm desde cerca y luego a 50 mm desde más lejos, de modo que salga del mismo tamaño en las dos. Compara el fondo: a 50 mm se ve más grande y más desenfocado, y la cara se ve más favorecedora.",
+  },
+  {id:"ver", title:"Tus fotos en el iPhone", sub:"Revisar en la cámara y pasar fotos a Fotos", min:25,
+   evf:["▶","DISP","Wi‑Fi → FOTOS"],
+   goal:"Revisar tus fotos con ojo crítico y dejarlas en la app Fotos del iPhone, donde las editarás.",
+   body:`
+<h3>Revisar en la cámara</h3>
+<ul>
+<li>Pulsa [[▶]] y gira la rueda para pasar fotos.</li>
+<li><b>Ampliar:</b> el botón [[AF/MF·AEL]] tiene una lupa: en reproducción amplía la foto. La pantalla es pequeña y engaña: <b>amplía siempre las fotos importantes</b> para comprobar el enfoque.</li>
+<li><b>Ver los ajustes:</b> pulsa [[DISP]] hasta ver la velocidad, el número F y el ISO de la foto. Mirar los ajustes de tus fotos buenas y malas es la forma más rápida de aprender.</li>
+<li><b>Borrar:</b> botón [[C3 / 🗑]]. No se puede deshacer.</li>
+</ul>
+<h3>Pasarlas al iPhone</h3>
+<p>Hay dos caminos. Las fotos acaban en la app <b>Fotos</b>, en Recientes, igual que las del móvil.</p>
+<div class="table-wrap"><table>
+<tr><th>Método</th><th>Cómo funciona</th><th>Ideal para</th></tr>
+<tr><td>Wi‑Fi con la app</td><td>La app gratuita <b>Imaging Edge Mobile</b> de Sony se conecta a la red Wi‑Fi de la cámara y copia las fotos que elijas.</td><td>El día a día, sin cables. Pasa fotos JPEG.</td></tr>
+<tr><td>Lector de tarjetas</td><td>Un lector de tarjetas SD para iPhone (USB‑C o Lightning). Metes la tarjeta y Fotos te ofrece importar.</td><td>Pasar muchas fotos de golpe, videos 4K o archivos RAW.</td></tr>
+</table></div>
+<div class="callout c-warn"><span class="eyebrow">Sobre la sincronización automática</span><p>Algunas cámaras Sony más nuevas pasan cada foto al móvil solas mientras disparas («transferencia automática en segundo plano»). Por lo que sabemos, la α6500 no tiene esa función: eres tú quien inicia la transferencia. Si en la app ves esa opción disponible para tu cámara, actívala. Si no, la rutina de abajo tarda menos de un minuto.</p></div>
+<div class="callout c-iphone"><span class="eyebrow">Diferencia con el iPhone</span><p>Las fotos no aparecen solas en tu carrete: tú eliges cuáles pasar. Úsalo a tu favor y pasa solo las buenas.</p></div>`,
+   steps:[
+    "Pulsa [[▶]], recorre tus fotos y amplía una con el botón de la lupa.",
+    "Pulsa [[DISP]] en reproducción hasta ver la velocidad, el F y el ISO de esa foto.",
+    "Borra una foto mala con [[🗑]].",
+    "Instala <b>Imaging Edge Mobile</b> desde la App Store y, cuando te lo pida, dale acceso a Fotos.",
+    "En los ajustes de la app, busca el tamaño de las imágenes copiadas y elige <b>Original</b> (si no, pasa versiones pequeñas de 2 MP).",
+    "En la cámara: {{MENU › Red › Enviar a smartphone › Seleccionar en este disp. › Todas imág. de esta fecha|Wireless › Send to Smartphone › Select on This Device › All Images on This Date}}. La cámara muestra un código QR.",
+    "En la app, escanea el código QR. Solo hace falta la primera vez: después el iPhone recuerda la red de la cámara.",
+    "Abre Fotos y comprueba que tus fotos están en Recientes. Crea un álbum «α6500» para tenerlas juntas.",
+    "Prueba también el atajo: con una foto en pantalla, pulsa [[Fn]] (en reproducción es «Enviar a smartphone») y elige Esta imagen.",
+    "Otra opción: {{Enviar a smartphone › Seleccionar en smartphone|Select on Smartphone}} te deja ver toda la tarjeta desde el iPhone y elegir allí."
+   ],
+   mission:"Haz 10 fotos, revísalas en la cámara ampliándolas, borra las que fallen y pasa las buenas al iPhone. Repite la rutina hasta que tardes menos de un minuto.",
+  }
+ ]},
+ {id:2, week:"Semana 2", title:"Enfoque", lessons:[
+  {id:"modos-enfoque", title:"Modos de enfoque", sub:"AF-S, AF-A, AF-C, DMF y MF", min:20,
+   evf:["P","AF-S","AF-C"],
+   goal:"Elegir si la cámara enfoca una vez y se queda quieta, o si sigue al sujeto mientras se mueve.",
+   body:`
+<p>A partir de aquí usa el modo <b>P</b> (Programa) del dial: la cámara sigue calculando la luz, pero te deja elegir el enfoque y casi todo lo demás. En AUTO muchos ajustes están bloqueados.</p>
+<p>El modo de enfoque está en {{MENU › Ajustes de cámara 1 › Modo de enfoque|Focus Mode}} y también en el menú [[Fn]].</p>
+<div class="table-wrap"><table>
+<tr><th>Modo</th><th>Qué hace</th><th>Úsalo para</th></tr>
+<tr><td>AF-S</td><td>Enfoca una vez y bloquea el enfoque mientras mantienes el medio disparador.</td><td>Personas posando, comida, paisajes, objetos.</td></tr>
+<tr><td>AF-A</td><td>Decide solo: bloquea si el sujeto está quieto, sigue si se mueve.</td><td>Cuando no sabes qué va a pasar.</td></tr>
+<tr><td>AF-C</td><td>Sigue enfocando todo el tiempo mientras mantienes el medio disparador. No pita.</td><td>Niños, mascotas, deporte, gente caminando.</td></tr>
+<tr><td>DMF</td><td>Enfoca solo y luego te deja retocar a mano con el anillo.</td><td>Fotos muy de cerca.</td></tr>
+<tr><td>MF</td><td>Enfocas tú con el anillo del objetivo.</td><td>Cuando el autoenfoque falla (lección «Enfoque manual»).</td></tr>
+</table></div>
+<h3>Cómo leer el indicador de enfoque</h3>
+<p>Abajo en la pantalla hay un punto verde: <b>fijo</b> significa enfocado y bloqueado; <b>parpadeando</b> significa que no pudo enfocar; <b>con paréntesis</b> (en AF-C) significa que está siguiendo al sujeto.</p>
+<p>Al autoenfoque le cuestan las cosas oscuras, las superficies lisas sin textura (una pared blanca), el cristal y los reflejos.</p>`,
+   steps:[
+    "Gira el dial a P.",
+    "Pon el modo de enfoque en AF-S. Enfoca una taza, mantén el medio disparador y acerca o aleja la cámara: el enfoque no cambia.",
+    "Cambia a AF-C. Pide a alguien que camine hacia ti y síguelo con el medio disparador presionado.",
+    "Apunta a una pared lisa y mira cómo el indicador parpadea porque no encuentra qué enfocar."
+   ],
+   mission:"Una persona o mascota camina hacia ti: haz cinco fotos en AF-S y cinco en AF-C. Amplía en la cámara: ¿en cuál salen más nítidas?",
+  },
+  {id:"areas", title:"Dónde enfoca: áreas y pantalla táctil", sub:"Amplia, Zona, Punto flexible y Lock-on", min:20,
+   evf:["P","AF-S","[ ▢ ] PUNTO FLEX."],
+   goal:"Decidir tú qué parte de la foto queda nítida, en vez de dejar que la cámara adivine.",
+   body:`
+<p>El modo de enfoque dice <i>cuándo</i> enfoca. El <b>área de enfoque</b> dice <i>dónde</i>. Está en {{MENU › Ajustes de cámara 1 › Área de enfoque|Focus Area}} y en [[Fn]].</p>
+<div class="table-wrap"><table>
+<tr><th>Área</th><th>Qué hace</th></tr>
+<tr><td>Amplia</td><td>La cámara busca el sujeto en toda la imagen. Rápido, pero a veces elige lo que no querías (normalmente lo más cercano).</td></tr>
+<tr><td>Zona</td><td>Eliges una región de la pantalla y la cámara elige dentro de ella.</td></tr>
+<tr><td>Centro</td><td>Siempre enfoca al centro. Perfecto con el truco de enfocar y recomponer.</td></tr>
+<tr><td>Punto flexible</td><td>Un recuadro pequeño (S, M o L) que tú mueves a cualquier sitio. Máximo control.</td></tr>
+<tr><td>Punto flexible ampliado</td><td>Igual, pero si no puede enfocar en el punto, usa los de alrededor.</td></tr>
+<tr><td>Lock-on AF</td><td>Solo con AF-C. Engancha al sujeto y lo persigue por la pantalla.</td></tr>
+</table></div>
+<h3>Mover el punto con el dedo</h3>
+<p>Activa {{MENU › Configuración › Funcionamiento táctil › Panel táctil+Pad|Setup › Touch Operation › Touch Panel+Pad}}. Mirando la pantalla, <b>toca</b> donde quieres enfocar. Mirando por el visor, la pantalla funciona como un <b>touchpad</b>: arrastra el pulgar y el recuadro se mueve.</p>
+<div class="callout c-iphone"><span class="eyebrow">Diferencia con el iPhone</span><p>Es como tocar la pantalla del iPhone para enfocar. La diferencia es que aquí luego confirmas con el medio disparador.</p></div>
+<p class="muted">En AUTO y en SCN el área queda fija en Amplia. Por eso practicas en P.</p>`,
+   steps:[
+    "Dial en P. Área de enfoque: Punto flexible, tamaño M.",
+    "Activa el funcionamiento táctil (Panel táctil+Pad).",
+    "Toca la pantalla sobre un objeto que no esté en el centro y presiona a medias: enfoca ahí.",
+    "Mira por el visor y arrastra el pulgar sobre la pantalla para mover el recuadro.",
+    "Prueba Amplia con varios objetos a distintas distancias. ¿Cuál elige la cámara?",
+    "Con AF-C, elige Lock-on AF y sigue a algo que se mueva."
+   ],
+   mission:"Pon tres objetos a distintas distancias sobre una mesa. Sin mover la cámara, haz tres fotos enfocando cada vez uno distinto con el punto flexible. Es tu primera lección de dirigir la mirada de quien vea la foto.",
+  },
+  {id:"eyeaf", title:"Eye AF: ojos nítidos en retratos", sub:"El botón central de la rueda", min:15,
+   evf:["A","AF-C","EYE AF","50 mm"],
+   goal:"Hacer retratos con los ojos perfectamente enfocados, que es lo primero que mira cualquiera.",
+   body:`
+<p>En un retrato, si los ojos no están nítidos, la foto se siente mal aunque todo lo demás esté bien. La α6500 tiene <b>Eye AF</b>: encuentra el ojo y enfoca ahí.</p>
+<p>De fábrica está en el <b>botón central de la rueda</b>. Se usa así:</p>
+<ol>
+<li>Apunta a la cara de la persona.</li>
+<li><b>Mantén presionado</b> el botón central. Aparece un pequeño recuadro sobre el ojo.</li>
+<li>Sin soltarlo, dispara.</li>
+</ol>
+<p>Funciona mejor en <b>AF-C</b>, porque sigue el ojo si la persona se mueve un poco.</p>
+<p>Le cuesta con gafas de sol, pelo sobre los ojos, contraluz fuerte, poca luz u ojos cerrados. Si no detecta el ojo, enfoca la cara.</p>
+<p class="muted">Si el botón central no hace nada, alguien cambió su función. Devuélvela en {{MENU › Ajustes de cámara 2 › Tecla personaliz. (disparo) › Botón central › Eye AF|Custom Key(Shoot.) › Center Button › Eye AF}}.</p>`,
+   steps:[
+    "Dial en P, modo de enfoque AF-C.",
+    "Apunta a una persona a 1,5 o 2 metros con el zoom en 50 mm.",
+    "Mantén el botón central y espera el recuadro sobre el ojo.",
+    "Sin soltar el botón central, dispara.",
+    "Amplía la foto en [[▶]] y comprueba que las pestañas se ven nítidas."
+   ],
+   mission:"Retrato junto a una ventana: persona de lado a la luz, zoom a 50 mm, Eye AF. Haz diez fotos mientras habla y se mueve. Cuenta cuántas tienen el ojo nítido.",
+  },
+  {id:"manual", title:"Enfoque manual con peaking", sub:"Cuando el autoenfoque se confunde", min:20,
+   evf:["MF","PEAKING: MEDIO","🔍"],
+   goal:"Enfocar a mano cuando el autoenfoque no puede: a través de cristales, de noche o muy de cerca.",
+   body:`
+<p>Elige {{Modo de enfoque › MF|Focus Mode › Manual Focus}}. Ahora el <b>anillo del objetivo enfoca</b> en vez de hacer zoom (el zoom sigue en la palanquita W/T).</p>
+<p>Dos ayudas hacen que sea fácil:</p>
+<ul>
+<li><b>Ampliación automática:</b> al girar el anillo, la imagen se amplía para que veas el detalle. Pulsa el disparador a medias para volver a la vista completa.</li>
+<li><b>Peaking (realce):</b> pinta de color los bordes que están enfocados. Actívalo en {{MENU › Ajustes de cámara 1 › Nivel de realce › Medio|Peaking Level › Mid}} y elige el color en {{Color de realce|Peaking Color}} (rojo o amarillo se ven bien).</li>
+</ul>
+<h3>El atajo AF/MF</h3>
+<p>Con la palanca de atrás en <b>AF/MF</b>, el botón [[AF/MF·AEL]] cambia de autoenfoque a manual mientras lo pulsas. Ideal para un retoque rápido.</p>
+<p class="muted">El 16-50 no enfoca más cerca de unos 25 cm (a 16 mm) o 30 cm (a 50 mm). Si estás más cerca, ningún enfoque funcionará.</p>`,
+   steps:[
+    "Activa el peaking en nivel Medio y color Rojo.",
+    "Pon el modo de enfoque en MF.",
+    "Gira el anillo despacio sobre un objeto con textura y mira cómo aparecen los bordes de color.",
+    "Pulsa el disparador a medias para salir de la ampliación y dispara.",
+    "Vuelve a AF-S y prueba el atajo: palanca en AF/MF, mantén el botón y gira el anillo."
+   ],
+   mission:"Fotografía algo a través de una ventana con gotas, una reja o una cortina fina. Primero en automático (verás que enfoca en el cristal) y luego en manual, enfocando lo de detrás.",
+  }
+ ]},
+ {id:3, week:"", title:"La luz y la exposición", lessons:[
+  {id:"luz", title:"Aprende a ver la luz", sub:"Dirección, calidad y hora del día", min:20,
+   evf:["☀ LATERAL","CONTRALUZ","HORA DORADA"],
+   goal:"Fijarte en la luz antes de tocar ningún ajuste, porque la luz decide la foto más que la cámara.",
+   body:`
+<p>Ya sabes componer. El siguiente salto no está en la cámara: está en <b>ver la luz</b>. Antes de levantar la cámara, pregúntate siempre: <b>¿de dónde viene la luz y cómo es?</b></p>
+<h3>Dirección</h3>
+<div class="table-wrap"><table>
+<tr><th>Luz</th><th>Qué hace</th></tr>
+<tr><td>De frente</td><td>Ilumina todo por igual. Plana, sin volumen. Segura, pero aburrida.</td></tr>
+<tr><td>Lateral</td><td>Crea sombras que dan volumen y textura. La favorita para retratos con carácter, comida y objetos.</td></tr>
+<tr><td>Contraluz</td><td>Siluetas, pelo brillante, ambiente. Hay que decidir si quieres silueta o cara expuesta (lecciones «Más clara o más oscura» y «Poca luz y flash»).</td></tr>
+<tr><td>Cenital</td><td>Sol de mediodía desde arriba: sombras duras bajo los ojos. Busca sombra.</td></tr>
+</table></div>
+<h3>Calidad</h3>
+<p><b>Dura:</b> fuente pequeña o lejana (sol directo, una bombilla desnuda). Sombras con bordes marcados. <b>Suave:</b> fuente grande (cielo nublado, sombra abierta, una ventana grande). Sombras suaves, piel favorecida.</p>
+<h3>Hora</h3>
+<p>La <b>hora dorada</b> (la primera y la última hora de sol) da luz cálida, baja y lateral. La <b>hora azul</b> (justo después del atardecer) da cielos azul intenso con las luces de la ciudad encendidas.</p>
+<div class="callout c-iphone"><span class="eyebrow">Diferencia con el iPhone</span><p>El iPhone combina varias fotos para aclarar sombras y oscurecer cielos, así que todo se ve «bien iluminado». La α6500 hace una sola foto: verás contrastes y sombras más fuertes. No es un fallo, es la luz real, y aprender a usarla es lo que hará tus fotos distintas a las de un móvil.</p></div>`,
+   steps:[
+    "Siéntate junto a una ventana y mira cómo cae la luz sobre tu mano al girarla.",
+    "Pide a alguien que se ponga de frente a la ventana, de lado y de espaldas. Observa su cara en cada posición.",
+    "Sal a la calle a mediodía y busca una sombra abierta (bajo un portal o un árbol grande). Compara la cara de alguien al sol y en la sombra.",
+    "Mira el cielo al atardecer cada 10 minutos durante media hora y fíjate en cómo cambia el color de la luz."
+   ],
+   mission:"<b>Cuatro luces, un objeto.</b> Una fruta o una taza junto a una ventana: luz de frente, de lado, desde atrás y en sombra. Mismos ajustes en las cuatro fotos (modo A, F5.6). Solo cambia la luz. ¿Cuál tiene más volumen?"
+  },
+  {id:"triangulo", title:"El triángulo de exposición", sub:"Apertura, velocidad e ISO", min:20,
+   evf:["P","1/125","F5.6","ISO AUTO"], sim:"P",
+   goal:"Entender las tres formas que tiene la cámara de conseguir luz y qué precio paga cada una.",
+   body:`
+<p>Una foto es luz que llega al sensor. Hay tres llaves para controlar cuánta llega, y cada una cambia algo más en la foto:</p>
+<div class="table-wrap"><table>
+<tr><th>Llave</th><th>Qué es</th><th>Más luz</th><th>Efecto secundario</th></tr>
+<tr><td>Apertura (F)</td><td>El tamaño del agujero del objetivo.</td><td>Número F más bajo</td><td>Fondo más desenfocado</td></tr>
+<tr><td>Velocidad</td><td>Cuánto tiempo está abierto el obturador.</td><td>Tiempo más largo</td><td>Lo que se mueve sale borroso</td></tr>
+<tr><td>ISO</td><td>Cuánto amplifica el sensor la luz.</td><td>Número más alto</td><td>Más ruido (granito)</td></tr>
+</table></div>
+<p>Piensa en llenar un vaso bajo el grifo: puedes abrir más el grifo (apertura), dejarlo más tiempo (velocidad) o usar un vaso más pequeño (ISO). Las tres llenan el vaso.</p>
+<p>Los fotógrafos hablan de <b>pasos</b>: un paso es el doble o la mitad de luz. 1/250 a 1/125 es un paso. ISO 400 a 800 es un paso. F5.6 a F4 también.</p>
+<h3>Quién decide qué</h3>
+<div class="table-wrap"><table>
+<tr><th>Modo</th><th>Tú eliges</th><th>La cámara elige</th></tr>
+<tr><td>AUTO</td><td>Nada</td><td>Todo</td></tr>
+<tr><td>P</td><td>ISO y estilo</td><td>Apertura y velocidad</td></tr>
+<tr><td>A</td><td>Apertura</td><td>Velocidad</td></tr>
+<tr><td>S</td><td>Velocidad</td><td>Apertura</td></tr>
+<tr><td>M</td><td>Las dos</td><td>Nada (o el ISO, si está en AUTO)</td></tr>
+</table></div>
+<p>Abre el simulador y juega antes de tocar la cámara. Cambia de escena y de modo, y mira qué decide la cámara.</p>`,
+   steps:[
+    "En el simulador, modo P: cambia la escena de Sol a Noche y mira cómo cambian los tres valores.",
+    "En la cámara, dial en P. Presiona a medias y lee abajo en la pantalla: velocidad, F e ISO.",
+    "Apunta a una zona luminosa y luego a una oscura. Mira cómo cambian los números.",
+    "En P, gira el dial de control con el disparador a medias: la P se convierte en P* y cambias la pareja apertura-velocidad sin cambiar el brillo."
+   ],
+   mission:"Diario de luz: en P, anota la velocidad, F e ISO que elige la cámara en cuatro lugares (sol directo, sombra, interior de casa y de noche). Verás que de noche todo se dispara: velocidad lenta e ISO alto.",
+  },
+  {id:"apertura", title:"Apertura y modo A", sub:"Fondo desenfocado o todo nítido", min:25,
+   evf:["A","F5.6","50 mm","ISO AUTO"], sim:"A",
+   goal:"Controlar cuánto de la foto queda nítido: solo el sujeto, o todo de delante a atrás.",
+   body:`
+<p>Gira el dial a <b>A</b> (prioridad a la apertura). Con el <b>dial de control</b> de arriba eliges el número F y la cámara pone la velocidad.</p>
+<ul>
+<li><b>Número F bajo</b> (F3.5 a F5.6): agujero grande, mucha luz, <b>poca profundidad de campo</b>: el sujeto nítido y el fondo desenfocado. Ideal para retratos.</li>
+<li><b>Número F alto</b> (F8 a F11): agujero pequeño, <b>todo nítido</b>. Ideal para paisajes y grupos.</li>
+</ul>
+<h3>Lo que debes saber de tu objetivo</h3>
+<p>El 16-50 es <b>F3.5–5.6</b>: el F más bajo depende del zoom. A 16 mm llega a F3.5, pero a 50 mm solo a F5.6. Para el fondo más desenfocado posible con este objetivo, la receta es:</p>
+<ol>
+<li>Zoom a <b>50 mm</b> y F lo más bajo posible (F5.6).</li>
+<li><b>Acércate</b> al sujeto (1 a 1,5 m para un retrato de busto).</li>
+<li>Que el fondo esté <b>lejos</b> del sujeto (varios metros).</li>
+</ol>
+<p>La distancia importa tanto como la apertura. Un fondo pegado a la persona nunca se desenfoca mucho.</p>
+<p>El objetivo da su mejor nitidez alrededor de <b>F8</b>. A partir de F16 la imagen se suaviza un poco por difracción.</p>
+<div class="callout c-warn"><span class="eyebrow">Si un número parpadea</span><p>Si la velocidad parpadea en pantalla, la cámara no puede compensar la apertura que elegiste (demasiada o muy poca luz). Cambia la apertura o el ISO.</p></div>`,
+   steps:[
+    "En el simulador, modo A: mueve la apertura de F5.6 a F22 con el zoom en 50 mm y mira el fondo.",
+    "En la cámara, dial en A e ISO en AUTO.",
+    "Zoom a 50 mm, gira el dial de control hasta F5.6.",
+    "Fotografía una taza o una flor a un metro con el fondo lejos.",
+    "Sin moverte, sube a F16 y repite."
+   ],
+   mission:"<b>Fondo cremoso.</b> Retrato de busto a 50 mm y F5.6, con la persona a varios metros de la pared o los árboles de detrás. Luego la misma foto con la persona pegada a la pared. Compara.",
+  },
+  {id:"velocidad", title:"Velocidad y modo S", sub:"Congelar o dibujar el movimiento", min:25,
+   evf:["S","1/1000","1/15","STEADYSHOT"], sim:"S",
+   goal:"Decidir si el movimiento sale congelado o como una estela, y evitar fotos movidas.",
+   body:`
+<p>Gira el dial a <b>S</b> (prioridad a la velocidad). Con el <b>dial de control</b> eliges la velocidad y la cámara pone la apertura.</p>
+<div class="table-wrap"><table>
+<tr><th>Velocidad</th><th>Resultado</th></tr>
+<tr><td>1/1000 o más</td><td>Congela salpicaduras, saltos y deporte.</td></tr>
+<tr><td>1/500</td><td>Congela niños y mascotas corriendo.</td></tr>
+<tr><td>1/250</td><td>Gente caminando nítida.</td></tr>
+<tr><td>1/60 a 1/125</td><td>Personas quietas, uso diario.</td></tr>
+<tr><td>1/15 a 1/2</td><td>Agua sedosa, estelas. Hay que apoyar la cámara.</td></tr>
+</table></div>
+<h3>Foto movida o sujeto movido</h3>
+<p>Si <b>toda</b> la foto sale borrosa, se movió la cámara (trepidación). Si solo sale borroso lo que se mueve, es el sujeto. Regla: sin estabilizador, no bajes de <b>1 / (mm × 1,5)</b>: a 50 mm, unos 1/80.</p>
+<p>Tu α6500 tiene <b>SteadyShot</b> (estabilizador dentro del cuerpo) y el objetivo tiene el suyo. Juntos te dejan ir unos pasos más lento con sujetos quietos. Revisa que esté activo: {{MENU › Ajustes de cámara 2 › SteadyShot › Activado|SteadyShot › On}}. Apágalo solo si usas trípode.</p>
+<p><b>Barrido:</b> a 1/30, sigue con la cámara a un ciclista mientras disparas. El ciclista sale nítido y el fondo en rayas.</p>
+<div class="callout c-warn"><span class="eyebrow">Si el número F parpadea</span><p>No hay apertura que compense esa velocidad. Con poca luz, sube el ISO o elige una velocidad más lenta.</p></div>`,
+   steps:[
+    "En el simulador, modo S: pon 1/2000 y luego 1/15 y mira al ciclista.",
+    "En la cámara, dial en S, ISO en AUTO.",
+    "Comprueba que el SteadyShot esté activado.",
+    "Fotografía a alguien caminando a 1/500 y a 1/15.",
+    "Apoya la cámara en una mesa y prueba la foto más lenta que te salga nítida."
+   ],
+   mission:"<b>Agua.</b> Un grifo o una fuente: una foto a 1/1000 (gotas congeladas) y otra a 1/15 o más lenta, con la cámara apoyada (agua de seda). Usa el temporizador de 2 s si tienes dónde apoyarla.",
+  },
+  {id:"iso", title:"ISO sin miedo", sub:"Cuándo subirlo y hasta dónde", min:15,
+   evf:["ISO 100","ISO 6400","AUTO"], sim:"A",
+   goal:"Usar el ISO para salvar fotos con poca luz, sabiendo cuánto ruido aceptas.",
+   body:`
+<p>Pulsa el <b>lado derecho</b> de la rueda ([[ISO]]). Va de <b>ISO 100</b> a <b>51200</b>, o <b>AUTO</b>.</p>
+<ul>
+<li><b>100–400:</b> día, máxima calidad.</li>
+<li><b>800–3200:</b> interiores y atardecer. En esta cámara se ve muy limpio.</li>
+<li><b>6400:</b> noche. Algo de grano, pero aceptable.</li>
+<li><b>12800 o más:</b> emergencias. Mejor una foto con grano que una foto movida.</li>
+</ul>
+<p><b>ISO AUTO</b> es tu mejor amigo al principio: de fábrica se mueve entre 100 y 6400. Puedes cambiar ese rango: con ISO AUTO seleccionado, pulsa el lado derecho de la rueda y ajusta el máximo y el mínimo.</p>
+<p>También puedes decirle a la cámara cuándo empezar a subir el ISO con {{MENU › Ajustes de cámara 1 › ISO AUTO vel. obt. mín.|ISO AUTO Min. SS}}. Para niños y mascotas, elige «Más rápido».</p>
+<p class="muted">Truco para escenas quietas de noche: el ajuste Multi Frame NR (en la lista de ISO) hace varias fotos y las combina para reducir ruido. Solo funciona en JPEG.</p>`,
+   steps:[
+    "Pulsa ISO (lado derecho de la rueda) y recorre los valores.",
+    "Elige ISO AUTO y pulsa el lado derecho para ver el rango mínimo y máximo.",
+    "En el simulador, escena Interior, modo A: cambia entre ISO 100 y AUTO y mira la velocidad."
+   ],
+   mission:"Misma escena dentro de casa con la cámara apoyada: ISO 100, 1600, 6400 y 25600. Amplíalas en el móvil. ¿Desde cuál te molesta el grano? Ése es tu límite personal: ponlo como máximo de ISO AUTO.",
+  },
+  {id:"compensacion", title:"Más clara o más oscura", sub:"Compensación, histograma y medición", min:20,
+   evf:["A","±0.0","+0.7","HISTOGRAMA"],
+   goal:"Corregir el brillo cuando la cámara se equivoca, y saber leer si una foto está quemada.",
+   body:`
+<p>La cámara intenta que todo quede de un brillo «medio». Por eso la nieve o una pared blanca salen grisáceas, y un gato negro sale gris. Tú la corriges con la <b>compensación de exposición</b>:</p>
+<p>Pulsa el <b>lado de abajo</b> de la rueda ([[±]]) y gírala: <b>+</b> aclara, <b>−</b> oscurece. Va de −5 a +5, en tercios de paso. Funciona en P, A y S (en M, solo con ISO AUTO). En AUTO no está disponible.</p>
+<ul>
+<li>Nieve, playa, fondo blanco: <b>+0.7 a +1.3</b>.</li>
+<li>Escenario, fondo negro, atardecer intenso: <b>−0.7 a −1.3</b>.</li>
+</ul>
+<h3>El histograma</h3>
+<p>Es una gráfica del brillo: sombras a la izquierda, luces a la derecha. Si la montaña choca contra el borde derecho, hay zonas <b>quemadas</b> (blanco sin detalle, no se recupera). Se ve pulsando [[DISP]]. Si no aparece, actívalo en {{MENU › Ajustes de cámara 2 › Botón DISP › Monitor › Histograma|DISP Button › Monitor › Histogram}}.</p>
+<h3>Medición</h3>
+<p>{{MENU › Ajustes de cámara 1 › Modo medición|Metering Mode}}. <b>Multi</b> (de fábrica) va bien casi siempre. <b>Puntual</b> mide solo el centro: útil en contraluz para exponer bien una cara.</p>
+<p>Con la palanca en <b>AEL</b>, el botón [[AF/MF·AEL]] congela la exposición mientras lo mantienes: mides en la cara, mantienes, recompones y disparas.</p>`,
+   steps:[
+    "Dial en A. Pulsa el lado de abajo de la rueda y gira hasta +1.0. Mira cómo se aclara la pantalla.",
+    "Vuelve a 0.0 (no olvides esto: la compensación se queda puesta).",
+    "Pulsa [[DISP]] hasta ver el histograma. Si no aparece, actívalo en el menú.",
+    "Apunta a una ventana muy luminosa y mira cómo el histograma choca contra la derecha."
+   ],
+   mission:"Fotografía algo blanco (un papel o una pared) en A sin compensar: saldrá gris. Repite a +1.0. Luego algo negro a 0 y a −1.0.",
+  },
+  {id:"manualm", title:"Modo M: tú decides todo", sub:"La escala de exposición", min:25,
+   evf:["M","1/125","F8","ISO 100","±0.0"], sim:"M",
+   goal:"Fijar apertura y velocidad a la vez, usando la escala de la pantalla como guía.",
+   body:`
+<p>Gira el dial a <b>M</b>. De fábrica:</p>
+<ul>
+<li><b>Rueda de control</b> (atrás): velocidad.</li>
+<li><b>Dial de control</b> (arriba): apertura.</li>
+</ul>
+<p>Si el ISO está fijo, aparece una escala marcada <b>MM</b> con un número: <b>0.0</b> es lo que la cámara cree correcto, <b>+</b> saldrá más clara, <b>−</b> más oscura. El método:</p>
+<ol>
+<li>Elige la apertura por la profundidad de campo que quieres.</li>
+<li>Elige la velocidad por el movimiento.</li>
+<li>Ajusta el ISO (o uno de los dos) hasta que la escala quede cerca de 0.</li>
+</ol>
+<p><b>M con red de seguridad:</b> pon ISO en AUTO. Tú eliges apertura y velocidad, y la cámara ajusta el ISO. Muy útil para deporte o niños: velocidad rápida fija y apertura abierta.</p>
+<h3>Cuándo usar M</h3>
+<ul>
+<li>Cuando quieres que todas las fotos de una serie tengan el mismo brillo (panorámicas, fotos de producto).</li>
+<li>De noche o con flash.</li>
+<li>Cuando la cámara se deja engañar por fondos muy claros u oscuros.</li>
+</ul>
+<p class="muted">Si prefieres el ajuste al revés (apertura atrás, velocidad arriba): {{MENU › Ajustes de cámara 2 › Config. dial/rueda|Dial/Wheel Setup}}.</p>`,
+   steps:[
+    "En el simulador, modo M: pon F8 y 1/125, y sube y baja el ISO hasta que la marca quede en 0.",
+    "En la cámara, dial en M, ISO en 100.",
+    "Gira la rueda de atrás (velocidad) y el dial de arriba (apertura) hasta ver 0.0 en la escala.",
+    "Prueba ISO AUTO en M y mira cómo la escala desaparece y el ISO cambia solo."
+   ],
+   mission:"Al atardecer: en M, F8 e ISO 100, ajusta la velocidad hasta 0.0. Luego haz una a −1 y otra a +1. Muchas veces la mejor es la −1, con colores más intensos.",
+  },
+  {id:"decidir", title:"De la idea al ajuste", sub:"Piensa como fotógrafa antes de disparar", min:30,
+   evf:["¿QUÉ?","¿SE MUEVE?","¿NÍTIDO?","¿LUZ?","¿SENSACIÓN?"],
+   goal:"Pasar de «qué botón toco» a «qué quiero contar», y que los ajustes salgan de esa decisión.",
+   body:`
+<p>Hasta aquí has aprendido qué hace cada ajuste. Un fotógrafo trabaja al revés: <b>primero decide qué quiere contar</b> y después elige los ajustes que lo consiguen. Estas cinco preguntas sirven para cualquier foto. Con práctica tardan tres segundos.</p>
+<div class="table-wrap"><table>
+<tr><th>Pregunta</th><th>Decide</th></tr>
+<tr><td>1. ¿Qué es lo importante?</td><td>Dónde enfocas (área, Eye AF) y dónde lo colocas en el encuadre.</td></tr>
+<tr><td>2. ¿Se mueve? ¿Congelado o con movimiento?</td><td>La velocidad.</td></tr>
+<tr><td>3. ¿Qué debe verse nítido: solo el sujeto o todo?</td><td>La apertura, el zoom y tu distancia.</td></tr>
+<tr><td>4. ¿Hay luz para todo eso?</td><td>El ISO, apoyar la cámara o usar flash.</td></tr>
+<tr><td>5. ¿Qué sensación quiero?</td><td>El brillo (compensación) y el color (balance de blancos, estilo).</td></tr>
+</table></div>
+<h3>Cómo elegir el modo</h3>
+<ul>
+<li>Si manda el <b>movimiento</b> (pregunta 2): modo <b>S</b>.</li>
+<li>Si manda <b>qué se ve nítido</b> (pregunta 3): modo <b>A</b>.</li>
+<li>Si mandan <b>las dos</b> a la vez: modo <b>M con ISO AUTO</b>.</li>
+<li>Si nada se mueve y el fondo da igual: <b>A en F8</b> es un buen punto de partida.</li>
+</ul>
+<div class="table-wrap"><table>
+<tr><th>Quiero…</th><th>Prioridad</th><th>Ajuste</th></tr>
+<tr><td>Aislar a una persona</td><td>Apertura</td><td>A, F5.6 a 50 mm, cerca de ella y lejos del fondo</td></tr>
+<tr><td>Que se lea todo el paisaje</td><td>Apertura</td><td>A, F8–F11, 16 mm</td></tr>
+<tr><td>Congelar un salto</td><td>Velocidad</td><td>S, 1/1000, AF-C, ráfaga</td></tr>
+<tr><td>Agua sedosa</td><td>Velocidad</td><td>S, 1/8 o más lenta, cámara apoyada</td></tr>
+<tr><td>Niño corriendo y fondo borroso</td><td>Las dos</td><td>M, F5.6, 1/1000, ISO AUTO</td></tr>
+<tr><td>El ambiente de una cena con velas</td><td>Luz</td><td>A, F3.5 a 16 mm, ISO alto, sin flash, balance cálido</td></tr>
+<tr><td>Una silueta al atardecer</td><td>Brillo</td><td>Compensación −1 a −2, midiendo el cielo</td></tr>
+</table></div>
+<h3>El planificador</h3>
+<p>Describe la foto que quieres y mira qué ajustes propone y por qué. También lo tienes en la pestaña Recetas.</p>
+<div data-widget="planner"></div>
+<div class="callout c-iphone"><span class="eyebrow">Cuando una foto no sale</span><p>No culpes a la cámara: vuelve a las cinco preguntas y busca cuál respondiste sin pensar. Anótalo en tu cuaderno.</p></div>`,
+   steps:[
+    "Repite las cinco preguntas en voz alta hasta sabértelas.",
+    "Usa el planificador con tres situaciones de tu vida: tu casa, tu trabajo y un paseo.",
+    "Hoy, antes de cada foto, responde las cinco preguntas mentalmente.",
+    "En tu cuaderno, para tres fotos, escribe qué querías y qué ajuste lo consiguió."
+   ],
+   mission:"<b>Tres intenciones, un sujeto.</b> Elige a una persona o un lugar y haz tres fotos con intenciones distintas: una que lo aísle (fondo borroso), una que lo sitúe en su entorno (todo nítido) y una que muestre movimiento o el paso del tiempo. Antes de cada una, di en voz alta qué quieres y qué ajuste lo consigue.",
+  }
+ ]},
+ {id:4, week:"Semana 4", title:"Color y edición", lessons:[
+  {id:"balance", title:"Balance de blancos", sub:"Que el blanco salga blanco", min:20,
+   evf:["AWB","☀ 5500K","💡 3200K"],
+   goal:"Entender por qué las fotos salen amarillas o azules, y corregirlo o usarlo a propósito.",
+   body:`
+<p>Cada luz tiene un color: la bombilla de casa es naranja, la sombra es azulada, el mediodía es neutro. Tus ojos lo corrigen sin que lo notes; la cámara tiene que adivinarlo. Eso es el <b>balance de blancos</b> (WB), y se mide en grados <b>Kelvin</b>.</p>
+<p>Prueba aquí: elige la luz real de la escena y luego el ajuste de la cámara. La taza es blanca en la vida real.</p>
+<div data-widget="wb"></div>
+<p>Está en {{MENU › Ajustes de cámara 1 › Balance blancos|White Balance}} y en [[Fn]]. Opciones:</p>
+<ul>
+<li><b>Auto (AWB):</b> acierta casi siempre al aire libre.</li>
+<li><b>Luz diurna, Sombra, Nublado, Incandescente, Fluorescente, Flash:</b> preajustes para cada luz.</li>
+<li><b>Temp. color/Filtro:</b> eliges los Kelvin a mano.</li>
+<li><b>Personalizado:</b> fotografías algo blanco bajo esa luz y la cámara aprende el color. Lo más preciso.</li>
+</ul>
+<p>En cualquier ajuste, pulsa el lado derecho de la rueda para afinar hacia ámbar, azul, verde o magenta.</p>
+<p><b>Truco creativo:</b> en un atardecer, Auto «corrige» el naranja y lo apaga. Pon <b>Luz diurna</b> o <b>Nublado</b> y el atardecer sale cálido como lo viste.</p>`,
+   steps:[
+    "En la demostración: luz Bombilla con ajuste Luz diurna. Luego cambia a Incandescente.",
+    "En la cámara, abre el balance de blancos desde [[Fn]].",
+    "Bajo una lámpara de casa, haz una foto en Auto y otra en Incandescente.",
+    "Prueba el ajuste fino: pulsa el lado derecho y mueve hacia ámbar."
+   ],
+   mission:"Una misma escena con luz de lámpara amarilla: Auto, Incandescente y Luz diurna. ¿Cuál te gusta más? No hay respuesta correcta: a veces el color cálido es la gracia.",
+  },
+  {id:"estilos", title:"Estilos creativos y DRO", sub:"El «filtro» de la cámara", min:15,
+   evf:["ESTILO: ESTÁNDAR","DRO AUTO"],
+   goal:"Ajustar el aspecto de los colores desde la cámara, como un filtro pero bien hecho.",
+   body:`
+<p>{{MENU › Ajustes de cámara 1 › Estilo creativo|Creative Style}}. Elige un estilo y, con los lados de la rueda, ajusta <b>contraste</b>, <b>saturación</b> y <b>nitidez</b> de −3 a +3.</p>
+<div class="table-wrap"><table>
+<tr><th>Estilo</th><th>Para qué</th></tr>
+<tr><td>Estándar</td><td>Uso general.</td></tr>
+<tr><td>Vívido</td><td>Más color y contraste: flores, cielos, mar.</td></tr>
+<tr><td>Neutro</td><td>Colores suaves; ideal si vas a editar.</td></tr>
+<tr><td>Retrato</td><td>Piel más suave y natural.</td></tr>
+<tr><td>Paisaje</td><td>Verdes y azules intensos, nítido.</td></tr>
+<tr><td>Ocaso</td><td>Realza rojos y naranjas.</td></tr>
+<tr><td>Blanco y negro / Sepia</td><td>Monocromo. Sube el contraste para un look clásico.</td></tr>
+</table></div>
+<p>También hay Claro, Profundo, Luz, Escena nocturna y Hojas de otoño.</p>
+<h3>DRO: rescatar sombras</h3>
+<p>{{MENU › Ajustes de cámara 1 › DRO/HDR auto › Optimiz. gama D|DRO/Auto HDR › D-Range Opt.}}. En <b>Auto</b> aclara las sombras en escenas con mucho contraste, como un contraluz. Déjalo en Auto.</p>
+<p class="muted">Los estilos solo afectan a las fotos JPEG. Los «Efectos foto» (cámara de juguete, color parcial, miniatura, acuarela…) son más extremos y se encuentran en {{Efecto foto|Picture Effect}}.</p>`,
+   steps:[
+    "Abre Estilo creativo y recorre la lista con la rueda.",
+    "Elige Blanco y negro y sube el contraste a +2.",
+    "Comprueba que DRO esté en Auto.",
+    "Vuelve a Estándar al terminar."
+   ],
+   mission:"Un mismo paisaje o calle en Estándar, Vívido y Blanco y negro con contraste +2. Elige tu favorito para el día a día.",
+  },
+  {id:"rawjpeg", title:"JPEG o RAW", sub:"Calidad y tamaño de imagen", min:15,
+   evf:["JPEG EXTRA FINO","RAW+J","24M"],
+   goal:"Elegir el tipo de archivo adecuado ahora y saber cuándo pasarte a RAW.",
+   body:`
+<p>{{MENU › Ajustes de cámara 1 › Calidad|Quality}}:</p>
+<ul>
+<li><b>JPEG Extra fino / Fino / Estándar:</b> foto lista para compartir, con el estilo y el balance de blancos ya aplicados. Extra fino es la mejor calidad.</li>
+<li><b>RAW:</b> el «negativo digital»: todos los datos del sensor sin procesar. Permite recuperar mucho más al editar (luces, sombras, balance de blancos), pero <b>hay que editarlo</b> antes de compartirlo y ocupa mucho más.</li>
+<li><b>RAW y JPEG:</b> guarda los dos. Lo mejor de ambos mundos, a cambio de espacio.</li>
+</ul>
+<p>Como vas a pasar las fotos con la app y editarlas en <b>Fotos del iPhone</b>, usa <b>JPEG Extra fino</b>: la app transfiere los JPEG, no los RAW. Si algún día pasas las fotos con un lector de tarjetas, prueba <b>RAW y JPEG</b>: la app Fotos también abre y edita los RAW de Sony, con mucho más margen para recuperar cielos y sombras.</p>
+<p>Deja el <b>Tamaño de imagen</b> en <b>L (24M)</b>, el máximo. La proporción de esta cámara es <b>3:2</b>, más alargada que el 4:3 del iPhone.</p>
+<p class="muted">Con RAW, el Auto superior no puede combinar varias fotos y el ISO Multi Frame NR no está disponible.</p>`,
+   steps:[
+    "Pon la calidad en JPEG Extra fino.",
+    "Comprueba que el tamaño de imagen esté en L.",
+    "Mira en pantalla cuántas fotos te caben en la tarjeta (el número arriba)."
+   ],
+   mission:"Busca una escena con cielo brillante y sombras. Hazle una foto, pásala al iPhone e intenta en Fotos recuperar el cielo y aclarar las sombras. Verás cuánto margen tiene un JPEG y por qué conviene acertar la exposición desde la cámara.",
+  },
+  {id:"editar", title:"Elegir y editar en el iPhone", sub:"Selección y la app Fotos", min:30,
+   evf:["♡ FAVORITAS","RECORTAR","LUCES","SOMBRAS"],
+   goal:"Quedarte solo con tus mejores fotos y darles en Fotos un acabado sencillo y limpio.",
+   body:`
+<p>Los fotógrafos profesionales enseñan una de cada veinte o cincuenta fotos que hacen. <b>Elegir es la mitad de la fotografía.</b></p>
+<h3>Elegir en tres pasadas</h3>
+<ol>
+<li><b>Descarta</b> sin pensarlo mucho: desenfocadas, movidas, ojos cerrados.</li>
+<li>De cada grupo de fotos parecidas, <b>quédate con una</b> y márcala con el corazón (♡ Favorita).</li>
+<li>De las favoritas, pregúntate: <b>¿esta foto cuenta lo que yo quería?</b> Si dudas, quítale el corazón.</li>
+</ol>
+<h3>Editar en Fotos, en este orden</h3>
+<p>Abre la foto y toca <b>Editar</b>. Ve de lo general a lo particular:</p>
+<ol>
+<li><b>Recortar:</b> endereza el horizonte y ajusta el encuadre. Con 24 megapíxeles puedes recortar bastante, pero si recortas mucho, la próxima vez acércate más.</li>
+<li><b>Exposición:</b> el brillo general.</li>
+<li><b>Luces</b> (bájalas para recuperar un cielo) y <b>Sombras</b> (súbelas para ver mejor una cara).</li>
+<li><b>Contraste</b> y <b>Punto negro</b>: dan fuerza sin que se vea artificial.</li>
+<li><b>Calidez</b> y <b>Matiz</b>: el color de la luz (lección «Balance de blancos»).</li>
+<li><b>Intensidad</b> mejor que Saturación: aviva los colores apagados sin poner naranja la piel.</li>
+<li><b>Definición</b> o <b>Nitidez</b>: un poco, nunca al máximo.</li>
+</ol>
+<p><b>Series coherentes:</b> en una foto editada toca el menú <b>•••</b> › Copiar ajustes, y en otra, ••• › Pegar ajustes. <b>Todo se puede deshacer</b> con Revertir.</p>
+<div class="callout c-iphone"><span class="eyebrow">Regla de clase</span><p>Edita para acercarte a lo que viste o sentiste, no para arreglar una foto mal pensada. Si tienes que editar mucho, anota en tu cuaderno qué ajuste de la cámara lo habría evitado.</p></div>
+<p class="muted">Los nombres de los ajustes pueden variar un poco según tu versión de iOS.</p>`,
+   steps:[
+    "Pasa al iPhone 20 fotos de los últimos días.",
+    "Haz las tres pasadas y quédate con 5 favoritas.",
+    "Edita una foto siguiendo el orden de los siete pasos.",
+    "Compara el antes y el después tocando la foto mientras editas.",
+    "Copia los ajustes de esa foto y pégalos en otra parecida."
+   ],
+   mission:"Elige 3 fotos y edítalas para que parezcan de la misma serie: parecido brillo, contraste y color. Ponlas juntas en un álbum y comprueba que se ven como un conjunto.",
+  }
+ ]},
+ {id:5, week:"Semana 5", title:"Situaciones reales", lessons:[
+  {id:"rafaga", title:"Ráfaga y temporizador", sub:"Modo de avance", min:20,
+   evf:["Hi+","AF-C","⏱ 10 s","⏱ 2 s"],
+   goal:"Capturar el instante justo en acción y salir tú también en las fotos.",
+   body:`
+<p>Pulsa el <b>lado izquierdo</b> de la rueda (modo de avance).</p>
+<div class="table-wrap"><table>
+<tr><th>Modo</th><th>Para qué</th></tr>
+<tr><td>Disparo único</td><td>Una foto por pulsación. El normal.</td></tr>
+<tr><td>Continuo Hi+</td><td>Hasta 11 fotos por segundo. La pantalla no muestra la escena en vivo entre fotos.</td></tr>
+<tr><td>Continuo Hi / Mid / Lo</td><td>Algo más lento, pero ves la escena en vivo: más fácil seguir al sujeto.</td></tr>
+<tr><td>Autodisparador 10 / 5 / 2 s</td><td>10 o 5 s para salir en la foto. 2 s para no mover la cámara al pulsar.</td></tr>
+<tr><td>Autodisparador continuo</td><td>Tras la cuenta, hace varias fotos: perfecto para grupos (alguien siempre parpadea).</td></tr>
+<tr><td>Horquillado</td><td>Varias fotos con distinto brillo, balance o DRO. Para escenas difíciles.</td></tr>
+</table></div>
+<p>Para acción, combina ráfaga con <b>AF-C</b>: la cámara reenfoca entre fotos. Usa Hi si quieres ver al sujeto mientras disparas.</p>
+<p>Después de una ráfaga, la luz de acceso parpadea mientras guarda. Puedes seguir disparando.</p>
+<p class="muted">También puedes usar el iPhone como mando a distancia con Imaging Edge Mobile.</p>`,
+   steps:[
+    "Pulsa el lado izquierdo de la rueda y elige Continuo Hi.",
+    "Pon AF-C y sigue a alguien en movimiento mientras mantienes el disparador.",
+    "Elige Autodisparador 10 s, apoya la cámara y sal en la foto.",
+    "Vuelve a Disparo único al terminar."
+   ],
+   mission:"<b>El salto.</b> Alguien salta: modo S a 1/1000, AF-C, Continuo Hi. Elige la mejor foto del grupo. Después, foto de grupo con autodisparador continuo de 10 s y 3 fotos.",
+  },
+  {id:"pocaluz", title:"Poca luz y flash", sub:"De noche sin miedo", min:25,
+   evf:["A","F3.5","ISO 6400","⚡ SINCRO LENTA"],
+   goal:"Hacer fotos nítidas con poca luz, y usar el flash sin que la foto parezca una foto de flash.",
+   body:`
+<h3>Sin flash, en este orden</h3>
+<ol>
+<li><b>Abre la apertura:</b> zoom a 16 mm para tener F3.5.</li>
+<li><b>Sube el ISO:</b> hasta 6400 sin miedo.</li>
+<li><b>Apoya la cámara</b> y confía en el SteadyShot para sujetos quietos.</li>
+<li><b>Auto superior</b> o {{SCN › Crepúsculo sin trípode|Hand-held Twilight}}: hacen varias fotos y las combinan, con menos ruido.</li>
+</ol>
+<h3>El flash</h3>
+<p>No sale solo: pulsa el botón [[⚡]] de atrás para levantarlo. Para guardarlo, empújalo con el dedo. Modos en {{MENU › Ajustes de cámara 1 › Modo flash|Flash Mode}}:</p>
+<ul>
+<li><b>Flash desactivado</b> / <b>Flash automático</b> / <b>Flash de relleno</b> (siempre dispara).</li>
+<li><b>Flash de relleno de día:</b> en contraluz, ilumina la cara en sombra. Uno de los mejores usos del flash.</li>
+<li><b>Sincronización lenta:</b> el flash ilumina a la persona y una velocidad lenta capta las luces del fondo. El retrato nocturno con ciudad detrás.</li>
+<li><b>Sincronización trasera:</b> el flash dispara al final, para estelas de movimiento naturales.</li>
+</ul>
+<p>Con {{Compens. flash|Flash Comp.}} bajas su potencia (−1 suele quedar más natural). Ponte a <b>más de 1 metro</b> del sujeto. El flash no se usa en video.</p>
+<p class="muted">Truco que usan muchos dueños de esta cámara: con el flash levantado, inclínalo suavemente hacia atrás con un dedo para que la luz rebote en un techo blanco. La luz queda mucho más suave.</p>`,
+   steps:[
+    "Levanta el flash con el botón [[⚡]].",
+    "Fotografía a una persona en interior con Flash de relleno y luego sin flash a ISO 3200.",
+    "Prueba Compensación de flash a −1.",
+    "Guarda el flash empujándolo hacia abajo."
+   ],
+   mission:"Retrato de noche con luces de ciudad o de un árbol de luces detrás: una foto con flash normal y otra con Sincronización lenta, con la cámara apoyada y pidiendo a la persona que no se mueva.",
+  },
+  {id:"video", title:"Video básico", sub:"4K, velocidad y enfoque táctil", min:20,
+   evf:["● REC","4K 30p","1/60","AF-C"],
+   goal:"Grabar clips nítidos y con aspecto de cine.",
+   body:`
+<p>El botón rojo [[MOVIE]] graba desde cualquier modo. Púlsalo otra vez para parar. Así graba con ajustes automáticos.</p>
+<p>Para controlar la exposición, gira el dial a <b>película</b> (el icono de la cinta). Allí eliges entre P, A, S o M para el video en {{MENU › Ajustes de cámara 1 › Modo exposición|Exposure Mode}}.</p>
+<h3>Ajustes recomendados</h3>
+<ul>
+<li>{{MENU › Ajustes de cámara 2 › Formato archivo|File Format}}: <b>XAVC S 4K</b> para la mejor calidad, o XAVC S HD para archivos más ligeros.</li>
+<li>{{Ajuste de grabación|Record Setting}}: <b>30p</b> para uso general; <b>60p</b> (en HD) para cámara lenta suave. 4K a 100M necesita una tarjeta U3.</li>
+<li><b>Velocidad = doble de los fotogramas:</b> 1/60 para 30p, 1/125 para 60p. El movimiento se ve natural, como en el cine.</li>
+<li>Enfoque <b>AF-C</b> y toca la pantalla para cambiar el enfoque de un sujeto a otro mientras grabas.</li>
+</ul>
+<p>La pantalla se inclina: grabar desde la cintura o a ras de suelo da planos muy distintos a los del móvil.</p>
+<p class="muted">En sol fuerte, 1/60 puede ser demasiada luz incluso a F22: el ISO no baja de 100. Los videógrafos usan un filtro ND (unas «gafas de sol» para el objetivo, de 40,5 mm de rosca). Los clips se cortan a unos 30 minutos.</p>`,
+   steps:[
+    "Pulsa [[MOVIE]], graba 10 segundos y para.",
+    "Gira el dial a película y elige el modo de exposición A.",
+    "Revisa formato y ajuste de grabación.",
+    "Mientras grabas, toca la pantalla sobre un objeto cercano y luego sobre uno lejano."
+   ],
+   mission:"Clip de 15 segundos para redes: un objeto cerca y una persona al fondo. Empieza enfocando el objeto y, tocando la pantalla, pasa el enfoque a la persona.",
+  },
+  {id:"personaliza", title:"Hazla tuya", sub:"Menú Fn, botones C y memorias", min:25,
+   evf:["Fn","C1","C2","MR 1·2"],
+   goal:"Dejar la cámara configurada para tu forma de fotografiar, con tus ajustes favoritos a un botón.",
+   body:`
+<h3>El menú Fn</h3>
+<p>Elige qué 12 ajustes aparecen al pulsar [[Fn]]: {{MENU › Ajustes de cámara 2 › Ajustes menú función|Function Menu Set.}}. Pon arriba lo que más usas.</p>
+<h3>Botones personalizables</h3>
+<p>[[C1]], [[C2]], [[C3]], [[AF/MF·AEL]], el centro y tres lados de la rueda pueden hacer lo que quieras: {{MENU › Ajustes de cámara 2 › Tecla personaliz. (disparo)|Custom Key(Shoot.)}}. Primero mira qué hacen ahora. Una propuesta para empezar:</p>
+<ul>
+<li>[[C1]]: Área de enfoque.</li>
+<li>[[C2]]: Modo de enfoque.</li>
+<li>Centro: Eye AF (como ya está).</li>
+</ul>
+<h3>Memorias 1 y 2 del dial</h3>
+<p>Guarda una configuración completa y recupérala girando el dial a <b>1</b> o <b>2</b>. Configura la cámara como quieras y guárdala en {{MENU › Ajustes de cámara 1 › Memoria|Memory}}, eligiendo 1 o 2.</p>
+<p>Dos memorias que funcionan muy bien:</p>
+<ul>
+<li><b>1 · Retrato:</b> A, F5.6, ISO AUTO, AF-C, punto flexible, estilo Retrato.</li>
+<li><b>2 · Acción:</b> S, 1/1000, ISO AUTO, AF-C, Zona, Continuo Hi.</li>
+</ul>
+<p class="muted">Si algún día la cámara hace cosas raras y no sabes por qué: {{MENU › Configuración › Restablecer ajuste|Setting Reset}} vuelve a los ajustes de fábrica (sin borrar las fotos si eliges Restabl. ajustes cámara).</p>`,
+   steps:[
+    "Abre Ajustes menú función y cambia al menos un ajuste del menú Fn.",
+    "Revisa qué hacen C1, C2 y C3 y asígnales algo útil.",
+    "Configura tu memoria 1 (Retrato) y guárdala.",
+    "Configura tu memoria 2 (Acción) y guárdala.",
+    "Gira el dial a 1 y a 2 y comprueba que todo cambia solo."
+   ],
+   mission:"Sal una hora usando solo tus memorias 1 y 2. Cada vez que cambies de situación, decide en un segundo cuál toca. Así la cámara queda configurada a tu manera.",
+  }
+ ]}
+];
+
+const THINK = {
+ "modos-enfoque":[
+  ["Un cumpleaños: tu sobrino corre hacia ti con un globo.","<b>AF-C</b>, área Zona o Amplia, y ráfaga. En AF-S el enfoque se quedaría donde estaba el niño al presionar y llegaría borroso."],
+  ["Un plato de comida en un restaurante.","<b>AF-S</b> con un punto flexible pequeño sobre la parte más apetecible. Nada se mueve y quieres precisión."]],
+ "areas":[
+  ["Un retrato con la persona a un lado y una ventana brillante al otro.","<b>Punto flexible</b> sobre su cara (o Eye AF). En Amplia, la cámara podría elegir el marco de la ventana, que tiene más contraste."],
+  ["Un perro corriendo por el parque.","<b>AF-C</b> con <b>Zona</b> o <b>Lock-on AF</b>, y ráfaga. Un punto pequeño es difícil de mantener sobre algo que se mueve rápido."]],
+ "eyeaf":[
+  ["Dos amigas, una delante de la otra, y quieres a las dos nítidas.","Eye AF enfocará a una sola. Pídeles que se pongan a la misma distancia de ti, o cierra a <b>F8</b> para ganar profundidad."]],
+ "manual":[
+  ["Un escaparate de noche, fotografiando a través del cristal.","Acerca el objetivo al cristal para evitar reflejos y usa <b>MF con peaking</b>: el autoenfoque se iría al cristal o a las luces reflejadas."]],
+ "luz":[
+  ["Quieres retratar a alguien a mediodía en una plaza a pleno sol.","Llévala a una <b>sombra abierta</b> (un portal, un árbol grande): luz suave y ojos sin sombras duras. Si no hay sombra, pon el sol a su espalda y usa <b>flash de relleno</b> o compensación +0.7."],
+  ["Una taza de café para que se vea su textura y su vapor.","<b>Luz lateral</b> de una ventana, o contraluz para que se vea el vapor. Evita la luz de frente: lo aplana todo."]],
+ "triangulo":[
+  ["Una fiesta en casa con gente bailando y poca luz.","Lo primero es que no salgan movidos: <b>velocidad</b> de al menos 1/125. Luego apertura abierta (F3.5 a 16 mm) y que el ISO suba lo que haga falta. Mejor algo de grano que una foto movida."]],
+ "apertura":[
+  ["Un paisaje con una flor en primer plano y montañas al fondo.","Quieres todo nítido: <b>A, F8–F11</b>, 16 mm, enfocando más o menos a un tercio de la escena (no en la flor ni en las montañas)."],
+  ["Un retrato en una calle llena de gente que distrae.","Aíslala: <b>50 mm, F5.6</b>, acércate a ella y busca un ángulo donde la gente quede lejos detrás."]],
+ "velocidad":[
+  ["Una fuente en un parque.","Primero decide qué quieres contar. ¿La fuerza del agua? <b>1/1000</b>, gotas congeladas. ¿La calma del lugar? <b>1/8 o más lenta</b>, cámara apoyada, agua de seda."],
+  ["Un niño pasa en bici por delante de ti.","<b>Barrido</b>: S a 1/30, síguelo con la cámara mientras disparas en ráfaga. Él saldrá nítido y el fondo en rayas, con sensación de velocidad."]],
+ "iso":[
+  ["Un museo sin flash, delante de un cuadro poco iluminado.","Abre al máximo (F3.5 a 16 mm), mantén la velocidad en 1/60 o más rápida apoyando los codos, y deja que el <b>ISO</b> suba hasta 6400. Un poco de grano no importa; una foto movida, sí."]],
+ "compensacion":[
+  ["Alguien con camisa blanca en la playa un día de sol.","La cámara oscurecerá la escena por tanto blanco: <b>+0.7 a +1.0</b>. Mira el histograma para que no se queme la camisa."],
+  ["Una silueta contra el atardecer.","Quieres a la persona negra y el cielo con color: <b>−1 a −2</b>, apuntando al cielo para medir."]],
+ "manualm":[
+  ["Un concierto con focos que cambian de color y brillo todo el tiempo.","<b>M con ISO AUTO</b>: fija 1/250 para congelar al músico y F abierta para que entre luz. La cámara ajusta el ISO a cada cambio de foco."],
+  ["Tres fotos para unirlas luego en una panorámica.","<b>M</b> con todo fijo (F8, velocidad e ISO), para que las tres tengan el mismo brillo y se unan sin saltos."]],
+ "decidir":[
+  ["Tu amiga en una terraza al atardecer, con la ciudad encendiéndose detrás.","Lo importante es ella: Eye AF. ¿Quieres la ciudad reconocible? F8. ¿Solo luces bonitas? F5.6 a 50 mm. Hay poca luz: ISO AUTO. Si su cara queda oscura, <b>flash de relleno con sincronización lenta</b> a −1."],
+  ["Un mercado lleno de gente y quieres transmitir el bullicio.","Manda el movimiento: <b>S a 1/15–1/30</b> con la cámara apoyada. Los puestos salen nítidos y la gente como estelas. Enfoca en un puesto."],
+  ["Las manos de tu abuela cocinando.","Lo importante son las manos: A a 50 mm, F5.6, cerca, punto flexible pequeño sobre ellas. Si se mueven rápido, sube la velocidad mínima de ISO AUTO a «Más rápido»."]],
+ "balance":[
+  ["Una cena con velas y quieres que se sienta íntima.","No la «corrijas» del todo: <b>Auto</b> ya deja un toque cálido. Si sale demasiado naranja, prueba Incandescente y afina hacia ámbar. El calor de la luz es la historia."]],
+ "rafaga":[
+  ["Una niña sopla las velas de su tarta.","<b>Continuo Hi</b>, empieza a disparar justo antes de que sople y mantén el disparador. Sube el ISO para que la velocidad no baje de 1/125."]],
+ "pocaluz":[
+  ["Un retrato de noche con las luces de la ciudad detrás.","Dos caminos: <b>flash con sincronización lenta</b> (cara iluminada, fondo con luces) o sin flash, F3.5 e ISO 3200–6400, con la persona junto a una fuente de luz como un escaparate."]]
+};
+const LESSONS = [];
+UNITS.forEach(u => u.lessons.forEach(l => { l.unit = u; l.n = LESSONS.length + 1; LESSONS.push(l); }));
+const byId = id => LESSONS.find(l => l.id === id);
+LESSONS.forEach(l => { if(THINK[l.id]) l.think = THINK[l.id]; });
+
+/* ---------- recipes ---------- */
+const GLOSS = [
+ ["Apertura (F)","Tamaño del agujero del objetivo. Número F bajo = más luz y fondo más desenfocado."],
+ ["Velocidad de obturación","Tiempo que entra la luz. Rápida (1/1000) congela; lenta (1/15) deja estelas."],
+ ["ISO","Cuánto amplifica la cámara la luz. Más alto = más claro, pero con más grano."],
+ ["Exposición","Cuánta luz recibe la foto: si sale clara, oscura o correcta."],
+ ["Paso","El doble o la mitad de luz. 1/250 → 1/125 es un paso."],
+ ["Profundidad de campo","La zona de la foto que se ve nítida, de delante a atrás."],
+ ["Compensación de exposición (±)","Pedirle a la cámara una foto más clara (+) o más oscura (−) de lo que ella calcula."],
+ ["Histograma","Gráfica del brillo: sombras a la izquierda, luces a la derecha."],
+ ["Quemado","Zona tan clara que queda blanca sin detalle. No se recupera."],
+ ["Balance de blancos (WB)","Ajuste para que el blanco salga blanco según el color de la luz."],
+ ["Kelvin (K)","Unidad del color de la luz: bajo = naranja (bombilla), alto = azul (sombra)."],
+ ["AF-S","Autoenfoque que enfoca una vez y se queda fijo. Para sujetos quietos."],
+ ["AF-C","Autoenfoque continuo que sigue al sujeto. Para movimiento."],
+ ["MF","Enfoque manual, con el anillo del objetivo."],
+ ["Eye AF","La cámara busca y enfoca el ojo de una persona."],
+ ["Peaking (realce)","Colorea los bordes que están enfocados al usar enfoque manual."],
+ ["Área de enfoque","La parte de la imagen donde la cámara busca enfocar."],
+ ["Modo A","Prioridad a la apertura: tú eliges el F y la cámara la velocidad."],
+ ["Modo S","Prioridad a la velocidad: tú eliges la velocidad y la cámara el F."],
+ ["Modo M","Manual: tú eliges apertura y velocidad."],
+ ["Modo P","Programa: la cámara elige apertura y velocidad, tú el resto."],
+ ["Trepidación","Foto borrosa porque se movió la cámara al disparar."],
+ ["SteadyShot","El estabilizador de la cámara. Reduce la trepidación."],
+ ["Barrido","Seguir a un sujeto en movimiento con una velocidad lenta: él nítido, fondo en rayas."],
+ ["RAW","Archivo con todos los datos del sensor, sin procesar. Más margen al editar."],
+ ["JPEG","Foto ya procesada y lista para compartir."],
+ ["Ráfaga","Varias fotos seguidas mientras mantienes el disparador."],
+ ["Distancia focal (mm)","El zoom: 16 mm ve amplio, 50 mm acerca."],
+ ["Luz dura / suave","Dura: sombras marcadas (sol directo). Suave: sombras difusas (nublado, ventana)."],
+ ["Hora dorada","La primera y última hora de sol: luz cálida y lateral."]
+];
+const RECIPES = [
+ {t:"Retrato con fondo desenfocado", evf:["A","F5.6","50 mm","ISO AUTO"], d:[["Modo","A, F lo más bajo posible (F5.6 a 50 mm)"],["Enfoque","AF-C + Eye AF (botón central)"],["Distancia","Persona a 1,5–2 m; fondo varios metros detrás"],["Estilo","Retrato"]], tip:"Busca sombra abierta o luz de ventana lateral. Evita el sol directo en la cara.", l:"eyeaf"},
+ {t:"Paisaje", evf:["A","F8","16 mm","ISO 100"], d:[["Modo","A, F8"],["ISO","100"],["Enfoque","AF-S, punto flexible a un tercio de la escena"],["Extra","Nivel con DISP, DRO Auto, estilo Paisaje"]], tip:"El horizonte sobre una línea de la cuadrícula, no en el centro.", l:"apertura"},
+ {t:"Comida y objetos en la mesa", evf:["A","F5.6","35–50 mm","ISO AUTO"], d:[["Modo","A, F5.6"],["Zoom","35–50 mm, a unos 30–40 cm"],["Enfoque","AF-S, punto flexible S en lo más importante"],["Luz","Ventana de lado; sin flash"]], tip:"El objetivo no enfoca a menos de 25–30 cm. Si no enfoca, aléjate un poco.", l:"areas"},
+ {t:"Niños y mascotas en movimiento", evf:["S","1/500","ISO AUTO","Hi"], d:[["Modo","S, 1/500 (1/1000 si corren)"],["Enfoque","AF-C, Zona o Lock-on AF"],["Avance","Continuo Hi"],["ISO","AUTO"]], tip:"Ponte a su altura, con la pantalla inclinada.", l:"rafaga"},
+ {t:"Interior con poca luz", evf:["A","F3.5","16 mm","ISO ≤6400"], d:[["Modo","A, F3.5 (zoom a 16 mm)"],["ISO","AUTO, máximo 6400"],["Enfoque","AF-S"],["Estabilidad","Codos pegados o cámara apoyada; SteadyShot activado"]], tip:"Acércate a la luz que haya (una lámpara, una ventana) en vez de usar el flash directo.", l:"pocaluz"},
+ {t:"Atardecer y contraluz", evf:["A","F8","−0.7","WB ☀"], d:[["Modo","A, F8, ISO 100"],["Exposición","−0.7 a −1.0"],["Balance","Luz diurna o Nublado (no Auto)"],["Extra","DRO Auto; estilo Ocaso; flash de relleno si hay una persona"]], tip:"Mira el histograma: que no choque a la derecha.", l:"balance"},
+ {t:"Noche en la ciudad sin trípode", evf:["SCN","CREPÚSC. SIN TRÍP."], d:[["Opción fácil","SCN › Crepúsculo sin trípode, o Auto superior"],["Opción manual","A, F3.5, ISO 3200–6400"],["Enfoque","AF-S sobre una luz o borde con contraste"]], tip:"Apóyate en una pared o farola y suelta el aire antes de disparar.", l:"pocaluz"},
+ {t:"Agua sedosa", evf:["S","1/8","ISO 100","⏱ 2 s"], d:[["Modo","S, entre 1/15 y 1/2"],["ISO","100"],["Estabilidad","Cámara apoyada + autodisparador 2 s"],["Extra","Mejor en sombra o al atardecer"]], tip:"Si la F parpadea, hay demasiada luz: busca sombra o espera a que baje el sol.", l:"velocidad"},
+ {t:"Foto de grupo", evf:["A","F8","16–24 mm","⏱ 10 s ×3"], d:[["Modo","A, F8 para que todas las caras salgan nítidas"],["Avance","Autodisparador continuo 10 s, 3 fotos"],["Enfoque","AF-S en una cara de la fila del medio"]], tip:"Cámara a la altura de los ojos o algo más alta, nunca desde abajo.", l:"rafaga"},
+ {t:"Video para redes", evf:["● REC","4K 30p","1/60","AF-C"], d:[["Modo","Dial en película, exposición A"],["Formato","XAVC S 4K, 30p"],["Velocidad","1/60 (doble de los fotogramas)"],["Enfoque","AF-C, toca la pantalla para cambiar el enfoque"]], tip:"Planos cortos de 3–5 segundos, moviéndote despacio.", l:"video"}
+];
+
+/* ---------- camera map ---------- */
+const PARTS = {
+ back:[
+  {id:"visor", n:"Visor electrónico", en:"Viewfinder", d:"Una pantalla pequeña de mucha calidad. Al acercar el ojo, el sensor de ojo apaga la pantalla trasera y lo enciende. Ves exactamente cómo saldrá la foto, también con sol fuerte.", tip:"Pon el ocular de goma que viene en la caja: tapa la luz y es más cómodo."},
+  {id:"dioptria", n:"Ajuste de dioptrías", en:"Diopter-adjustment dial", d:"Ruedita junto al visor para adaptarlo a tu vista. Gírala hasta ver nítidos los números del visor.", tip:"Si usas gafas, ajústalo con ellas puestas o sin ellas, pero siempre igual."},
+  {id:"flashbtn", n:"Botón del flash", en:"Flash pop-up", d:"Levanta el flash incorporado. El flash nunca sale solo. Para guardarlo, empújalo hacia abajo con el dedo.", tip:"Lección «Poca luz y flash»: el flash de relleno en contraluz es su mejor uso."},
+  {id:"pantalla", n:"Pantalla táctil inclinable", en:"Monitor", d:"Muestra la imagen, los menús y tus fotos. Se inclina hacia arriba y hacia abajo. Es táctil solo para enfocar: toca donde quieres el enfoque. Mirando por el visor funciona como touchpad.", tip:"Los menús no son táctiles: se manejan con la rueda."},
+  {id:"menu", n:"MENU", en:"MENU button", d:"Abre todos los ajustes de la cámara, en pestañas: Ajustes de cámara 1 y 2, Red, Reproducción, Configuración y Mi menú. También sirve para volver atrás.", tip:"Mi menú (la estrella) guarda tus ajustes favoritos del menú."},
+  {id:"afmf", n:"Palanca y botón AF/MF · AEL", en:"AF/MF/AEL switch lever", d:"Con la palanca en AF/MF, el botón cambia entre autoenfoque y enfoque manual. En AEL, bloquea la exposición mientras lo mantienes. En reproducción, este botón amplía la foto.", tip:"Ampliar las fotos al revisarlas es el hábito que más mejora tus resultados."},
+  {id:"movie", n:"Botón MOVIE", en:"MOVIE button", d:"Empieza y para la grabación de video desde cualquier modo.", tip:"Está en el borde: es fácil pulsarlo sin querer. Si ves REC en rojo, púlsalo de nuevo."},
+  {id:"fn", n:"Botón Fn", en:"Fn (Function) button", d:"Menú rápido con 12 ajustes frecuentes: enfoque, ISO, balance de blancos, estilo… Al hacer fotos, muévete con la rueda. En reproducción, este botón envía la foto al móvil.", tip:"Lección «Hazla tuya»: elige tú qué aparece en el menú Fn."},
+  {id:"rueda", n:"Rueda de control", en:"Control wheel", d:"Gírala para cambiar valores y púlsala por los lados como botones. Arriba: DISP (información en pantalla). Derecha: ISO. Abajo: compensación de exposición (±). Izquierda: modo de avance (ráfaga y temporizador).", tip:"En modo M, la rueda cambia la velocidad."},
+  {id:"centro", n:"Botón central", en:"Center button", d:"Acepta en los menús. Al hacer fotos, de fábrica activa Eye AF: mantenlo pulsado para enfocar el ojo de una persona.", tip:"Lección «Eye AF»."},
+  {id:"c3", n:"C3 / Borrar", en:"C3 button / Delete", d:"Al hacer fotos es un botón personalizable (C3). En reproducción, borra la foto que estás viendo.", tip:"Lo borrado no se puede recuperar."},
+  {id:"play", n:"Reproducción ▶", en:"Playback button", d:"Muestra tus fotos y videos. Pulsa de nuevo o presiona el disparador a medias para volver a disparar.", tip:"Presionar el disparador a medias siempre te devuelve a modo foto, estés donde estés."}
+ ],
+ top:[
+  {id:"zapata", n:"Zapata multiinterfaz", en:"Multi Interface Shoe", d:"Para conectar un flash externo, un micrófono u otros accesorios.", tip:"Apaga la cámara antes de poner o quitar accesorios."},
+  {id:"flash", n:"Flash incorporado", en:"Flash", d:"Pequeño flash que se levanta con su botón de atrás. Alcance corto: úsalo a más de 1 metro.", tip:"Puedes inclinarlo hacia atrás con el dedo para rebotar la luz en un techo blanco."},
+  {id:"dial", n:"Dial de modos", en:"Mode dial", d:"Elige quién decide la exposición. AUTO: todo automático. P: automático con control. A: tú la apertura. S: tú la velocidad. M: tú todo. 1 y 2: tus memorias. Película: video con control. Panorámica. SCN: escenas (retrato, deporte, noche…).", tip:"Para aprender, vive en A y S. Para una foto rápida sin pensar, AUTO."},
+  {id:"dialcontrol", n:"Dial de control", en:"Control dial", d:"Rueda superior que mueves con el pulgar sin soltar el agarre. En A cambia la apertura, en S la velocidad, en M la apertura, y en P cambia la pareja apertura-velocidad.", tip:"Es el control que más usarás en A y S."},
+  {id:"disparador", n:"Disparador", en:"Shutter button", d:"Dos tiempos: a medias enfoca (pitido y recuadro verde), hasta el fondo dispara. Mantener a medias bloquea el enfoque para recomponer.", tip:"Pulsarlo a medias también despierta la cámara y sale de los menús."},
+  {id:"onoff", n:"Interruptor ON/OFF", en:"Power switch", d:"La palanca alrededor del disparador. Al encender, el objetivo 16-50 se extiende solo.", tip:"Apaga antes de cambiar batería, tarjeta u objetivo."},
+  {id:"c1", n:"Botón C1", en:"Custom button 1", d:"Botón personalizable. Puedes asignarle el ajuste que más uses.", tip:"Propuesta: Área de enfoque."},
+  {id:"c2", n:"Botón C2", en:"Custom button 2", d:"Otro botón personalizable.", tip:"Propuesta: Modo de enfoque."}
+ ],
+ lens:[
+  {id:"liberacion", n:"Botón de liberación del objetivo", en:"Lens release button", d:"Mantenlo pulsado y gira el objetivo para quitarlo. Con la cámara apagada.", tip:"Pon siempre la tapa del cuerpo si la cámara se queda sin objetivo."},
+  {id:"palanca", n:"Palanca de zoom W/T", en:"Zoom lever", d:"Empuja hacia T para acercar (50 mm) y hacia W para ver más amplio (16 mm). Si la empujas un poco, el zoom va despacio; a fondo, rápido.", tip:"16 mm ≈ cámara principal del iPhone. 50 mm ≈ teleobjetivo 3×."},
+  {id:"anillo", n:"Anillo de zoom/enfoque", en:"Zoom/Focus ring", d:"En autoenfoque, el anillo hace zoom. En enfoque manual (MF), enfoca.", tip:"El zoom con el anillo es más suave para video."},
+  {id:"frontal", n:"Lente frontal (rosca 40,5 mm)", en:"Front element", d:"El cristal delantero. Su rosca de 40,5 mm admite filtros (protector, polarizador, ND).", tip:"Límpiala con un paño de microfibra, nunca con la camiseta. Y pon la tapa al guardarla."}
+ ]
+};
+
+function cameraSVG(view){
+  const hs = (id, inner, n) => `<g class="hs" data-id="${id}" tabindex="0" role="button" aria-label="${esc(findPart(id).n)}">${inner}</g>`;
+  if(view === "back") return `
+<svg viewBox="0 0 400 236" role="img" aria-label="Parte trasera de la cámara">
+ <rect x="6" y="12" width="388" height="212" rx="18" fill="var(--cam)"/>
+ <rect x="300" y="12" width="94" height="212" rx="18" fill="var(--cam-2)" opacity=".35"/>
+ ${hs("visor",`<rect class="hl" x="14" y="18" width="94" height="62" rx="10"/><rect x="20" y="24" width="82" height="50" rx="9" fill="var(--cam-2)"/><rect x="33" y="34" width="56" height="30" rx="4" fill="#07090A"/>`)}
+ ${hs("dioptria",`<rect class="hl" x="108" y="22" width="20" height="36" rx="5"/><rect x="113" y="27" width="10" height="26" rx="3" fill="var(--cam-3)"/><path d="M115 31h6M115 35h6M115 39h6M115 43h6M115 47h6" stroke="var(--cam)" stroke-width="1"/>`)}
+ ${hs("flashbtn",`<circle class="hl" cx="150" cy="40" r="15"/><circle cx="150" cy="40" r="10" fill="var(--cam-3)"/><path d="M152 33l-5 8h4l-2 7 6-9h-4z" fill="var(--cam-ink)"/>`)}
+ ${hs("pantalla",`<rect class="hl" x="16" y="86" width="244" height="130" rx="8"/><rect x="22" y="92" width="232" height="118" rx="5" fill="#07090A"/><text x="138" y="155" text-anchor="middle" class="cam-label" opacity=".6">PANTALLA TÁCTIL</text>`)}
+ ${hs("menu",`<rect class="hl" x="234" y="26" width="58" height="30" rx="14"/><rect x="240" y="31" width="46" height="20" rx="10" fill="var(--cam-3)"/><text x="263" y="45" text-anchor="middle" class="cam-label">MENU</text>`)}
+ ${hs("afmf",`<circle class="hl" cx="344" cy="44" r="26"/><path d="M322 30a26 26 0 0 1 20-12" stroke="var(--cam-3)" stroke-width="8" fill="none" stroke-linecap="round"/><circle cx="344" cy="46" r="13" fill="var(--cam-3)"/><text x="344" y="43" text-anchor="middle" class="cam-label" style="font-size:6.5px">AF/MF</text><text x="344" y="52" text-anchor="middle" class="cam-label" style="font-size:6.5px">AEL</text>`)}
+ ${hs("movie",`<circle class="hl" cx="381" cy="88" r="12"/><circle cx="381" cy="88" r="7" fill="var(--cam-3)"/><circle cx="381" cy="88" r="3.5" fill="#E0352B"/>`)}
+ ${hs("fn",`<circle class="hl" cx="334" cy="96" r="16"/><circle cx="334" cy="96" r="11" fill="var(--cam-3)"/><text x="334" y="99.5" text-anchor="middle" class="cam-label">Fn</text>`)}
+ ${hs("rueda",`<circle class="hl" cx="322" cy="160" r="44"/><circle cx="322" cy="160" r="38" fill="var(--cam-2)"/><circle cx="322" cy="160" r="38" fill="none" stroke="var(--cam-3)" stroke-width="3" stroke-dasharray="2 3"/><text x="322" y="133" text-anchor="middle" class="cam-label">DISP</text><text x="349" y="163" text-anchor="middle" class="cam-label">ISO</text><text x="322" y="192" text-anchor="middle" class="cam-label" style="font-size:11px">±</text><text x="295" y="163.5" text-anchor="middle" class="cam-label" style="font-size:10px">◷</text>`)}
+ ${hs("centro",`<circle class="hl" cx="322" cy="160" r="15"/><circle cx="322" cy="160" r="11" fill="var(--cam-3)"/>`)}
+ ${hs("c3",`<circle class="hl" cx="278" cy="208" r="12"/><circle cx="278" cy="208" r="8" fill="var(--cam-3)"/><text x="278" y="211" text-anchor="middle" class="cam-label" style="font-size:7px">C3</text>`)}
+ ${hs("play",`<circle class="hl" cx="368" cy="208" r="12"/><circle cx="368" cy="208" r="8" fill="var(--cam-3)"/><path d="M366 204.5v7l5.5-3.5z" fill="var(--cam-ink)"/>`)}
+</svg>`;
+  if(view === "top") return `
+<svg viewBox="0 0 400 190" role="img" aria-label="Parte superior de la cámara">
+ <rect x="6" y="40" width="388" height="78" rx="16" fill="var(--cam)"/>
+ <rect x="300" y="40" width="94" height="96" rx="16" fill="var(--cam)"/>
+ <rect x="60" y="118" width="150" height="62" rx="6" fill="var(--cam-2)"/>
+ <path d="M84 118v62M96 118v62M108 118v62M120 118v62M132 118v62" stroke="var(--cam)" stroke-width="3"/>
+ <text x="170" y="155" text-anchor="middle" class="cam-label">16-50</text>
+ <text x="200" y="24" text-anchor="middle" class="cam-label" opacity=".7">← ATRÁS (VISOR) · DELANTE (OBJETIVO) ↓</text>
+ ${hs("zapata",`<rect class="hl" x="44" y="48" width="84" height="38" rx="5"/><rect x="50" y="54" width="72" height="26" rx="3" fill="var(--cam-2)"/><path d="M54 60h64M54 74h64" stroke="var(--cam-3)" stroke-width="2"/>`)}
+ ${hs("flash",`<rect class="hl" x="134" y="48" width="88" height="34" rx="8"/><rect x="140" y="54" width="76" height="22" rx="6" fill="var(--cam-2)"/><text x="178" y="69" text-anchor="middle" class="cam-label">FLASH</text>`)}
+ ${hs("dial",`<circle class="hl" cx="290" cy="74" r="28"/><circle cx="290" cy="74" r="23" fill="var(--cam-2)"/><circle cx="290" cy="74" r="23" fill="none" stroke="var(--cam-3)" stroke-width="4" stroke-dasharray="1.5 2.5"/><text x="290" y="70" text-anchor="middle" class="cam-label" style="font-size:7px">P A S M</text><text x="290" y="81" text-anchor="middle" class="cam-label" style="font-size:7px">AUTO</text>`)}
+ ${hs("dialcontrol",`<rect class="hl" x="328" y="36" width="56" height="26" rx="8"/><rect x="334" y="42" width="44" height="14" rx="6" fill="var(--cam-3)"/><path d="M340 42v14M346 42v14M352 42v14M358 42v14M364 42v14M370 42v14" stroke="var(--cam-2)" stroke-width="1.5"/>`)}
+ ${hs("onoff",`<rect class="hl" x="312" y="106" width="24" height="22" rx="6"/><rect x="316" y="111" width="16" height="10" rx="3" fill="var(--cam-3)"/>`)}
+ ${hs("disparador",`<circle class="hl" cx="352" cy="108" r="20"/><circle cx="352" cy="108" r="16" fill="var(--cam-2)"/><circle cx="352" cy="108" r="10" fill="var(--cam-3)"/>`)}
+ ${hs("c1",`<circle class="hl" cx="352" cy="78" r="12"/><circle cx="352" cy="78" r="8" fill="var(--cam-3)"/><text x="352" y="81" text-anchor="middle" class="cam-label" style="font-size:7px">C1</text>`)}
+ ${hs("c2",`<circle class="hl" cx="252" cy="100" r="12"/><circle cx="252" cy="100" r="8" fill="var(--cam-3)"/><text x="252" y="103" text-anchor="middle" class="cam-label" style="font-size:7px">C2</text>`)}
+</svg>`;
+  return `
+<svg viewBox="0 0 400 180" role="img" aria-label="Objetivo 16-50 mm visto de lado">
+ <rect x="6" y="14" width="120" height="156" rx="14" fill="var(--cam)"/>
+ <rect x="126" y="44" width="16" height="96" fill="var(--cam-3)"/>
+ <rect x="142" y="40" width="200" height="104" rx="8" fill="var(--cam-2)"/>
+ <text x="300" y="132" text-anchor="middle" class="cam-label">E 3.5-5.6/PZ 16-50 OSS</text>
+ ${hs("liberacion",`<circle class="hl" cx="106" cy="122" r="14"/><circle cx="106" cy="122" r="9" fill="var(--cam-3)"/>`)}
+ ${hs("palanca",`<rect class="hl" x="160" y="24" width="64" height="26" rx="8"/><rect x="166" y="30" width="52" height="14" rx="7" fill="var(--cam-3)"/><text x="174" y="40.5" class="cam-label" style="font-size:8px">W</text><text x="203" y="40.5" class="cam-label" style="font-size:8px">T</text>`)}
+ ${hs("anillo",`<rect class="hl" x="236" y="36" width="68" height="112" rx="6"/><rect x="242" y="40" width="56" height="104" rx="4" fill="var(--cam-3)"/><path d="M248 44v96M256 44v96M264 44v96M272 44v96M280 44v96M288 44v96" stroke="var(--cam-2)" stroke-width="2.5"/>`)}
+ ${hs("frontal",`<rect class="hl" x="336" y="32" width="58" height="120" rx="10"/><ellipse cx="358" cy="92" rx="18" ry="50" fill="#0B0E10"/><ellipse cx="354" cy="80" rx="6" ry="16" fill="#3a5a7a" opacity=".5"/>`)}
+</svg>`;
+}
+function findPart(id){ for(const k in PARTS){ const p = PARTS[k].find(x => x.id === id); if(p) return p; } return {n:id}; }
+
+function mountCamera(el){
+  let view = "back", sel = null;
+  el.innerHTML = `
+  <div class="stack">
+   <div class="cam-tabs" role="group" aria-label="Vista">
+    <button type="button" data-v="back" aria-pressed="true">Atrás</button>
+    <button type="button" data-v="top" aria-pressed="false">Arriba</button>
+    <button type="button" data-v="lens" aria-pressed="false">Objetivo</button>
+   </div>
+   <div class="cam-stage" data-stage></div>
+   <div class="chips" data-chips aria-label="Partes"></div>
+   <div class="card cam-info" data-info aria-live="polite"></div>
+   <p class="muted" style="font-size:14px">Esquema simplificado, no a escala. La posición exacta de cada botón puede variar ligeramente.</p>
+  </div>`;
+  const stage = el.querySelector("[data-stage]"), info = el.querySelector("[data-info]"), chips = el.querySelector("[data-chips]");
+  function pick(id){
+    sel = id;
+    stage.querySelectorAll(".hs").forEach(g => g.classList.toggle("on", g.dataset.id === id));
+    chips.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", c.dataset.id === id));
+    const p = findPart(id);
+    info.innerHTML = `<div class="stack" style="gap:8px"><h3>${esc(p.n)} <span class="en">${esc(p.en)}</span></h3><p>${esc(p.d)}</p><p class="muted"><b>Consejo:</b> ${esc(p.tip)}</p></div>`;
+  }
+  function draw(){
+    el.querySelectorAll(".cam-tabs button").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === view));
+    stage.innerHTML = cameraSVG(view);
+    chips.innerHTML = PARTS[view].map(p => `<button type="button" class="chip" data-id="${p.id}" aria-pressed="false">${esc(p.n)}</button>`).join("");
+    pick(PARTS[view][0].id);
+  }
+  el.addEventListener("click", e => {
+    const v = e.target.closest(".cam-tabs button"); if(v){ view = v.dataset.v; draw(); return; }
+    const h = e.target.closest(".hs,.chip"); if(h) pick(h.dataset.id);
+  });
+  el.addEventListener("keydown", e => { const h = e.target.closest(".hs"); if(h && (e.key === "Enter" || e.key === " ")){ e.preventDefault(); pick(h.dataset.id); } });
+  draw();
+}
+
+/* ---------- white balance demo ---------- */
+function mountWB(el){
+  const LIGHTS = [["Sol",5500],["Sombra",7500],["Nublado",6500],["Bombilla",3000],["Fluorescente",4000]];
+  const SETS = [["Auto",0],["Luz diurna",5500],["Sombra",7000],["Nublado",6000],["Incandescente",3200],["Fluorescente",4000]];
+  let light = 3000, set = 5500;
+  el.innerHTML = `
+  <div class="stack" style="gap:12px">
+   <div class="wb-frame">
+    <svg viewBox="0 0 320 180" aria-hidden="true">
+     <rect width="320" height="180" fill="#E9E4DA"/>
+     <rect x="0" y="118" width="320" height="62" fill="#B98E62"/>
+     <rect x="0" y="118" width="320" height="4" fill="#9E7650"/>
+     <rect x="200" y="22" width="90" height="70" fill="#C9D9E6" stroke="#FFFFFF" stroke-width="5"/>
+     <path d="M245 22v70M200 57h90" stroke="#FFFFFF" stroke-width="3"/>
+     <path d="M120 78h46l-5 52a6 6 0 0 1-6 5h-24a6 6 0 0 1-6-5z" fill="#FBFBF9" stroke="#D9D9D4"/>
+     <path d="M166 90c14 0 14 26 0 26" fill="none" stroke="#FBFBF9" stroke-width="6"/>
+     <ellipse cx="143" cy="80" rx="23" ry="4" fill="#5A3A22"/>
+     <rect x="40" y="96" width="44" height="34" rx="4" fill="#5E8C5A"/>
+     <circle cx="52" cy="90" r="12" fill="#6FA368"/><circle cx="70" cy="86" r="14" fill="#7AB273"/>
+     <text x="143" y="160" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#5A4632">taza blanca</text>
+    </svg>
+    <div class="wb-cast" data-cast></div>
+   </div>
+   <div><div class="eyebrow" style="margin-bottom:6px">Luz real de la escena</div><div class="chips" data-l>${LIGHTS.map(([n,k]) => `<button type="button" class="chip" data-k="${k}" aria-pressed="${k===light}">${n} · ${k} K</button>`).join("")}</div></div>
+   <div><div class="eyebrow" style="margin-bottom:6px">Ajuste en la cámara</div><div class="chips" data-s>${SETS.map(([n,k]) => `<button type="button" class="chip" data-k="${k}" aria-pressed="${k===set}">${n}${k?` · ${k} K`:""}</button>`).join("")}</div></div>
+   <p data-msg class="card" style="padding:12px 14px"></p>
+  </div>`;
+  const cast = el.querySelector("[data-cast]"), msg = el.querySelector("[data-msg]");
+  function render(){
+    // AWB tracks the light but leaves warm tungsten slightly warm, as the camera's default "Standard" AWB does
+    const eff = set === 0 ? (light < 3600 ? light * 1.12 : light) : set;
+    const c = Math.log2(eff / light);
+    const a = Math.min(.55, Math.abs(c) * 1.1);
+    cast.style.background = c > 0 ? "#FF8A2A" : "#3B7BFF";
+    cast.style.opacity = a < .04 ? 0 : a;
+    let t;
+    if(a < .06) t = "Colores naturales: la taza se ve blanca.";
+    else if(c > 0) t = `Sale <b>anaranjada</b>: le dijiste a la cámara que la luz era más fría (más azul) de lo que es, y la cámara añadió calidez de más.`;
+    else t = `Sale <b>azulada</b>: le dijiste a la cámara que la luz era más cálida (más naranja) de lo que es, y la cámara la enfrió de más.`;
+    if(set === 0 && light < 3600) t += " En Auto, la cámara deja un toque cálido con luz de bombilla para que se sienta el ambiente.";
+    msg.innerHTML = t;
+    el.querySelectorAll("[data-l] .chip").forEach(b => b.setAttribute("aria-pressed", +b.dataset.k === light));
+    el.querySelectorAll("[data-s] .chip").forEach(b => b.setAttribute("aria-pressed", +b.dataset.k === set));
+  }
+  el.addEventListener("click", e => {
+    const b = e.target.closest(".chip"); if(!b) return;
+    if(b.closest("[data-l]")) light = +b.dataset.k; else set = +b.dataset.k;
+    render();
+  });
+  render();
+}
+
+
+/* ---------- intent planner ---------- */
+function mountPlanner(el){
+  const Q = [
+   ["subj","¿Qué fotografías?",[["persona","Una persona"],["grupo","Un grupo"],["paisaje","Paisaje o lugar"],["objeto","Objeto o comida"]]],
+   ["move","¿Se mueve?",[["no","Está quieto"],["poco","Algo (camina, gesticula)"],["rapido","Rápido (corre, salta)"]]],
+   ["want","¿Qué quieres conseguir?",[["blur","Fondo borroso"],["sharp","Todo nítido"],["freeze","Congelar el movimiento"],["trail","Mostrar el movimiento"]]],
+   ["light","¿Cuánta luz hay?",[["sol","Sol"],["sombra","Sombra o nublado"],["interior","Interior"],["noche","Noche"]]]
+  ];
+  const st = {subj:"persona", move:"no", want:"blur", light:"sombra"};
+  el.innerHTML = `<div class="card stack" style="gap:14px">${Q.map(([k,t,o]) => `<div><div class="eyebrow" style="margin-bottom:6px">${t}</div><div class="chips" data-q="${k}">${o.map(([v,n]) => `<button type="button" class="chip" data-v="${v}" aria-pressed="false">${n}</button>`).join("")}</div></div>`).join("")}<div data-out aria-live="polite"></div></div>`;
+  function plan(){
+    const {subj, move, want, light} = st, dark = light === "interior" || light === "noche";
+    const fast = {no:"1/125", poco:"1/250", rapido:"1/1000"}[move];
+    const why = [], warn = [];
+    let mode, N = "La elige la cámara", t = "La elige la cámara", iso = "AUTO", zoom = "El que encuadre mejor";
+    if(want === "trail"){
+      mode = "S"; iso = "100 (el más bajo)";
+      if(move === "no"){ t = "1/8 a 1 segundo"; why.push("Una velocidad lenta convierte lo que se mueve en el encuadre (agua, gente, coches, nubes) en estelas; lo quieto queda nítido."); }
+      else { t = "1/30, siguiendo al sujeto"; why.push("Barrido: si sigues al sujeto con la cámara mientras disparas, él queda nítido y el fondo sale en rayas."); }
+      if(light === "sol") warn.push("Con sol puede sobrar luz y el número F parpadear. Busca sombra o espera a que baje el sol.");
+    } else if(want === "freeze"){
+      mode = "S"; t = move === "no" ? "1/250" : fast;
+      why.push(`A ${t} el movimiento queda congelado. La cámara elige la apertura y el ISO sube si falta luz.`);
+      if(move === "no") warn.push("Si nada se mueve no hace falta congelar. Quizá te interesa más elegir el fondo (modo A).");
+    } else if(move === "rapido"){
+      mode = "M con ISO AUTO"; t = fast;
+      N = want === "blur" ? "La más baja (F5.6 a 50 mm)" : "F8";
+      if(want === "blur") zoom = "50 mm";
+      why.push("Mandan a la vez el movimiento y lo nítido: fijas tú la velocidad y la apertura, y la cámara ajusta el ISO.");
+    } else {
+      mode = "A";
+      if(want === "blur"){ N = "La más baja (F5.6 a 50 mm)"; zoom = "50 mm"; why.push("Apertura abierta, zoom largo y poca distancia al sujeto: así el fondo se desenfoca al máximo con este objetivo. Aleja al sujeto del fondo."); }
+      else { N = subj === "paisaje" ? "F8 a F11" : "F8"; zoom = subj === "paisaje" ? "16 mm" : (subj === "grupo" ? "16–24 mm" : zoom); why.push("Con F8 la zona nítida es amplia y el objetivo da su mejor detalle."); }
+      if(move === "poco") warn.push("Vigila que la velocidad no baje de 1/250. Si baja, sube el ISO o pasa a M con ISO AUTO.");
+    }
+    if(want === "blur" && subj === "grupo") warn.push("Con fondo borroso, quien esté a otra distancia saldrá desenfocado. Ponlos en una línea o usa F8.");
+    if(want === "blur" && subj === "paisaje") warn.push("En un paisaje casi todo está lejos: el fondo apenas se desenfocará. Busca algo cercano que destacar.");
+    if(dark && iso === "AUTO") why.push("Hay poca luz: el ISO AUTO subirá hasta 6400. Mejor algo de grano que una foto movida.");
+    if(light === "noche" && move === "no" && (subj === "paisaje" || subj === "objeto")){ iso = "100–400"; why.push("De noche, con un sujeto quieto, apoya la cámara: puedes usar velocidades lentas con ISO bajo y la máxima calidad."); }
+    const focus = move === "no" ? "AF-S" : "AF-C";
+    const area = subj === "persona" ? (move === "rapido" ? "Zona o Lock-on AF + Eye AF" : "Eye AF (botón central)") : subj === "grupo" ? "Punto flexible en una cara de la fila central" : subj === "paisaje" ? "Punto flexible a un tercio de la escena" : (move === "rapido" ? "Zona o Lock-on AF" : "Punto flexible pequeño en lo importante");
+    const drive = move === "rapido" ? "Continuo Hi" : subj === "grupo" ? "Autodisparador continuo (3 fotos)" : (want === "trail" && move === "no") || (light === "noche" && move === "no") ? "Autodisparador 2 s, cámara apoyada" : "Disparo único";
+    if(light === "sol" && (subj === "persona" || subj === "grupo")) warn.push("Sol directo en la cara: busca sombra abierta, o pon el sol detrás y usa flash de relleno.");
+    if(light === "noche" && (subj === "persona" || subj === "grupo")) warn.push("Para iluminar caras de noche: flash con sincronización lenta, o acércalas a una fuente de luz.");
+    if(light === "interior") why.push("Antes de subir el ISO, acerca el sujeto a una ventana o lámpara: la luz manda.");
+    return {mode, N, t, iso, zoom, focus, area, drive, why, warn};
+  }
+  function render(){
+    el.querySelectorAll("[data-q]").forEach(g => g.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", c.dataset.v === st[g.dataset.q])));
+    const r = plan();
+    el.querySelector("[data-out]").innerHTML = `<div class="stack" style="gap:10px">
+      <h3>Tu punto de partida</h3>
+      ${evfHTML([r.mode, r.t.startsWith("La") ? "VEL. AUTO" : r.t, r.N.startsWith("La e") ? "F AUTO" : r.N.replace(/ \(.*\)/,"").replace("La más baja","F MÍN."), "ISO " + r.iso])}
+      <div class="recipe"><dl>
+       <dt>Modo</dt><dd>${esc(r.mode)}</dd><dt>Apertura</dt><dd>${esc(r.N)}</dd><dt>Velocidad</dt><dd>${esc(r.t)}</dd><dt>ISO</dt><dd>${esc(r.iso)}</dd>
+       <dt>Zoom</dt><dd>${esc(r.zoom)}</dd><dt>Enfoque</dt><dd>${r.focus} · ${esc(r.area)}</dd><dt>Avance</dt><dd>${esc(r.drive)}</dd>
+      </dl></div>
+      <div><b>Por qué</b><ul style="margin:6px 0 0;padding-left:22px;display:flex;flex-direction:column;gap:4px">${r.why.map(w => `<li>${esc(w)}</li>`).join("")}</ul></div>
+      ${r.warn.length ? `<div class="callout c-warn"><span class="eyebrow">Ojo</span>${r.warn.map(w => `<p>${esc(w)}</p>`).join("")}</div>` : ""}
+    </div>`;
+  }
+  el.addEventListener("click", e => { const c = e.target.closest(".chip"); if(!c) return; st[c.closest("[data-q]").dataset.q] = c.dataset.v; render(); });
+  render();
+}
+
+/* ---------- exposure simulator ---------- */
+const AP = [3.5,4,4.5,5,5.6,6.3,7.1,8,9,10,11,13,14,16,18,20,22];
+const SS = [1/4000,1/3200,1/2500,1/2000,1/1600,1/1250,1/1000,1/800,1/640,1/500,1/400,1/320,1/250,1/200,1/160,1/125,1/100,1/80,1/60,1/50,1/40,1/30,1/25,1/20,1/15,1/13,1/10,1/8,1/6,1/5,1/4,.3,.4,.5,.6,.8,1,1.3,1.6,2,2.5,3.2,4,5,6,8,10,13,15,20,25,30];
+const ISOS = [100,125,160,200,250,320,400,500,640,800,1000,1250,1600,2000,2500,3200,4000,5000,6400,8000,10000,12800,16000,20000,25600,32000,40000,51200];
+const SCENES = [
+ {id:"sol", n:"Sol", ev:15, sky:["#5FA8E0","#CFE8F7"], g:"#6E9F4E", hill:"#4F7F3E", tree:"#3E6B33", night:false},
+ {id:"sombra", n:"Sombra", ev:12, sky:["#8DB2CF","#D7E3EA"], g:"#5E8549", hill:"#476B3B", tree:"#355A2D", night:false},
+ {id:"atardecer", n:"Atardecer", ev:10, sky:["#E9875B","#F7D29A"], g:"#6B6A3E", hill:"#4D4B2E", tree:"#3A3923", night:false},
+ {id:"interior", n:"Interior", ev:7, sky:["#D8C7A8","#E9DDC6"], g:"#9C7A55", hill:"#BCA683", tree:"#8E7556", night:false, indoor:true},
+ {id:"noche", n:"Noche", ev:4, sky:["#0E1A33","#2A3B5E"], g:"#2E3A2C", hill:"#1D2638", tree:"#162016", night:true}
+];
+const SIM = {mode:"A", scene:"sombra", f:50, N:5.6, t:1/125, iso:400, isoAuto:true};
+const nearestIdx = (arr, v) => { let bi = 0, bd = Infinity; arr.forEach((x,i) => { const d = Math.abs(Math.log2(x) - Math.log2(v)); if(d < bd){ bd = d; bi = i; } }); return bi; };
+const snap = (arr, v) => arr[nearestIdx(arr, v)];
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+function minAp(f){ const tbl = [[16,3.5],[18,4],[24,4.5],[30,5],[35,5.6],[50,5.6]]; for(let i=1;i<tbl.length;i++){ if(f <= tbl[i][0]){ const [f0,a0] = tbl[i-1], [f1,a1] = tbl[i]; const v = a0 + (a1-a0)*(f-f0)/(f1-f0); return AP.find(a => a >= v - 0.05) || 5.6; } } return 5.6; }
+const fmtT = t => t >= .3 ? t + '"' : "1/" + Math.round(1/t);
+const fmtN = N => "F" + N;
+
+function solve(st){
+  const sc = SCENES.find(s => s.id === st.scene), EV = sc.ev, mA = minAp(st.f);
+  let N = Math.max(st.N, mA), t = st.t, iso = st.isoAuto ? 100 : st.iso;
+  const blink = {};
+  const L = i => EV + Math.log2(i / 100);
+  const minSS = 1 / (st.f * 1.5);
+  const isoFor = (N, t) => clamp(100 * Math.pow(2, Math.log2(N*N/t) - EV), 100, 6400);
+  if(st.mode === "P" || st.mode === "A"){
+    if(st.mode === "P"){ N = mA; let i = AP.indexOf(N); while(N*N/Math.pow(2, L(iso)) < 1/250 && N < 8){ N = AP[++i]; } }
+    t = N*N / Math.pow(2, L(iso));
+    if(st.isoAuto && t > minSS){ iso = snap(ISOS, isoFor(N, minSS)); t = N*N / Math.pow(2, L(iso)); }
+    if(t < SS[0] || t > 30) blink.t = true;
+    t = snap(SS, clamp(t, SS[0], 30));
+  } else if(st.mode === "S"){
+    let need = Math.sqrt(t * Math.pow(2, L(iso)));
+    if(st.isoAuto && need < mA){ iso = snap(ISOS, isoFor(mA, t)); need = Math.sqrt(t * Math.pow(2, L(iso))); }
+    if(need < mA - .05 || need > 22.5) blink.N = true;
+    N = snap(AP, clamp(need, mA, 22));
+  } else {
+    if(st.isoAuto){ const raw = 100 * Math.pow(2, Math.log2(N*N/t) - EV); if(raw > 6400 || raw < 100) blink.iso = true; iso = snap(ISOS, clamp(raw, 100, 6400)); }
+  }
+  const delta = L(iso) - Math.log2(N*N/t);
+  return {N, t, iso, delta, blink, sc, mA, minSS};
+}
+
+let noiseURL = null;
+function getNoise(){
+  if(noiseURL) return noiseURL;
+  try{
+    const c = document.createElement("canvas"); c.width = c.height = 160;
+    const x = c.getContext("2d"), d = x.createImageData(160,160);
+    for(let i=0;i<d.data.length;i+=4){ const v = Math.random()*255; d.data[i] = v + (Math.random()-.5)*60; d.data[i+1] = v; d.data[i+2] = v + (Math.random()-.5)*60; d.data[i+3] = 255; }
+    x.putImageData(d,0,0); noiseURL = c.toDataURL();
+  }catch(e){ noiseURL = ""; }
+  return noiseURL;
+}
+
+function sceneSVG(){
+  return `<svg viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+ <defs>
+  <linearGradient id="skyG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" data-sky0/><stop offset="1" data-sky1/></linearGradient>
+  <filter id="fBg" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur data-bgblur stdDeviation="1"/></filter>
+  <filter id="fMov" x="-30%" y="-10%" width="160%" height="120%"><feGaussianBlur data-movblur stdDeviation="0 0"/></filter>
+  <filter id="fShake"><feGaussianBlur data-shake stdDeviation="0"/></filter>
+ </defs>
+ <g filter="url(#fShake)">
+ <g data-world>
+  <rect x="-200" y="-200" width="700" height="600" fill="url(#skyG)"/>
+  <g filter="url(#fBg)">
+   <circle data-sun cx="236" cy="44" r="14"/>
+   <g data-stars fill="#FFFFFF"><circle cx="40" cy="20" r=".8"/><circle cx="90" cy="35" r=".7"/><circle cx="160" cy="18" r=".9"/><circle cx="270" cy="28" r=".7"/><circle cx="210" cy="60" r=".6"/></g>
+   <path data-hill d="M-200 132 Q 20 92 120 120 T 300 110 T 500 120 V 260 H -200 Z"/>
+   <g data-house><rect x="196" y="96" width="44" height="34" fill="#D9CBB5"/><path d="M192 98 L218 80 L244 98Z" fill="#9A4B3A"/><rect data-win x="204" y="106" width="9" height="9"/><rect data-win x="222" y="106" width="9" height="9"/></g>
+   <g data-trees><rect x="34" y="104" width="4" height="22" fill="#4A3523"/><ellipse cx="36" cy="98" rx="15" ry="20"/><rect x="262" y="100" width="4" height="26" fill="#4A3523"/><ellipse cx="264" cy="92" rx="13" ry="20"/><ellipse cx="90" cy="106" rx="11" ry="14"/><rect x="88" y="112" width="3" height="14" fill="#4A3523"/></g>
+   <g data-lamps fill="#FFD27A"><circle cx="70" cy="122" r="2.5"/><circle cx="150" cy="118" r="2"/><circle cx="290" cy="120" r="2.5"/></g>
+  </g>
+  <rect data-ground x="-200" y="126" width="700" height="200"/>
+  <g filter="url(#fMov)">
+   <g transform="translate(196 132)">
+    <circle cx="0" cy="22" r="10" fill="none" stroke="#1E2226" stroke-width="2.5"/><circle cx="30" cy="22" r="10" fill="none" stroke="#1E2226" stroke-width="2.5"/>
+    <path d="M0 22 L12 6 L26 6 L30 22 M12 6 L16 22 L26 6" fill="none" stroke="#C63A2E" stroke-width="2.5"/>
+    <path d="M16 -4 L13 6 M16 -4 L24 5" stroke="#2F5DA8" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="17" cy="-10" r="5" fill="#E2B48C"/><path d="M12 -12a5 5 0 0 1 10 0z" fill="#F2C230"/>
+   </g>
+  </g>
+  <g data-subject>
+   <path d="M88 200 C 88 162, 104 150, 122 148 L 142 148 C 160 150, 176 162, 176 200 Z" fill="#3F6F8F"/>
+   <rect x="124" y="132" width="16" height="20" rx="6" fill="#C98F6B"/>
+   <ellipse cx="132" cy="114" rx="20" ry="24" fill="#D7A27D"/>
+   <path d="M110 112 C 108 84, 156 82, 155 110 C 150 96, 132 92, 118 100 C 116 104, 114 110, 112 118 Z" fill="#2B1D16"/>
+   <path d="M111 112 C 104 132, 108 146, 116 150 L 116 112 Z" fill="#2B1D16"/>
+   <ellipse cx="124" cy="116" rx="2.4" ry="2" fill="#1A1210"/><ellipse cx="140" cy="116" rx="2.4" ry="2" fill="#1A1210"/>
+   <path d="M126 128 q6 4 12 0" fill="none" stroke="#9C5B45" stroke-width="1.8" stroke-linecap="round"/>
+  </g>
+ </g>
+ </g>
+</svg>`;
+}
+
+function mountSim(el, opts){
+  opts = opts || {};
+  if(opts.mode){ SIM.mode = opts.mode; }
+  el.innerHTML = `
+  <div class="stack">
+   <div class="sim-frame" data-frame>
+    ${sceneSVG()}
+    <div class="sim-noise" data-noise></div>
+    <div class="sim-focus" aria-hidden="true"></div>
+    <div class="sim-mode" data-osdmode></div>
+    <div class="sim-osd" data-osd></div>
+   </div>
+   <div class="meter" data-meterwrap>
+    <div style="display:flex;justify-content:space-between"><span>Más oscura</span><span data-metertxt></span><span>Más clara</span></div>
+    <div class="meter-bar"><div class="meter-ticks">${[-3,-2,-1,0,1,2,3].map((v,i,a) => `<span class="big"><b>${v>0?"+"+v:v}</b></span>` + (i < a.length-1 ? "<span></span><span></span>" : "")).join("")}</div><div class="meter-mark" data-mark></div></div>
+   </div>
+   <div class="seg" role="group" aria-label="Modo">${["P","A","S","M"].map(m => `<button type="button" data-mode="${m}" aria-pressed="false">${m}</button>`).join("")}</div>
+   <div class="chips" role="group" aria-label="Escena">${SCENES.map(s => `<button type="button" class="chip" data-scene="${s.id}" aria-pressed="false">${s.n}</button>`).join("")}</div>
+   <div class="ctrls">
+    <div class="ctrl"><label class="lab" for="sim-zoom">Zoom <small data-zoomtxt></small></label><output data-zoomv style="font:700 18px var(--f-mono)"></output><input type="range" id="sim-zoom" min="16" max="50" step="1" value="${SIM.f}"></div>
+    <div class="ctrl" data-c="N"><div class="lab">Apertura <small data-sub></small></div><div class="stepper"><button type="button" data-d="-1" aria-label="Abrir (F más bajo)">−</button><output></output><button type="button" data-d="1" aria-label="Cerrar (F más alto)">+</button></div></div>
+    <div class="ctrl" data-c="t"><div class="lab">Velocidad <small data-sub></small></div><div class="stepper"><button type="button" data-d="-1" aria-label="Más rápida">−</button><output></output><button type="button" data-d="1" aria-label="Más lenta">+</button></div></div>
+    <div class="ctrl" data-c="iso"><div class="lab">ISO <small data-sub></small><button type="button" class="chip" data-isoauto style="margin-top:6px">ISO AUTO</button></div><div class="stepper"><button type="button" data-d="-1" aria-label="ISO más bajo">−</button><output></output><button type="button" data-d="1" aria-label="ISO más alto">+</button></div></div>
+   </div>
+   <ul class="verdict" data-verdict></ul>
+   <p class="muted" style="font-size:14px">Simulación aproximada para entender la relación entre ajustes. Los valores de apertura mínima según el zoom son aproximados para el 16-50 mm.</p>
+  </div>`;
+  const $ = s => el.querySelector(s);
+  $("[data-noise]").style.backgroundImage = getNoise() ? `url(${getNoise()})` : "none";
+
+  function render(){
+    const r = solve(SIM), sc = r.sc;
+    // reflect camera-chosen values back into state so switching modes continues from them
+    SIM.N = r.N; SIM.t = r.t; if(SIM.isoAuto) SIM._iso = r.iso;
+    // scene colours
+    $("[data-sky0]").setAttribute("stop-color", sc.sky[0]); $("[data-sky1]").setAttribute("stop-color", sc.sky[1]);
+    $("[data-hill]").setAttribute("fill", sc.hill); $("[data-ground]").setAttribute("fill", sc.g);
+    $("[data-trees]").setAttribute("fill", sc.tree);
+    $("[data-sun]").setAttribute("fill", sc.night ? "#F4F1DE" : (sc.id === "atardecer" ? "#FFB04A" : "#FFF3B0"));
+    $("[data-sun]").style.display = sc.indoor ? "none" : "";
+    $("[data-stars]").style.display = sc.night ? "" : "none";
+    $("[data-lamps]").style.display = sc.night ? "" : "none";
+    el.querySelectorAll("[data-win]").forEach(w => w.setAttribute("fill", sc.night ? "#FFCF6E" : "#7E97A8"));
+    $("[data-house]").style.display = sc.indoor ? "none" : "";
+    // zoom
+    const z = 1 + (SIM.f - 16) / 34 * 0.6;
+    $("[data-world]").setAttribute("transform", `translate(132 118) scale(${z.toFixed(3)}) translate(-132 -118)`);
+    // depth of field
+    const bg = 0.15 + 3.4 * Math.pow(SIM.f / 50, 1.6) * (3.5 / r.N);
+    $("[data-bgblur]").setAttribute("stdDeviation", bg.toFixed(2));
+    // motion of the cyclist
+    const mv = Math.min(30, 420 * r.t);
+    $("[data-movblur]").setAttribute("stdDeviation", `${mv.toFixed(2)} 0`);
+    // camera shake (with SteadyShot about 2 stops of help)
+    const shakeRatio = r.t / r.minSS;
+    $("[data-shake]").setAttribute("stdDeviation", shakeRatio > 4 ? Math.min(2.2, .4 * Math.log2(shakeRatio)).toFixed(2) : 0);
+    // brightness & noise
+    const b = clamp(Math.pow(2, r.delta * .75), .05, 4.5);
+    $("[data-frame] svg").style.filter = `brightness(${b.toFixed(3)})` + (r.delta > 1.2 ? ` contrast(${clamp(1 - (r.delta-1.2)*.15, .6, 1).toFixed(2)})` : "");
+    const nz = clamp((Math.log2(r.iso / 100) - 3.3) / 6.5, 0, 1);
+    $("[data-noise]").style.opacity = (nz * .5).toFixed(2);
+    // OSD
+    const bl = (k, s) => r.blink[k] ? `<span class="blink">${s}</span>` : `<span>${s}</span>`;
+    $("[data-osdmode]").textContent = SIM.mode;
+    const ev = (r.delta >= 0 ? "+" : "−") + Math.abs(Math.round(r.delta * 3) / 3).toFixed(1);
+    $("[data-osd]").innerHTML = bl("t", fmtT(r.t)) + bl("N", fmtN(r.N)) + (SIM.mode === "M" && !SIM.isoAuto ? `<span>MM ${ev}</span>` : `<span>±0.0</span>`) + bl("iso", "ISO " + (SIM.isoAuto ? "AUTO " : "") + r.iso);
+    // meter
+    const mpos = clamp(r.delta, -3.3, 3.3);
+    $("[data-mark]").style.left = `${((mpos + 3) / 6 * 100).toFixed(1)}%`;
+    $("[data-metertxt]").textContent = Math.abs(r.delta) < .2 ? "Exposición correcta" : (r.delta > 0 ? `+${r.delta.toFixed(1)} pasos` : `${r.delta.toFixed(1)} pasos`);
+    // controls
+    el.querySelectorAll(".seg button").forEach(x => x.setAttribute("aria-pressed", x.dataset.mode === SIM.mode));
+    el.querySelectorAll("[data-scene]").forEach(x => x.setAttribute("aria-pressed", x.dataset.scene === SIM.scene));
+    $("[data-zoomv]").textContent = SIM.f + " mm";
+    $("[data-zoomtxt]").textContent = `F más bajo posible: F${r.mA}`;
+    const user = {N: SIM.mode === "A" || SIM.mode === "M", t: SIM.mode === "S" || SIM.mode === "M", iso: !SIM.isoAuto};
+    const val = {N: fmtN(r.N), t: fmtT(r.t), iso: (SIM.isoAuto ? "AUTO " : "") + r.iso};
+    const sub = {N: user.N ? "Tú la eliges" : "La elige la cámara", t: user.t ? "Tú la eliges" : "La elige la cámara", iso: SIM.isoAuto ? "La cámara la ajusta (100–6400)" : "Tú lo eliges"};
+    ["N","t","iso"].forEach(k => {
+      const c = el.querySelector(`[data-c="${k}"]`);
+      c.classList.toggle("auto", !user[k]);
+      c.querySelector("output").textContent = val[k];
+      c.querySelector("[data-sub]").textContent = sub[k];
+      c.querySelectorAll("[data-d]").forEach(x => x.disabled = !user[k]);
+    });
+    $("[data-isoauto]").setAttribute("aria-pressed", SIM.isoAuto);
+    // verdict
+    const v = [];
+    const expTxt = Math.abs(r.delta) < .4 ? "Correcta." : r.delta > 0 ? (r.delta > 1.5 ? "Muy clara: zonas quemadas." : "Algo clara.") : (r.delta < -1.5 ? "Muy oscura." : "Algo oscura.");
+    v.push(["Brillo", expTxt, Math.abs(r.delta) >= .4]);
+    v.push(["Fondo", bg * z > 4.5 ? "Muy desenfocado." : bg * z > 2 ? "Desenfocado." : bg * z > 1 ? "Algo suave." : "Nítido.", false]);
+    v.push(["Ciclista", mv < 1.2 ? "Congelado." : mv < 5 ? "Ligeramente movido." : "Estela de movimiento.", false]);
+    v.push(["Ruido", r.iso <= 800 ? "Imperceptible." : r.iso <= 3200 ? "Muy bajo." : r.iso <= 6400 ? "Algo de grano." : "Mucho grano.", r.iso > 6400]);
+    v.push(["Pulso", shakeRatio <= 1 ? "Sin riesgo de foto movida." : shakeRatio <= 4 ? "El SteadyShot te salva; sujétala firme." : "Foto movida: apoya la cámara o usa trípode.", shakeRatio > 4]);
+    const bk = Object.keys(r.blink);
+    if(bk.length) v.push(["Aviso", "Un valor parpadea: la cámara no llega a la exposición correcta con estos ajustes.", true]);
+    $("[data-verdict]").innerHTML = v.map(([a,b,w]) => `<li class="${w?"w":""}"><b>${a}</b>${b}</li>`).join("");
+  }
+  el.addEventListener("click", e => {
+    const m = e.target.closest("[data-mode]"); if(m){ SIM.mode = m.dataset.mode; if(SIM.mode === "M" && SIM.isoAuto && SIM._iso){ /* keep auto */ } render(); return; }
+    const s = e.target.closest("[data-scene]"); if(s){ SIM.scene = s.dataset.scene; render(); return; }
+    if(e.target.closest("[data-isoauto]")){ if(SIM.isoAuto){ SIM.iso = SIM._iso || 400; } SIM.isoAuto = !SIM.isoAuto; render(); return; }
+    const d = e.target.closest("[data-d]"); if(d){
+      const k = d.closest("[data-c]").dataset.c, dir = +d.dataset.d;
+      if(k === "N"){ const i = clamp(AP.indexOf(snap(AP, SIM.N)) + dir, 0, AP.length - 1); SIM.N = Math.max(AP[i], minAp(SIM.f)); }
+      if(k === "t"){ const i = clamp(nearestIdx(SS, SIM.t) + dir, 0, SS.length - 1); SIM.t = SS[i]; }
+      if(k === "iso"){ const i = clamp(nearestIdx(ISOS, SIM.iso) + dir, 0, ISOS.length - 1); SIM.iso = ISOS[i]; }
+      render();
+    }
+  });
+  $("#sim-zoom").addEventListener("input", e => { SIM.f = +e.target.value; render(); });
+  render();
+}
+
+/* ---------- text size ---------- */
+const ZOOMS = [1, 1.12, 1.25];
+function applyZoom(){ document.documentElement.style.setProperty("--zoom", S.zoom); const b = document.getElementById("tsize"); if(b) b.setAttribute("aria-label", `Tamaño del texto: ${["normal","grande","muy grande"][ZOOMS.indexOf(S.zoom)] || "normal"}`); }
+document.getElementById("tsize").addEventListener("click", () => { S.zoom = ZOOMS[(ZOOMS.indexOf(S.zoom) + 1) % ZOOMS.length]; save(); applyZoom(); });
+applyZoom();
+
+/* ---------- practice mode: one step per screen, screen kept awake ---------- */
+let wake = null;
+async function keepAwake(on){
+  try{
+    if(on && navigator.wakeLock && !wake){ wake = await navigator.wakeLock.request("screen"); wake.addEventListener("release", () => { wake = null; }); }
+    if(!on && wake){ await wake.release(); wake = null; }
+  }catch(e){ wake = null; }
+}
+document.addEventListener("visibilitychange", () => { if(document.visibilityState === "visible" && document.querySelector(".practice")) keepAwake(true); });
+function openPractice(l, onChange){
+  const n = l.steps.length;
+  let k = Math.max(0, l.steps.findIndex((_, i) => !(S.steps[l.id] || []).includes(i)));
+  const ov = document.createElement("div");
+  ov.className = "practice"; ov.setAttribute("role","dialog"); ov.setAttribute("aria-modal","true"); ov.setAttribute("aria-label","Modo práctica");
+  document.body.appendChild(ov); document.body.style.overflow = "hidden";
+  keepAwake(true);
+  const mark = i => { const set = new Set(S.steps[l.id] || []); set.add(i); S.steps[l.id] = [...set]; save(); onChange(); };
+  function close(){ keepAwake(false); ov.remove(); document.body.style.overflow = ""; document.removeEventListener("keydown", onKey); }
+  function draw(){
+    const end = k >= n;
+    ov.innerHTML = `
+     <div class="pr-top"><span class="eyebrow">${esc(l.title)}</span><button type="button" class="pr-x" data-x aria-label="Cerrar modo práctica">✕</button></div>
+     <div class="progress" aria-hidden="true"><i style="width:${(Math.min(k,n)/n*100).toFixed(1)}%"></i></div>
+     <div class="pr-body">
+      ${end ? `<span class="eyebrow">¡Pasos completados!</span><p class="pr-step">Ahora, tu misión:</p><p class="pr-mission">${fmt(l.mission)}</p>`
+            : `<span class="eyebrow">Paso ${k+1} de ${n}</span><p class="pr-step">${fmt(l.steps[k])}</p>`}
+     </div>
+     <div class="pr-nav">
+      ${end ? `<button type="button" class="btn btn-ghost" data-prev>Anterior</button><button type="button" class="btn btn-primary" data-x>Volver a la lección</button>`
+            : `<button type="button" class="btn btn-ghost" data-prev ${k===0?"disabled":""}>Anterior</button><button type="button" class="btn btn-ok" data-next>${k===n-1?"Hecho, terminar":"Hecho, siguiente"}</button>`}
+     </div>
+     <p class="pr-hint">${wake ? "La pantalla se mantendrá encendida mientras practicas." : "Consejo: deja el móvil apoyado a la vista mientras usas la cámara."}</p>`;
+    ov.querySelector("[data-next],[data-x]:not(.pr-x)")?.focus();
+  }
+  function onKey(e){ if(e.key === "Escape") close(); }
+  document.addEventListener("keydown", onKey);
+  ov.addEventListener("click", e => {
+    if(e.target.closest("[data-x]")) return close();
+    if(e.target.closest("[data-prev]")){ k = Math.max(0, k-1); draw(); }
+    if(e.target.closest("[data-next]")){ mark(k); k++; draw(); }
+  });
+  draw(); setTimeout(draw, 400);
+}
+
+/* ---------- views ---------- */
+const app = document.getElementById("app");
+const doneCount = () => LESSONS.filter(l => S.done[l.id]).length;
+const nextLesson = () => LESSONS.find(l => !S.done[l.id]) || null;
+function updateRing(){ const r = document.getElementById("ring"); r.textContent = `${doneCount()}/${LESSONS.length}`; r.setAttribute("aria-label", `${doneCount()} de ${LESSONS.length} lecciones completadas`); }
+
+function evfHTML(items){ return `<div class="evf" aria-label="Ajustes de esta lección">${items.map((x,i) => `<span class="${i===0?"g":""}">${esc(x)}</span>`).join("")}</div>`; }
+
+function reviewPool(){ const out = []; LESSONS.forEach(l => { if(S.done[l.id] && l.think) l.think.forEach(t => out.push([l, t])); }); return out; }
+function reviewHTML(){
+  const pool = reviewPool(); if(!pool.length) return "";
+  const [l, [q, a]] = pool[S.rev % pool.length];
+  return `<section class="card stack review" style="gap:10px" data-review>
+   <span class="eyebrow">Repaso rápido · de «${esc(l.title)}»</span>
+   <p style="font-weight:700">${fmt(q)}</p>
+   <details class="think"><summary>Piensa tu respuesta y toca para comprobarla</summary><p>${fmt(a)}</p></details>
+   <div class="btn-row"><button type="button" class="linkbtn" data-nextrev>Otra situación</button></div>
+   <p class="muted" style="font-size:14px">Recordar sin mirar es lo que fija lo aprendido. Un repaso al día basta.</p>
+  </section>`;
+}
+function viewHome(){
+  const n = doneCount(), nx = nextLesson(), last = S.last && byId(S.last) && !S.done[S.last] ? byId(S.last) : nx;
+  app.innerHTML = `
+  <div class="stack-l">
+   <section class="hero stack">
+    <span class="eyebrow">Sony α6500 · objetivo 16-50 mm</span>
+    <h1>Del iPhone a tu primera cámara de verdad</h1>
+    <p>Ya sabes mirar y componer. Aquí aprendes a decirle a la cámara exactamente lo que quieres. Son ${LESSONS.length} lecciones cortas que se hacen con la cámara en la mano. No solo aprendes qué hace cada ajuste: aprendes a elegirlo según lo que quieres capturar.</p>
+    <div class="stack" style="gap:6px">
+     <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="${LESSONS.length}" aria-valuenow="${n}" aria-label="Progreso"><i style="width:${(n/LESSONS.length*100).toFixed(1)}%"></i></div>
+     <span class="muted" style="font-size:15px">${n === 0 ? "Aún no has empezado." : n === LESSONS.length ? "¡Programa completado! 🎉" : `${n} de ${LESSONS.length} lecciones completadas.`}</span>
+    </div>
+   </section>
+   ${last ? `
+   <section class="continue">
+    <span class="eyebrow">${n === 0 ? "Empieza aquí" : "Continúa"} · Lección ${last.n}</span>
+    <h2>${esc(last.title)}</h2>
+    ${evfHTML(last.evf)}
+    <div class="btn-row"><a class="btn btn-primary" href="#leccion-${last.id}">${n === 0 ? "Empezar" : "Seguir"}</a></div>
+   </section>` : ""}
+   ${reviewHTML()}
+   <section class="stack" style="gap:10px">
+    <h2>Cómo funciona</h2>
+    <div class="howto">
+     <div><b>1 · Lee</b>Unos minutos de explicación, comparada con lo que ya conoces del iPhone.</div>
+     <div><b>2 · Hazlo</b>Pasos con la cámara en la mano. Márcalos según los haces.</div>
+     <div><b>3 · Piénsalo</b>Situaciones reales: decide qué harías antes de ver la respuesta.</div>
+     <div><b>4 · Misión y cuaderno</b>Una foto con una intención clara, y una nota de qué querías, qué ajustaste y qué pasó.</div>
+    </div>
+    <p class="muted" style="font-size:15px">Ve a tu ritmo, en orden. Tu progreso y tus notas se guardan en este dispositivo.</p>
+   </section>
+   ${UNITS.map(u => `
+   <section class="unit">
+    <div class="unit-head"><h2>${u.id}. ${esc(u.title)}</h2><span class="eyebrow">${u.lessons.length} lecciones</span></div>
+    <ul class="lessons">${u.lessons.map(l => {
+      const st = S.steps[l.id] || [], done = !!S.done[l.id], part = !done && st.length > 0;
+      return `<li><a href="#leccion-${l.id}"><span class="num ${done?"done":part?"part":""} ${l.proj?"proj":""}">${done?"✓":l.proj?"★":l.n}</span><span><span class="l-title">${esc(l.title)}</span><br><span class="l-sub">${esc(l.sub)} · ${l.min} min</span></span><span class="chev" aria-hidden="true">›</span></a></li>`;
+    }).join("")}</ul>
+   </section>`).join("")}
+   ${Object.keys(S.notes).length ? `<section class="stack" style="gap:10px"><h2>Tu cuaderno</h2>${LESSONS.filter(l => S.notes[l.id]).map(l => `<details class="card"><summary style="cursor:pointer;font-weight:700">${l.proj?"★":l.n} · ${esc(l.title)}</summary><p style="white-space:pre-wrap;margin-top:10px">${esc(S.notes[l.id])}</p><a href="#leccion-${l.id}" style="font-size:15px">Abrir ›</a></details>`).join("")}</section>` : ""}
+   <section class="stack" style="gap:10px;border-top:1px solid var(--line);padding-top:20px">
+    <p class="muted" style="font-size:14px">Contenido comprobado con la Guía de ayuda oficial de la ILCE-6500. Los nombres de menú pueden variar un poco según la versión de software de tu cámara.</p>
+    <div class="confirm" data-reset><button type="button" class="linkbtn" data-ask>Reiniciar mi progreso</button></div>
+   </section>
+  </div>`;
+  app.querySelector("[data-review]")?.addEventListener("click", e => { if(e.target.closest("[data-nextrev]")){ S.rev++; save(); viewHome(); } });
+  const r = app.querySelector("[data-reset]");
+  r.addEventListener("click", e => {
+    if(e.target.closest("[data-ask]")){ r.innerHTML = `<span>¿Borrar todo tu progreso?</span><button type="button" class="btn btn-ghost" data-yes style="min-height:40px;padding:8px 14px">Sí, reiniciar</button><button type="button" class="linkbtn" data-no>Cancelar</button>`; }
+    else if(e.target.closest("[data-yes]")){ S = {done:{}, steps:{}, last:null, notes:{}, zoom:S.zoom, rev:0}; save(); updateRing(); viewHome(); }
+    else if(e.target.closest("[data-no]")){ viewHome(); }
+  });
+}
+
+function viewLesson(l){
+  S.last = l.id; save();
+  const i = LESSONS.indexOf(l), prev = LESSONS[i-1], next = LESSONS[i+1];
+  const st = new Set(S.steps[l.id] || []);
+  app.innerHTML = `
+  <article class="stack-l">
+   <div class="stack">
+    <div class="crumbs"><a href="#programa" class="eyebrow" style="text-decoration:none">‹ Programa</a><span class="eyebrow">Unidad ${l.unit.id} · ${l.proj ? "Proyecto" : "Lección"} ${l.n} de ${LESSONS.length}</span></div>
+    <h1>${esc(l.title)}</h1>
+    ${evfHTML(l.evf)}
+    <p class="goal"><b>Objetivo:</b> ${esc(l.goal)}</p>
+    <span class="muted" style="font-size:15px">Unos ${l.min} minutos · Ten la cámara encendida a mano.</span>
+    <nav class="outline" aria-label="En esta lección">${[["sec-lee","Lee"], l.think ? ["sec-piensa","Piénsalo"] : null, ["sec-hazlo","Hazlo"], ["sec-mision","Misión"], ["sec-cuaderno","Cuaderno"]].filter(Boolean).map(([id,t],i) => `<button type="button" class="chip" data-jump="${id}">${i+1} · ${t}</button>`).join("")}</nav>
+   </div>
+   <div class="prose" id="sec-lee">${fmt(l.body)}</div>
+   ${l.think ? `<section class="stack" style="gap:10px" id="sec-piensa"><h2>Piénsalo: ¿qué harías tú?</h2><p class="muted" style="font-size:15px">Decide qué ajustes usarías y luego toca para ver lo que haría una fotógrafa.</p>${l.think.map(([q,a]) => `<details class="think"><summary>${fmt(q)}</summary><p>${fmt(a)}</p></details>`).join("")}</section>` : ""}
+   ${l.sim ? `<div class="card stack" style="gap:10px"><h3>Pruébalo en el simulador</h3><p class="muted">Ve el efecto de cada ajuste antes de hacerlo con la cámara.</p><div class="btn-row"><button type="button" class="btn btn-ghost" data-opensim="${l.sim}">Abrir el simulador en modo ${l.sim}</button></div></div>` : ""}
+   ${l.warn ? `<div class="callout c-warn"><span class="eyebrow">Ojo</span><p>${fmt(l.warn)}</p></div>` : ""}
+   <section class="stack" style="gap:12px" id="sec-hazlo">
+    <h2>Hazlo con la cámara</h2>
+    <button type="button" class="btn btn-primary practice-btn" data-practice><span aria-hidden="true">▶</span> Modo práctica: un paso a la vez</button>
+    <p class="muted" style="font-size:14px;margin-top:-4px">Pantalla grande, botones abajo para el pulgar y la pantalla no se apaga mientras practicas. También puedes marcar los pasos aquí abajo.</p>
+    <ol class="steps">${l.steps.map((s, k) => `<li><input type="checkbox" id="st-${l.id}-${k}" data-k="${k}" ${st.has(k)?"checked":""}><label for="st-${l.id}-${k}"><span class="box" aria-hidden="true"></span><span>${fmt(s)}</span></label></li>`).join("")}</ol>
+   </section>
+   <section class="mission" id="sec-mision">
+    <span class="eyebrow">Misión de práctica</span>
+    <p>${fmt(l.mission)}</p>
+   </section>
+   <section class="stack" style="gap:8px">
+    <label for="nota-${l.id}" id="sec-cuaderno"><h2>Tu cuaderno</h2></label>
+    <p class="muted" style="font-size:15px">Apunta qué querías capturar, qué ajustes elegiste y por qué, y qué cambiarías. Releerlo te enseña tanto como las lecciones.</p>
+    <textarea id="nota-${l.id}" class="notes" rows="5" placeholder="Quería: …&#10;Ajustes: A · F5.6 · 1/250 · ISO 400, porque…&#10;Resultado: …&#10;La próxima vez: …">${esc(S.notes[l.id] || "")}</textarea>
+    <span class="muted" style="font-size:13px" data-saved></span>
+   </section>
+   <div class="lesson-foot" data-foot></div>
+  </article>`;
+  function foot(){
+    const done = !!S.done[l.id];
+    app.querySelector("[data-foot]").innerHTML = `
+     ${done ? `<div class="donebar">✓ Lección completada</div>` : ""}
+     <div class="btn-row">
+      ${done ? (next ? `<a class="btn btn-primary" href="#leccion-${next.id}">Siguiente: ${esc(next.title)}</a>` : `<a class="btn btn-primary" href="#programa">Volver al programa</a>`)
+             : `<button type="button" class="btn btn-ok" data-complete>Marcar como completada</button>`}
+      ${done ? `<button type="button" class="linkbtn" data-undo>Desmarcar</button>` : ""}
+     </div>
+     <div class="btn-row" style="justify-content:space-between">
+      ${prev ? `<a href="#leccion-${prev.id}" class="muted" style="font-size:15px">‹ ${esc(prev.title)}</a>` : "<span></span>"}
+      ${!done && next ? `<a href="#leccion-${next.id}" class="muted" style="font-size:15px">Saltar a la siguiente ›</a>` : ""}
+     </div>`;
+  }
+  foot();
+  app.onchange = onStep;
+  let tmr; const ta = app.querySelector(".notes");
+  ta.addEventListener("input", () => { clearTimeout(tmr); tmr = setTimeout(() => { const v = ta.value.trim(); if(v) S.notes[l.id] = ta.value; else delete S.notes[l.id]; save(); app.querySelector("[data-saved]").textContent = "Guardado en este dispositivo."; }, 400); });
+  function onStep(e){
+    const c = e.target.closest(".steps input"); if(!c) return;
+    const set = new Set(S.steps[l.id] || []); c.checked ? set.add(+c.dataset.k) : set.delete(+c.dataset.k);
+    S.steps[l.id] = [...set]; save();
+  }
+  app.onclick = e => {
+    const j = e.target.closest("[data-jump]"); if(j){ document.getElementById(j.dataset.jump)?.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"}); return; }
+    if(e.target.closest("[data-practice]")){ openPractice(l, () => { const done = new Set(S.steps[l.id] || []); app.querySelectorAll(".steps input").forEach(c => c.checked = done.has(+c.dataset.k)); }); return; }
+    if(e.target.closest("[data-complete]")){ S.done[l.id] = true; save(); updateRing(); foot(); app.querySelector("[data-foot]").scrollIntoView({block:"nearest", behavior:"smooth"}); }
+    else if(e.target.closest("[data-undo]")){ delete S.done[l.id]; save(); updateRing(); foot(); }
+    const o = e.target.closest("[data-opensim]"); if(o){ SIM.mode = o.dataset.opensim; if(l.id === "iso") SIM.scene = "interior"; location.hash = "simulador"; }
+  };
+  app.querySelectorAll("[data-widget=camera]").forEach(mountCamera);
+  app.querySelectorAll("[data-widget=wb]").forEach(mountWB);
+  app.querySelectorAll("[data-widget=planner]").forEach(mountPlanner);
+}
+
+function viewCamera(){
+  app.innerHTML = `<div class="stack-l"><div class="stack"><span class="eyebrow">Mapa de la cámara</span><h1>Cada botón, explicado</h1><p class="muted">Toca una parte del esquema o elige su nombre abajo.</p></div><div data-cam></div></div>`;
+  mountCamera(app.querySelector("[data-cam]"));
+}
+function viewSim(){
+  app.innerHTML = `<div class="stack-l"><div class="stack"><span class="eyebrow">Simulador de exposición</span><h1>Juega con la luz</h1><p class="muted">Elige un modo y una escena. Lo que eliges tú se ajusta con − y +; lo demás lo decide la cámara, igual que en tu α6500.</p></div><div data-sim></div></div>`;
+  mountSim(app.querySelector("[data-sim]"));
+}
+function viewRecipes(){
+  app.innerHTML = `<div class="stack-l">
+   <div class="stack"><span class="eyebrow">Chuleta</span><h1>Recetas para salir a fotografiar</h1><p class="muted">Empieza por lo que quieres capturar. El planificador te propone ajustes y te explica por qué; las recetas de abajo cubren situaciones típicas.</p></div>
+   <section class="stack" style="gap:10px"><h2>Planificador: ¿qué quieres capturar?</h2><div data-planner></div></section>
+   <section class="card stack" style="gap:10px;border-color:var(--accent)"><h2 style="font-size:21px">Rutina antes de salir</h2><p class="muted" style="font-size:15px">Lo que cualquier fotógrafo revisa antes de una sesión. Un minuto que evita perder fotos.</p>
+    <ol style="margin:0;padding-left:22px;display:flex;flex-direction:column;gap:6px">
+     <li>Batería cargada (y la de repuesto, si tienes).</li>
+     <li>Tarjeta puesta y con espacio. Pasa y borra las fotos de la última salida.</li>
+     <li>Lente frontal limpia, sin huellas.</li>
+     <li>Compensación de exposición en <b>±0.0</b>: se queda puesta de la última vez.</li>
+     <li>ISO en <b>AUTO</b>, no en un valor que dejaste fijo de noche.</li>
+     <li>Balance de blancos en <b>Auto</b>, salvo que lo hayas elegido a propósito.</li>
+     <li>Modo de avance en <b>Disparo único</b> (o ráfaga si vas a por acción).</li>
+     <li>Calidad correcta: JPEG Extra fino o RAW y JPEG.</li>
+    </ol></section>
+   ${RECIPES.map(r => `<section class="card recipe"><h2 style="font-size:21px">${esc(r.t)}</h2>${evfHTML(r.evf)}<dl>${r.d.map(([a,b]) => `<dt>${esc(a)}</dt><dd>${esc(b)}</dd>`).join("")}</dl><p class="muted" style="font-size:15px"><b>Consejo:</b> ${esc(r.tip)}</p><a href="#leccion-${r.l}" style="font-size:15px;font-weight:700">Repasar la lección: ${esc(byId(r.l).title)} ›</a></section>`).join("")}
+   <section class="stack" style="gap:10px" id="glosario"><h2>Glosario</h2><label for="gloss-q" class="muted" style="font-size:15px">Busca una palabra que no recuerdes.</label><input id="gloss-q" type="search" class="notes" style="padding:10px 14px" placeholder="Por ejemplo: apertura, ISO, RAW" autocomplete="off"><dl class="gloss" data-gloss></dl></section>
+  </div>`;
+  mountPlanner(app.querySelector("[data-planner]"));
+  const box = app.querySelector("[data-gloss]"), q = app.querySelector("#gloss-q");
+  const draw = () => { const t = q.value.trim().toLowerCase(); const items = GLOSS.filter(([a,b]) => !t || (a+" "+b).toLowerCase().includes(t)); box.innerHTML = items.length ? items.map(([a,b]) => `<div><dt>${esc(a)}</dt><dd>${esc(b)}</dd></div>`).join("") : `<p class="muted">No hay ningún término con «${esc(q.value)}».</p>`; };
+  q.addEventListener("input", draw); draw();
+}
+
+function route(){
+  const h = (location.hash || "#programa").slice(1);
+  app.onclick = null; app.onchange = null;
+  let tab = "programa";
+  if(h.startsWith("leccion-") && byId(h.slice(8))) viewLesson(byId(h.slice(8)));
+  else if(h === "camara"){ tab = "camara"; viewCamera(); }
+  else if(h === "simulador"){ tab = "simulador"; viewSim(); }
+  else if(h === "recetas"){ tab = "recetas"; viewRecipes(); }
+  else viewHome();
+  document.querySelectorAll(".nav a").forEach(a => { if(a.dataset.tab === tab) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current"); });
+  window.scrollTo(0, 0);
+  updateRing();
+}
+window.addEventListener("hashchange", route);
+route();
+})();
+</script>
+<script>
+if("serviceWorker" in navigator){ window.addEventListener("load", () => { navigator.serviceWorker.register("sw.js").catch(() => {}); }); }
+</script>
+</body>
+</html>
