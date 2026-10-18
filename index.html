@@ -2,7 +2,8 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="format-detection" content="telephone=no,date=no,email=no,address=no">
 <title>Escuela α6500</title>
 <meta name="description" content="Curso interactivo en español para aprender a usar la Sony α6500.">
 <link rel="manifest" href="manifest.webmanifest">
@@ -14,7 +15,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#F2F2F7" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
-<style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
+<style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
 </head>
 <body>
 <style>
@@ -30,6 +31,7 @@
   --f-body:-apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, "Segoe UI", Roboto, sans-serif;
   --f-mono:ui-monospace, "SF Mono", SFMono-Regular, Menlo, monospace;
   --r:12px; --nav-h:58px;
+  --gut-l:max(16px, env(safe-area-inset-left, 0px)); --gut-r:max(16px, env(safe-area-inset-right, 0px));
 }
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
   --bg:#000000; --surface:#1C1C1E; --fill:rgba(118,118,128,.24); --sunk:#2C2C2E; --ink:#F2F2F7; --muted:#98989F; --line:#38383A;
@@ -51,7 +53,7 @@
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.47;letter-spacing:-.01em;-webkit-font-smoothing:antialiased;
-  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));
+  padding-left:var(--gut-l);padding-right:var(--gut-r);
   padding-block:0 calc(var(--nav-h) + 28px + env(safe-area-inset-bottom, 0px))}
 .wrap{max-width:680px;margin:0 auto}
 h1,h2,h3{font-family:var(--f-display);line-height:1.18;text-wrap:balance;margin:0}
@@ -61,8 +63,16 @@ h3{font-size:17px;font-weight:600}
 p{margin:0}
 a{color:var(--accent);text-decoration:none}
 .prose a{text-decoration:underline;text-underline-offset:3px}
-button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent}
-a{-webkit-tap-highlight-color:transparent}
+button{font:inherit;color:inherit}
+/* Feel like an app, not a web page: no grey tap flash, no link previews on long press, no selecting
+   buttons and labels, no double-tap or pinch zoom, no rubber-band of the whole page.
+   Reading text and the fields she types in stay selectable. */
+html{-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;touch-action:pan-x pan-y;overscroll-behavior:none}
+body{overscroll-behavior:none}
+.prose,.goal,.think p,.callout,.mission,.table-wrap,.gloss,.recipe dl,.recipe p,.cam-info p,.review p{-webkit-user-select:text;user-select:text}
+:is(.prose,.callout,.mission,.recipe,.review) :is(a,button,label,summary){-webkit-user-select:none;user-select:none}
+input,textarea,[contenteditable]{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
+input[type=search],textarea{-webkit-appearance:none;appearance:none}
 :focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:8px}
 .eyebrow{font-size:15px;font-weight:600;color:var(--muted);letter-spacing:-.01em}
 .muted{color:var(--muted)}
@@ -71,7 +81,7 @@ a{-webkit-tap-highlight-color:transparent}
 
 /* top bar */
 .top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bar);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);
-  display:flex;align-items:center;gap:10px;min-height:52px;padding-block:4px;margin:0 -16px 8px;padding-inline:16px;box-shadow:0 .5px 0 var(--line)}
+  display:flex;align-items:center;gap:10px;min-height:52px;padding-block:4px;margin:0 calc(-1 * var(--gut-r)) 8px calc(-1 * var(--gut-l));padding-inline:var(--gut-l) var(--gut-r);box-shadow:0 .5px 0 var(--line)}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bar);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px)}
 .brand{font-weight:600;font-size:17px;display:flex;align-items:center;gap:8px;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .top .top-back{display:none;flex:1;min-width:0;margin-left:-6px}
@@ -100,6 +110,8 @@ body.in-lesson .top .top-back{display:inline-flex}
 .btn-ghost{background:var(--fill);color:var(--accent)}
 .btn-row{display:flex;flex-wrap:wrap;gap:10px}
 .linkbtn{background:none;border:0;padding:0;color:var(--accent);font-weight:400;cursor:pointer;text-decoration:none;min-height:44px}
+.linkbtn:active,.back:active,.ring:active,.tsize:active,.chip:active,.brand:active,.prose a:active,.recipe > a:active{opacity:.5}
+.guide a:active,.steps label:active,.howto-d summary:active,.think summary:active{background:var(--sunk)}
 
 /* home */
 .hero{padding-top:6px}
@@ -158,7 +170,7 @@ body.in-lesson .top .top-back{display:inline-flex}
 .c-iphone .eyebrow::before{content:"";display:inline-block;width:10px;height:16px;border:2px solid currentColor;border-radius:3px;margin-right:8px;vertical-align:-2px}
 .c-warn{background:var(--warn-soft)}
 .c-warn .eyebrow{color:var(--warn)}
-.table-wrap{overflow-x:auto;border-radius:var(--r);background:var(--surface)}
+.table-wrap{overflow-x:auto;overscroll-behavior-x:contain;border-radius:var(--r);background:var(--surface)}
 table{border-collapse:collapse;width:100%;font-size:15px}
 th,td{text-align:left;padding:10px 12px;border-bottom:.5px solid var(--line);vertical-align:top}
 tr:last-child td{border-bottom:0}
@@ -177,14 +189,15 @@ td:first-child{font-weight:600;white-space:nowrap}
 .steps input:checked + label .box::before{content:"✓";font-size:15px}
 .steps input:focus-visible + label{outline:3px solid var(--accent);outline-offset:-3px}
 .think{background:var(--surface);border-radius:var(--r);padding:13px 16px}
-.think summary{cursor:pointer;font-weight:600;line-height:1.4}
-.think[open] summary{margin-bottom:8px}
+.think summary{cursor:pointer;font-weight:600;line-height:1.4;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px;margin:-13px -16px;padding:13px 16px;border-radius:var(--r)}
+.think summary::-webkit-details-marker{display:none}
+.think[open] summary{margin-bottom:-5px}
 .think p{color:var(--muted)}
 .think p b{color:var(--ink)}
 .wrap{zoom:var(--zoom,1)}
 .tsize{border:0;background:var(--fill);border-radius:999px;min-width:44px;height:32px;font-weight:600;font-size:13px;cursor:pointer;padding:0 10px;color:var(--accent)}
 .tsize span{font-size:18px;margin-left:1px}
-.outline{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-inline:-16px;padding-inline:16px;scroll-padding-inline:16px}
+.outline{display:flex;gap:6px;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;margin-inline:calc(-1 * var(--gut-l)) calc(-1 * var(--gut-r));padding-inline:var(--gut-l) var(--gut-r);scroll-padding-inline:var(--gut-l) var(--gut-r)}
 .outline::-webkit-scrollbar{display:none}
 .outline .chip{flex:none}
 .outline .chip{font-size:15px;min-height:34px;padding:5px 14px}
@@ -194,14 +207,14 @@ td:first-child{font-weight:600;white-space:nowrap}
   padding:calc(16px + env(safe-area-inset-top,0px)) max(20px, env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(20px, env(safe-area-inset-left,0px))}
 .pr-top{display:flex;justify-content:space-between;align-items:center;gap:12px}
 .pr-x{width:36px;height:36px;border-radius:50%;border:0;background:var(--fill);color:var(--muted);font-size:15px;font-weight:700;cursor:pointer}
-.pr-body{flex:1;display:flex;flex-direction:column;justify-content:center;gap:14px;max-width:600px;margin:0 auto;width:100%;overflow:auto}
+.pr-body{flex:1;display:flex;flex-direction:column;justify-content:center;gap:14px;max-width:600px;margin:0 auto;width:100%;overflow:auto;overscroll-behavior:contain}
 .pr-step{font-family:var(--f-display);font-size:clamp(24px,6.6vw,32px);line-height:1.25;font-weight:700;letter-spacing:-.02em;text-wrap:pretty}
 .pr-step .path{font-size:.6em}
 .pr-mission{font-size:19px;line-height:1.5}
 .pr-nav{display:grid;grid-template-columns:1fr 2fr;gap:10px;max-width:600px;margin:0 auto;width:100%}
 .pr-nav .btn{min-height:56px}
 .pr-nav .btn:disabled{opacity:.4}
-.pr-hint{text-align:center;font-size:13px;color:var(--muted)}
+.pr-hint{text-align:center;font-size:13px;color:var(--muted);min-height:2.9em}
 .gloss{display:grid;gap:0;margin:0;background:var(--surface);border-radius:var(--r);overflow:hidden}
 .gloss div{padding:11px 16px;position:relative}
 .gloss div + div::before{content:"";position:absolute;top:0;left:16px;right:0;border-top:.5px solid var(--line)}
@@ -240,7 +253,8 @@ td:first-child{font-weight:600;white-space:nowrap}
 .cam-stage svg{display:block;width:100%;height:auto}
 .hs{cursor:pointer}
 .hs .hl{fill:transparent;stroke:transparent;stroke-width:2.5}
-.hs:hover .hl,.hs:focus .hl{stroke:var(--accent)}
+.hs:focus-visible .hl{stroke:var(--accent)}
+@media (hover:hover){.hs:hover .hl{stroke:var(--accent)}}
 .hs.on .hl{stroke:var(--cam-hi);fill:rgba(255,122,26,.18)}
 .hs:focus{outline:none}
 .pin{fill:var(--cam-hi)}
@@ -250,12 +264,12 @@ td:first-child{font-weight:600;white-space:nowrap}
 .cam-info h3{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap;font-size:20px;font-weight:700}
 .cam-info .en{font-size:13px;color:var(--muted);font-weight:400}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
-.chips-row{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-inline:-16px;padding-inline:16px}
+.chips-row{flex-wrap:nowrap;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;margin-inline:calc(-1 * var(--gut-l)) calc(-1 * var(--gut-r));padding-inline:var(--gut-l) var(--gut-r)}
 .chips-row::-webkit-scrollbar{display:none}
 .chips-row .chip{flex:none}
 .chip{border:0;background:var(--surface);border-radius:999px;padding:7px 14px;font-size:15px;cursor:pointer;min-height:36px;box-shadow:0 0 0 .5px var(--line) inset}
 .card .chip,.cam-info .chip{background:var(--fill);box-shadow:none}
-.chip[aria-pressed="true"],.card .chip[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);box-shadow:none;font-weight:600}
+.chip[aria-pressed="true"],.card .chip[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);box-shadow:none}
 
 /* simulator */
 .sim-frame{position:relative;border-radius:var(--r);overflow:hidden;background:#000;aspect-ratio:3/2;max-width:100%}
@@ -314,14 +328,14 @@ td:first-child{font-weight:600;white-space:nowrap}
 .howto-d summary{cursor:pointer;list-style:none;font-weight:600;font-size:17px;min-height:50px;display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--surface);border-radius:var(--r);padding:0 16px}
 .howto-d summary::-webkit-details-marker{display:none}
 .howto-d[open] summary{margin-bottom:10px}
-.howto-d summary::after,.recipe .r-head::after{content:"";flex:none;width:9px;height:9px;border-right:2px solid #C4C4C7;border-bottom:2px solid #C4C4C7;transform:rotate(45deg) translate(-2px,-2px);transition:transform .2s}
-.howto-d[open] summary::after,.recipe[open] .r-head::after{transform:rotate(-135deg) translate(-2px,-2px)}
+.howto-d summary::after,.recipe .r-head::after,.think summary::after{content:"";flex:none;width:9px;height:9px;border-right:2px solid #C4C4C7;border-bottom:2px solid #C4C4C7;transform:rotate(45deg) translate(-2px,-2px);transition:transform .2s}
+.howto-d[open] summary::after,.recipe[open] .r-head::after,.think[open] summary::after{transform:rotate(-135deg) translate(-2px,-2px)}
 
 /* sign-in */
 #signin{display:none}
-body.signin-on #signin{display:block;position:fixed;inset:0;z-index:50;background:var(--bg);overflow-y:auto}
+body.signin-on #signin{display:block;position:fixed;inset:0;z-index:50;background:var(--bg);overflow-y:auto;overscroll-behavior:contain}
 body.signin-on .wrap, body.signin-on .nav{display:none}
-.signin-box{max-width:440px;margin:0 auto;padding:calc(48px + env(safe-area-inset-top,0px)) 20px 40px}
+.signin-box{max-width:440px;margin:0 auto;padding:calc(48px + env(safe-area-inset-top,0px)) max(20px, env(safe-area-inset-right,0px)) calc(40px + env(safe-area-inset-bottom,0px)) max(20px, env(safe-area-inset-left,0px))}
 .signin-box h1{font-size:30px}
 .signin-box .back{background:none;border:0;align-self:flex-start;cursor:pointer}
 .welcome{display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;min-height:100%;padding-top:calc(44px + env(safe-area-inset-top,0px));padding-bottom:0}
@@ -542,7 +556,7 @@ const UNITS = [
     "Instala en el iPhone la app gratuita <b>Imaging Edge Mobile</b> de Sony. La configuras en la lección «Tus fotos en el iPhone».",
     "Evita fotos fantasma: {{MENU › Ajustes de cámara 2 › Disparar sin tarjeta › Deshabilitar|Camera Settings2 › Release w/o Card › Disable}}."
    ],
-   mission:"Pon el dial superior en AUTO y haz tres fotos de cualquier cosa. Pulsa [[▶]] para comprobar que se guardaron.",
+   mission:"Pon el dial superior en AUTO y haz tres fotos de cualquier cosa. Pulsa [[▶︎]] para comprobar que se guardaron.",
    warn:"Apaga siempre la cámara antes de sacar la batería, la tarjeta o el objetivo. Si la luz de acceso de la tarjeta está encendida, espera a que se apague."
   },
   {id:"controles", title:"Recorrido por los controles", sub:"Cada botón, rueda y dial", min:15,
@@ -566,7 +580,7 @@ const UNITS = [
     "Abre [[MENU]]. Muévete entre pestañas con los lados izquierdo y derecho de la rueda. Sal con [[MENU]].",
     "Pulsa [[Fn]], recorre los ajustes con la rueda y sal pulsando [[Fn]] otra vez."
    ],
-   mission:"Con los ojos cerrados, encuentra el disparador, la rueda trasera, [[MENU]] y [[▶]]. Repite hasta que tu dedo llegue sin mirar. Es lo que te hará rápida cuando la foto no espera.",
+   mission:"Con los ojos cerrados, encuentra el disparador, la rueda trasera, [[MENU]] y [[▶︎]]. Repite hasta que tu dedo llegue sin mirar. Es lo que te hará rápida cuando la foto no espera.",
   },
   {id:"primera", title:"Sujétala y haz tu primera foto", sub:"El disparador de dos tiempos", min:20,
    evf:["AUTO","AF","16 mm","50 mm"],
@@ -596,12 +610,12 @@ const UNITS = [
    mission:"<b>Mismo tamaño, dos zooms.</b> Fotografía a una persona a 16 mm desde cerca y luego a 50 mm desde más lejos, de modo que salga del mismo tamaño en las dos. Compara el fondo: a 50 mm se ve más grande y más desenfocado, y la cara se ve más favorecedora.",
   },
   {id:"ver", title:"Tus fotos en el iPhone", sub:"Revisar en la cámara y pasar fotos a Fotos", min:25,
-   evf:["▶","DISP","Wi‑Fi → FOTOS"],
+   evf:["▶︎","DISP","Wi‑Fi → FOTOS"],
    goal:"Revisar tus fotos con ojo crítico y dejarlas en la app Fotos del iPhone, donde las editarás.",
    body:`
 <h3>Revisar en la cámara</h3>
 <ul>
-<li>Pulsa [[▶]] y gira la rueda para pasar fotos.</li>
+<li>Pulsa [[▶︎]] y gira la rueda para pasar fotos.</li>
 <li><b>Ampliar:</b> el botón [[AF/MF·AEL]] tiene una lupa: en reproducción amplía la foto. La pantalla es pequeña y engaña: <b>amplía siempre las fotos importantes</b> para comprobar el enfoque.</li>
 <li><b>Ver los ajustes:</b> pulsa [[DISP]] hasta ver la velocidad, el número F y el ISO de la foto. Mirar los ajustes de tus fotos buenas y malas es la forma más rápida de aprender.</li>
 <li><b>Borrar:</b> botón [[C3 / 🗑]]. No se puede deshacer.</li>
@@ -616,7 +630,7 @@ const UNITS = [
 <div class="callout c-warn"><span class="eyebrow">Sobre la sincronización automática</span><p>Algunas cámaras Sony más nuevas pasan cada foto al móvil solas mientras disparas («transferencia automática en segundo plano»). Por lo que sabemos, la α6500 no tiene esa función: eres tú quien inicia la transferencia. Si en la app ves esa opción disponible para tu cámara, actívala. Si no, la rutina de abajo tarda menos de un minuto.</p></div>
 <div class="callout c-iphone"><span class="eyebrow">Diferencia con el iPhone</span><p>Las fotos no aparecen solas en tu carrete: tú eliges cuáles pasar. Úsalo a tu favor y pasa solo las buenas.</p></div>`,
    steps:[
-    "Pulsa [[▶]], recorre tus fotos y amplía una con el botón de la lupa.",
+    "Pulsa [[▶︎]], recorre tus fotos y amplía una con el botón de la lupa.",
     "Pulsa [[DISP]] en reproducción hasta ver la velocidad, el F y el ISO de esa foto.",
     "Borra una foto mala con [[🗑]].",
     "Instala <b>Imaging Edge Mobile</b> desde la App Store y, cuando te lo pida, dale acceso a Fotos.",
@@ -703,7 +717,7 @@ const UNITS = [
     "Apunta a una persona a 1,5 o 2 metros con el zoom en 50 mm.",
     "Mantén el botón central y espera el recuadro sobre el ojo.",
     "Sin soltar el botón central, dispara.",
-    "Amplía la foto en [[▶]] y comprueba que las pestañas se ven nítidas."
+    "Amplía la foto en [[▶︎]] y comprueba que las pestañas se ven nítidas."
    ],
    mission:"Retrato junto a una ventana: persona de lado a la luz, zoom a 50 mm, Eye AF. Haz diez fotos mientras habla y se mueve. Cuenta cuántas tienen el ojo nítido.",
   },
@@ -1285,7 +1299,7 @@ const PARTS = {
   {id:"rueda", n:"Rueda de control", en:"Control wheel", d:"Gírala para cambiar valores y púlsala por los lados como botones. Arriba: DISP (información en pantalla). Derecha: ISO. Abajo: compensación de exposición (±). Izquierda: modo de avance (ráfaga y temporizador).", tip:"En modo M, la rueda cambia la velocidad."},
   {id:"centro", n:"Botón central", en:"Center button", d:"Acepta en los menús. Al hacer fotos, de fábrica activa Eye AF: mantenlo pulsado para enfocar el ojo de una persona.", tip:"Lección «Eye AF»."},
   {id:"c3", n:"C3 / Borrar", en:"C3 button / Delete", d:"Al hacer fotos es un botón personalizable (C3). En reproducción, borra la foto que estás viendo.", tip:"Lo borrado no se puede recuperar."},
-  {id:"play", n:"Reproducción ▶", en:"Playback button", d:"Muestra tus fotos y videos. Pulsa de nuevo o presiona el disparador a medias para volver a disparar.", tip:"Presionar el disparador a medias siempre te devuelve a modo foto, estés donde estés."}
+  {id:"play", n:"Reproducción ▶︎", en:"Playback button", d:"Muestra tus fotos y videos. Pulsa de nuevo o presiona el disparador a medias para volver a disparar.", tip:"Presionar el disparador a medias siempre te devuelve a modo foto, estés donde estés."}
  ],
  top:[
   {id:"zapata", n:"Zapata multiinterfaz", en:"Multi Interface Shoe", d:"Para conectar un flash externo, un micrófono u otros accesorios.", tip:"Apaga la cámara antes de poner o quitar accesorios."},
@@ -1743,6 +1757,17 @@ function applyZoom(){ document.documentElement.style.setProperty("--zoom", S.zoo
 document.getElementById("tsize").addEventListener("click", () => { S.zoom = ZOOMS[(ZOOMS.indexOf(S.zoom) + 1) % ZOOMS.length]; save(); applyZoom(); });
 applyZoom();
 
+/* ---------- app feel ---------- */
+// iPhone ignores user-scalable=no; this stops pinch zoom in the home-screen app (she has the text-size button instead).
+document.addEventListener("gesturestart", e => e.preventDefault());
+// Keep the page behind a full-screen layer still; on iPhone it scrolls underneath otherwise.
+let lockedY = null;
+function lockScroll(on){
+  const b = document.body;
+  if(on && lockedY === null){ lockedY = scrollY; Object.assign(b.style, {position: "fixed", top: `-${lockedY}px`, left: "0", right: "0"}); }
+  if(!on && lockedY !== null){ Object.assign(b.style, {position: "", top: "", left: "", right: ""}); scrollTo(0, lockedY); lockedY = null; }
+}
+
 /* ---------- practice mode: one step per screen, screen kept awake ---------- */
 let wake = null;
 async function keepAwake(on){
@@ -1757,10 +1782,10 @@ function openPractice(l, onChange){
   let k = Math.max(0, l.steps.findIndex((_, i) => !(S.steps[l.id] || []).includes(i)));
   const ov = document.createElement("div");
   ov.className = "practice"; ov.setAttribute("role","dialog"); ov.setAttribute("aria-modal","true"); ov.setAttribute("aria-label","Modo práctica");
-  document.body.appendChild(ov); document.body.style.overflow = "hidden";
+  document.body.appendChild(ov); lockScroll(true);
   keepAwake(true);
   const mark = i => { const set = new Set(S.steps[l.id] || []); set.add(i); S.steps[l.id] = [...set]; save(); onChange(); };
-  function close(){ keepAwake(false); ov.remove(); document.body.style.overflow = ""; document.removeEventListener("keydown", onKey); }
+  function close(){ keepAwake(false); ov.remove(); lockScroll(false); document.removeEventListener("keydown", onKey); }
   function draw(){
     const end = k >= n;
     ov.innerHTML = `
@@ -1774,9 +1799,10 @@ function openPractice(l, onChange){
       ${end ? `<button type="button" class="btn btn-ghost" data-prev>Anterior</button><button type="button" class="btn btn-primary" data-x>Volver a la lección</button>`
             : `<button type="button" class="btn btn-ghost" data-prev ${k===0?"disabled":""}>Anterior</button><button type="button" class="btn btn-primary" data-next>${k===n-1?"Hecho, terminar":"Hecho, siguiente"}</button>`}
      </div>
-     <p class="pr-hint">${wake ? "La pantalla se mantendrá encendida mientras practicas." : "Consejo: deja el móvil apoyado a la vista mientras usas la cámara."}</p>`;
+     <p class="pr-hint">${hint()}</p>`;
     ov.querySelector("[data-next],[data-x]:not(.pr-x)")?.focus();
   }
+  function hint(){ return wake ? "La pantalla se mantendrá encendida mientras practicas." : "Consejo: deja el móvil apoyado a la vista mientras usas la cámara."; }
   function onKey(e){ if(e.key === "Escape") close(); }
   document.addEventListener("keydown", onKey);
   ov.addEventListener("click", e => {
@@ -1784,7 +1810,7 @@ function openPractice(l, onChange){
     if(e.target.closest("[data-prev]")){ k = Math.max(0, k-1); draw(); }
     if(e.target.closest("[data-next]")){ mark(k); k++; draw(); }
   });
-  draw(); setTimeout(draw, 400);
+  draw(); setTimeout(() => { const h = ov.querySelector(".pr-hint"); if(h) h.textContent = hint(); }, 400);
 }
 
 /* ---------- views ---------- */
@@ -2112,7 +2138,7 @@ function viewLesson(l){
    ${l.warn ? `<div class="callout c-warn"><span class="eyebrow">Ojo</span><p>${fmt(l.warn)}</p></div>` : ""}
    <section class="stack" style="gap:12px" id="sec-hazlo">
     <h2>Hazlo con la cámara</h2>
-    <button type="button" class="btn btn-primary practice-btn" data-practice><span aria-hidden="true">▶</span> Modo práctica: un paso a la vez</button>
+    <button type="button" class="btn btn-primary practice-btn" data-practice><span aria-hidden="true">▶︎</span> Modo práctica: un paso a la vez</button>
     <p class="muted" style="font-size:14px;margin-top:-4px">Pantalla grande, botones abajo para el pulgar y la pantalla no se apaga mientras practicas. También puedes marcar los pasos aquí abajo.</p>
     <ol class="steps">${l.steps.map((s, k) => `<li><input type="checkbox" id="st-${l.id}-${k}" data-k="${k}" ${st.has(k)?"checked":""}><label for="st-${l.id}-${k}"><span class="box" aria-hidden="true"></span><span>${fmt(s)}</span></label></li>`).join("")}</ol>
    </section>
@@ -2182,6 +2208,7 @@ function celebrate(l, next){
     <button type="button" class="btn btn-ghost" data-close>${next && !all ? "Ahora no" : "Volver al programa"}</button>
    </div>`;
   document.body.appendChild(sh);
+  sh.addEventListener("touchmove", e => e.preventDefault(), {passive: false}); // the page behind stays put
   const close = () => { sh.classList.add("out"); setTimeout(() => sh.remove(), 200); };
   sh.addEventListener("click", e => {
     if(e.target === sh || e.target.closest("[data-close]")){ close(); if(!next || all) location.hash = "programa"; }
@@ -2225,7 +2252,8 @@ function viewRecipes(){
   app.onclick = e => { const j = e.target.closest("[data-jump]"); if(j) document.getElementById(j.dataset.jump)?.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"}); };
 }
 
-function route(){
+function route(keepScroll){
+  const y = scrollY;
   const h = (location.hash || "#programa").slice(1);
   app.onclick = null; app.onchange = null;
   let tab = "programa";
@@ -2236,7 +2264,7 @@ function route(){
   else viewHome();
   document.body.classList.toggle("in-lesson", h.startsWith("leccion-"));
   document.querySelectorAll(".nav a").forEach(a => { if(a.dataset.tab === tab) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current"); });
-  window.scrollTo(0, 0);
+  window.scrollTo(0, keepScroll === true ? y : 0);
   updateRing();
 }
 /* ---------- sign-in screen ---------- */
@@ -2372,9 +2400,11 @@ let started = false;
 function startApp(){
   route();
   if(started) return; started = true;
-  window.addEventListener("hashchange", route);
+  window.addEventListener("hashchange", () => route());
+  // Tapping the tab you're already on scrolls back to the top, as in iPhone apps.
+  document.querySelector(".nav").addEventListener("click", e => { const a = e.target.closest("a"); if(a && a.getAttribute("href") === (location.hash || "#programa")){ e.preventDefault(); scrollTo({top: 0, behavior: "smooth"}); } });
   // Bring in changes made on another device when the app opens or comes back to the foreground.
-  const refresh = () => Sync.pull().then(ch => { if(ch && !document.activeElement?.matches("textarea, input")) route(); });
+  const refresh = () => Sync.pull().then(ch => { if(ch && !document.activeElement?.matches("textarea, input") && lockedY === null) route(true); });
   refresh();
   document.addEventListener("visibilitychange", () => { if(document.visibilityState === "visible") refresh(); else Sync.push(); });
   window.addEventListener("online", refresh);
