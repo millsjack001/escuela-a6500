@@ -208,6 +208,9 @@ td:first-child{font-weight:600;white-space:nowrap}
 .review .eyebrow{color:var(--accent)}
 .mission{background:var(--accent-soft);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:6px}
 .mission .eyebrow{color:var(--accent)}
+.vh{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;pointer-events:none}
+.photo-btn{width:100%}
+.photo-prev{display:block;width:100%;max-height:440px;object-fit:contain;border-radius:var(--r);background:var(--sunk)}
 .lesson-foot{display:flex;flex-direction:column;gap:12px;padding-top:4px}
 .lesson-foot .btn{width:100%}
 .lesson-foot .muted{text-decoration:none;min-height:44px;display:inline-flex;align-items:center}
@@ -1752,6 +1755,200 @@ function updateRing(){
 
 function evfHTML(items){ return `<div class="evf" aria-label="Ajustes de esta lección">${items.map((x,i) => `<span class="${i===0?"g":""}">${esc(x)}</span>`).join("")}</div>`; }
 
+/* ---------- photo review in her own Claude app ---------- */
+// She picks a photo; the app reads its camera settings and hands the photo plus a ready-written
+// message (lesson goal, her notebook, the settings) to the Claude app through the iPhone share sheet.
+// The review runs on her own Claude account; this app uploads nothing.
+const plain = s => String(s || "").replace(/<[^>]+>/g, "").replace(/\[\[(.+?)\]\]/g, "$1").replace(/\{\{(.+?)\}\}/g, (m, i) => i.split("|")[0]).replace(/\s+/g, " ").trim();
+
+// Minimal EXIF reader for camera JPEGs: just the fields that explain how a photo looks.
+function readExif(buf){
+  try{
+    const v = new DataView(buf);
+    if(v.getUint16(0) !== 0xFFD8) return null;
+    let o = 2, t = -1;
+    while(o + 10 < v.byteLength){
+      const m = v.getUint16(o), len = v.getUint16(o + 2);
+      if((m & 0xFF00) !== 0xFF00 || m === 0xFFDA) return null;
+      if(m === 0xFFE1 && v.getUint32(o + 4) === 0x45786966){ t = o + 10; break; }
+      o += 2 + len;
+    }
+    if(t < 0) return null;
+    const le = v.getUint16(t) === 0x4949;
+    const u16 = p => v.getUint16(p, le), u32 = p => v.getUint32(p, le), s32 = p => v.getInt32(p, le);
+    const SZ = {1:1, 2:1, 3:2, 4:4, 5:8, 7:1, 9:4, 10:8};
+    const ifd = (p, out) => {
+      const n = u16(t + p);
+      for(let i = 0; i < n; i++){
+        const e = t + p + 2 + i * 12, tag = u16(e), type = u16(e + 2), count = u32(e + 4), size = (SZ[type] || 1) * count;
+        const d = size > 4 ? t + u32(e + 8) : e + 8;
+        if(d + size > v.byteLength) continue;
+        if(type === 2){ let s = ""; for(let k = 0; k < count; k++){ const c = v.getUint8(d + k); if(!c) break; s += String.fromCharCode(c); } out[tag] = s.trim(); }
+        else if(type === 3) out[tag] = u16(d);
+        else if(type === 4) out[tag] = u32(d);
+        else if(type === 9) out[tag] = s32(d);
+        else if(type === 5) out[tag] = u32(d + 4) ? u32(d) / u32(d + 4) : 0;
+        else if(type === 10) out[tag] = s32(d + 4) ? s32(d) / s32(d + 4) : 0;
+      }
+    };
+    const a = {}, x = {};
+    ifd(u32(t + 4), a);
+    if(a[0x8769]) ifd(a[0x8769], x);
+    const r = {};
+    const make = a[0x010F] || "", model = a[0x0110] || "";
+    if(model) r.camera = model.toLowerCase().startsWith(make.toLowerCase()) ? model : (make + " " + model).trim();
+    if(x[0xA434]) r.lens = x[0xA434];
+    const prog = {1:["M","manual (M)"], 2:["P","programa (P)"], 3:["A","prioridad a la apertura (A)"], 4:["S","prioridad a la velocidad (S)"]}[x[0x8822]];
+    if(prog){ r.modeShort = prog[0]; r.mode = prog[1]; }
+    const et = x[0x829A];
+    if(et) r.shutter = et >= 0.3 ? (Math.round(et * 10) / 10).toString().replace(".", ",") + "″" : "1/" + Math.round(1 / et);
+    if(x[0x829D]) r.aperture = "F" + (Math.round(x[0x829D] * 10) / 10);
+    if(x[0x8827]) r.iso = x[0x8827];
+    if(x[0x920A]) r.focal = Math.round(x[0x920A]) + " mm";
+    if(x[0xA405] && r.focal && x[0xA405] !== Math.round(x[0x920A])) r.focal35 = x[0xA405] + " mm";
+    const b = x[0x9204];
+    if(b) r.bias = (b > 0 ? "+" : "−") + (Math.round(Math.abs(b) * 10) / 10).toString().replace(".", ",") + " EV";
+    const met = {1:"promedio", 2:"ponderada al centro", 3:"puntual", 5:"multi"}[x[0x9207]]; if(met) r.metering = met;
+    if(x[0xA403] !== undefined) r.wb = x[0xA403] ? "manual" : "automático";
+    if(x[0x9209] !== undefined) r.flash = x[0x9209] & 1 ? "disparó" : "no disparó";
+    if(x[0x9003]) r.date = x[0x9003];
+    return Object.keys(r).length ? r : null;
+  }catch(e){ return null; }
+}
+
+// A smaller JPEG is plenty for a review and shares quickly. Browsers apply the photo's rotation when drawing.
+async function shrinkPhoto(file, max = 2048){
+  const url = URL.createObjectURL(file);
+  try{
+    const img = new Image(); img.src = url; await img.decode();
+    const k = Math.min(1, max / Math.max(img.naturalWidth, img.naturalHeight));
+    const c = document.createElement("canvas");
+    c.width = Math.round(img.naturalWidth * k); c.height = Math.round(img.naturalHeight * k);
+    c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+    return await new Promise(res => c.toBlob(res, "image/jpeg", 0.88));
+  }finally{ URL.revokeObjectURL(url); }
+}
+
+function reviewPrompt(l, x, intent, typed){
+  const notes = (S.notes[l.id] || "").trim();
+  const set = [];
+  if(x){
+    [["Cámara", x.camera], ["Objetivo", x.lens], ["Modo", x.mode], ["Velocidad", x.shutter], ["Apertura", x.aperture], ["ISO", x.iso],
+     ["Focal", x.focal && (x.focal + (x.focal35 ? ` (${x.focal35} equivalente)` : ""))], ["Compensación", x.bias || "0"], ["Medición", x.metering],
+     ["Balance de blancos", x.wb], ["Flash", x.flash]].forEach(([k, v]) => { if(v) set.push(`${k}: ${v}`); });
+  }
+  if(typed.trim()) set.push(`Ajustes que recuerdo: ${typed.trim()}`);
+  return `Hola, Claude. Estoy aprendiendo a usar mi primera cámara de verdad, una Sony α6500 con el objetivo 16-50 mm (F3.5–5.6). Sé de composición por usar el iPhone; lo técnico es lo que estoy aprendiendo ahora, una lección cada vez. Te adjunto una foto que hice para esta lección. Revísala como un buen profesor: amable y sincero.
+
+LECCIÓN: ${l.title}
+Objetivo de la lección: ${plain(l.goal)}
+Misión de práctica: ${plain(l.mission)}
+Ajustes que sugiere la lección: ${l.evf.join(" · ")}
+
+LO QUE YO QUERÍA CONSEGUIR CON ESTA FOTO
+${intent.trim() || "No lo escribí: dedúcelo de la lección y de mi cuaderno."}
+
+MI CUADERNO DE ESTA LECCIÓN
+${notes || "Vacío."}
+
+AJUSTES DE LA FOTO (leídos del archivo)
+${set.length ? set.join("\n") : "No se encontraron en el archivo. Si puedes, dedúcelos de la imagen y dime que es una suposición."}
+
+Ponme nota según lo que pedía la lección y lo que yo quería conseguir, no según el nivel de un profesional. Un 10 quiere decir que conseguí el objetivo de la lección y lo que buscaba, aunque la foto tenga algún fallo pequeño. Una foto bonita que no practica la lección no debería sacar un 10.
+
+Sé concreto con lo que ves en la foto: dónde cayó el enfoque, luces quemadas o sombras empastadas, movimiento, cuánto se desenfoca el fondo, el color. Usa los ajustes para explicar por qué la foto salió así. Si la foto no parece hecha para esta lección, o parece hecha con un móvil, dímelo con cariño. Elogia solo lo que de verdad funciona.
+
+Responde en español, con frases cortas y sin tecnicismos sin explicar, con este formato:
+1. Nota: X/10, y una frase con tu veredicto.
+2. Objetivo de la lección: logrado, casi o todavía no.
+3. Puntos de 1 a 5, con un comentario corto cada uno: lo que pedía la lección, lo que yo quería, exposición, enfoque y nitidez, composición.
+4. Mis ajustes: qué hicieron en esta foto y si eran los adecuados.
+5. Lo que funcionó: hasta tres cosas.
+6. Para la próxima: hasta tres cambios, el más importante primero, diciendo exactamente cómo hacerlo en la α6500 (modo, número y qué rueda o botón).
+7. Prueba esto: un ejercicio corto para la próxima vez que salga.
+8. Para mi cuaderno: un resumen de tres líneas que pueda copiar.`;
+}
+
+function mountPhoto(el, l){
+  let photo = null, exif = null, url = null;
+  const fileInput = `<input type="file" accept="image/*" class="vh" id="foto-${l.id}" data-file>`;
+  const pickBtn = (label, cls) => `<label class="btn ${cls}" for="foto-${l.id}">${label}</label>${fileInput}`;
+  function idle(){
+    el.innerHTML = `
+     <p class="muted" style="font-size:15px">Cuando hayas hecho la misión, elige tu mejor foto del carrete. Se la enviamos a tu app de Claude junto con el objetivo de la lección, tu cuaderno y los ajustes de la cámara, y Claude te pone nota y te dice qué mejorar.</p>
+     <div class="btn-row">${pickBtn("Elegir una foto", "btn-ghost photo-btn")}</div>`;
+  }
+  function chosen(){
+    const chips = exif ? [exif.modeShort, exif.shutter, exif.aperture, exif.iso && "ISO " + exif.iso, exif.focal, exif.bias].filter(Boolean) : [];
+    const other = exif && exif.camera && !/ILCE-6500/i.test(exif.camera);
+    el.innerHTML = `
+     <img class="photo-prev" src="${url}" alt="La foto que elegiste">
+     ${chips.length ? `<div class="stack" style="gap:6px"><span class="eyebrow">Ajustes de la foto</span><div class="evf">${chips.map(c => `<span>${esc(c)}</span>`).join("")}</div></div>` : ""}
+     ${other ? `<p class="muted" style="font-size:15px">Esta foto parece hecha con: ${esc(exif.camera)}. Para esta lección te sirve más una foto de la α6500.</p>` : ""}
+     ${!chips.length ? `<label for="aj-${l.id}" class="stack" style="gap:6px"><b>No encontré los ajustes en la foto</b><span class="muted" style="font-size:15px">Si los recuerdas, escríbelos. Si no, déjalo vacío.</span></label><input id="aj-${l.id}" class="notes" data-typed placeholder="Por ejemplo: A · F5.6 · 1/250 · ISO 400" autocomplete="off">` : ""}
+     <label for="int-${l.id}" class="stack" style="gap:6px"><b>¿Qué querías conseguir con esta foto?</b><span class="muted" style="font-size:15px">Opcional. Claude también lee tu cuaderno.</span></label>
+     <textarea id="int-${l.id}" class="notes" rows="2" data-intent placeholder="Por ejemplo: la cara nítida y el fondo muy desenfocado"></textarea>
+     <button type="button" class="btn btn-primary" data-send>Enviar a Claude</button>
+     <div class="btn-row">${pickBtn("Elegir otra foto", "linkbtn")}</div>`;
+  }
+  function sent(how){
+    el.innerHTML = `
+     <div class="card stack" style="gap:8px">
+      <span class="eyebrow">${how === "shared" ? "Enviado" : "Mensaje copiado"}</span>
+      ${how === "shared"
+        ? `<p>Elige <b>Claude</b> en la lista y envía. Si el mensaje no aparece junto a la foto, mantén pulsado el cuadro de texto y toca Pegar: ya está copiado.</p>`
+        : `<p>Abre la app de Claude, adjunta esta foto desde Fotos y pega el mensaje.</p><div class="btn-row"><a class="btn btn-ghost" href="https://claude.ai/new" target="_blank" rel="noopener">Abrir Claude</a></div>`}
+     </div>
+     <label for="resp-${l.id}" class="stack" style="gap:6px"><b>Guarda lo que te dijo</b><span class="muted" style="font-size:15px">Pega aquí la respuesta de Claude, o solo el resumen «Para mi cuaderno», y se añadirá a tu cuaderno.</span></label>
+     <textarea id="resp-${l.id}" class="notes" rows="4" data-resp></textarea>
+     <button type="button" class="btn btn-ok" data-keep>Guardar en el cuaderno</button>
+     <div class="btn-row"><button type="button" class="linkbtn" data-again>Enviar otra vez</button>${pickBtn("Elegir otra foto", "linkbtn")}</div>`;
+  }
+  function msg(text){ el.querySelectorAll(".si-msg").forEach(n => n.remove()); const p = document.createElement("p"); p.className = "si-msg"; p.setAttribute("role", "alert"); p.textContent = text; el.appendChild(p); }
+
+  el.addEventListener("change", async e => {
+    const f = e.target.closest("[data-file]"); if(!f || !f.files[0]) return;
+    const file = f.files[0];
+    el.innerHTML = `<p class="muted">Preparando la foto…</p>`;
+    try{
+      exif = /jpe?g/i.test(file.type) || !file.type ? readExif(await file.slice(0, 256 * 1024).arrayBuffer()) : null;
+      photo = await shrinkPhoto(file);
+      if(!photo) throw new Error("blob");
+      if(url) URL.revokeObjectURL(url);
+      url = URL.createObjectURL(photo);
+      chosen();
+    }catch(err){ idle(); msg("No pude abrir esa foto. Prueba con otra."); }
+  });
+  el.addEventListener("click", async e => {
+    if(e.target.closest("[data-send]") || e.target.closest("[data-again]")){
+      const intent = (el.querySelector("[data-intent]") || {}).value || el.dataset.intent || "";
+      const typed = (el.querySelector("[data-typed]") || {}).value || el.dataset.typed || "";
+      el.dataset.intent = intent; el.dataset.typed = typed;
+      const text = reviewPrompt(l, exif, intent, typed);
+      const file = new File([photo], `foto-${l.id}.jpg`, {type: "image/jpeg"});
+      // Copy and share in the same tap: iOS only opens the share sheet straight from a tap.
+      try{ navigator.clipboard.writeText(text).catch(() => {}); }catch(err){}
+      if(navigator.canShare && navigator.canShare({files: [file], text})){
+        try{ await navigator.share({files: [file], text}); sent("shared"); }
+        catch(err){ if(err.name !== "AbortError"){ sent("copied"); } }
+      } else sent("copied");
+      return;
+    }
+    if(e.target.closest("[data-keep]")){
+      const t = el.querySelector("[data-resp]").value.trim(); if(!t) return;
+      const day = new Date().toLocaleDateString("es", {day: "numeric", month: "short"});
+      const prev = (S.notes[l.id] || "").trimEnd();
+      S.notes[l.id] = (prev ? prev + "\n\n" : "") + `Revisión de Claude (${day}):\n${t}`;
+      save();
+      const ta = document.getElementById("nota-" + l.id); if(ta) ta.value = S.notes[l.id];
+      el.querySelector("[data-resp]").value = "";
+      msg("Guardado en tu cuaderno.");
+      el.lastElementChild.style.color = "var(--ok)";
+    }
+  });
+  idle();
+}
+
 function reviewPool(){ const out = []; LESSONS.forEach(l => { if(S.done[l.id] && l.think) l.think.forEach(t => out.push([l, t])); }); return out; }
 function reviewHTML(){
   const pool = reviewPool(); if(!pool.length) return "";
@@ -1864,7 +2061,7 @@ function viewLesson(l){
     ${evfHTML(l.evf)}
     <p class="goal"><b>Objetivo:</b> ${esc(l.goal)}</p>
     <span class="muted" style="font-size:15px">Unos ${l.min} minutos · Ten la cámara encendida a mano.</span>
-    <nav class="outline" aria-label="En esta lección">${[["sec-lee","Lee"], l.think ? ["sec-piensa","Piénsalo"] : null, ["sec-hazlo","Hazlo"], ["sec-mision","Misión"], ["sec-cuaderno","Cuaderno"]].filter(Boolean).map(([id,t],i) => `<button type="button" class="chip" data-jump="${id}">${t}</button>`).join("")}</nav>
+    <nav class="outline" aria-label="En esta lección">${[["sec-lee","Lee"], l.think ? ["sec-piensa","Piénsalo"] : null, ["sec-hazlo","Hazlo"], ["sec-mision","Misión"], ["sec-cuaderno","Cuaderno"], ["sec-foto","Tu foto"]].filter(Boolean).map(([id,t],i) => `<button type="button" class="chip" data-jump="${id}">${t}</button>`).join("")}</nav>
    </div>
    <div class="prose" id="sec-lee">${fmt(l.body)}</div>
    ${l.think ? `<section class="stack" style="gap:10px" id="sec-piensa"><h2>Piénsalo: ¿qué harías tú?</h2><p class="muted" style="font-size:15px">Decide qué ajustes usarías y luego toca para ver lo que haría una fotógrafa.</p>${l.think.map(([q,a]) => `<details class="think"><summary>${fmt(q)}</summary><p>${fmt(a)}</p></details>`).join("")}</section>` : ""}
@@ -1885,6 +2082,10 @@ function viewLesson(l){
     <p class="muted" style="font-size:15px">Apunta qué querías capturar, qué ajustes elegiste y por qué, y qué cambiarías. Releerlo te enseña tanto como las lecciones.</p>
     <textarea id="nota-${l.id}" class="notes" rows="5" placeholder="Quería: …&#10;Ajustes: A · F5.6 · 1/250 · ISO 400, porque…&#10;Resultado: …&#10;La próxima vez: …">${esc(S.notes[l.id] || "")}</textarea>
     <span class="muted" style="font-size:13px" data-saved></span>
+   </section>
+   <section class="stack" style="gap:12px" id="sec-foto">
+    <h2>Revisa tu foto con Claude</h2>
+    <div class="stack" style="gap:12px" data-photo></div>
    </section>
    <div class="lesson-foot" data-foot></div>
   </article>`;
@@ -1921,6 +2122,7 @@ function viewLesson(l){
   app.querySelectorAll("[data-widget=camera]").forEach(mountCamera);
   app.querySelectorAll("[data-widget=wb]").forEach(mountWB);
   app.querySelectorAll("[data-widget=planner]").forEach(mountPlanner);
+  mountPhoto(app.querySelector("[data-photo]"), l);
 }
 
 function viewCamera(){
