@@ -26,7 +26,7 @@
   --bg:#EEF0EC; --surface:#FFFFFF; --sunk:#E3E6E1; --ink:#14181B; --muted:#58616A; --line:#D3D8D2;
   --accent:#2747C9; --accent-ink:#FFFFFF; --accent-soft:#E2E7FA;
   --ok:#17894A; --ok-soft:#DDF1E4; --warn:#B86B00; --warn-soft:#FBEBD2; --bad:#C2352B;
-  --evf:#101315; --evf-ink:#E9EEE9; --evf-dim:#8C969A; --evf-hot:#FFB020; --evf-green:#3FD07A;
+  --evf-edge:transparent; --evf:#101315; --evf-ink:#E9EEE9; --evf-dim:#8C969A; --evf-hot:#FFB020; --evf-green:#3FD07A;
   --cam:#25292D; --cam-2:#3A4046; --cam-3:#4C535A; --cam-ink:#C9CFD3; --cam-hi:#FF7A1A;
   --f-display:"Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
   --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
@@ -37,14 +37,14 @@
   --bg:#0F1214; --surface:#171B1E; --sunk:#1F2427; --ink:#E7ECE8; --muted:#9BA4A9; --line:#2B3236;
   --accent:#8EA2FF; --accent-ink:#0F1214; --accent-soft:#232B4A;
   --ok:#4CCB80; --ok-soft:#173326; --warn:#F2A93B; --warn-soft:#3A2B12; --bad:#FF7468;
-  --evf:#07090A; --evf-ink:#E9EEE9; --evf-dim:#8C969A; --evf-hot:#FFB020; --evf-green:#3FD07A;
+  --evf-edge:#2B3236; --evf:#07090A; --evf-ink:#E9EEE9; --evf-dim:#8C969A; --evf-hot:#FFB020; --evf-green:#3FD07A;
   --cam:#2C3237; --cam-2:#41484F; --cam-3:#566068; --cam-ink:#D3D9DD; --cam-hi:#FF8A33;
   color-scheme:dark }}
 :root[data-theme="dark"]{
   --bg:#0F1214; --surface:#171B1E; --sunk:#1F2427; --ink:#E7ECE8; --muted:#9BA4A9; --line:#2B3236;
   --accent:#8EA2FF; --accent-ink:#0F1214; --accent-soft:#232B4A;
   --ok:#4CCB80; --ok-soft:#173326; --warn:#F2A93B; --warn-soft:#3A2B12; --bad:#FF7468;
-  --evf:#07090A; --evf-ink:#E9EEE9; --evf-dim:#8C969A; --evf-hot:#FFB020; --evf-green:#3FD07A;
+  --evf-edge:#2B3236; --evf:#07090A; --evf-ink:#E9EEE9; --evf-dim:#8C969A; --evf-hot:#FFB020; --evf-green:#3FD07A;
   --cam:#2C3237; --cam-2:#41484F; --cam-3:#566068; --cam-ink:#D3D9DD; --cam-hi:#FF8A33;
   color-scheme:dark }
 
@@ -74,7 +74,11 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .brand{font-family:var(--f-display);font-weight:800;font-size:18px;display:flex;align-items:center;gap:8px;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .brand-mark{width:26px;height:26px;border-radius:50%;background:var(--ink);position:relative;flex:none}
 .brand-mark::after{content:"";position:absolute;inset:7px;border-radius:50%;background:var(--bg);box-shadow:0 0 0 2px var(--accent) inset}
-.ring{font-family:var(--f-mono);font-size:13px;color:var(--muted);white-space:nowrap}
+.ring{display:flex;align-items:center;gap:6px;font-family:var(--f-mono);font-size:13px;font-weight:700;color:var(--muted);white-space:nowrap;text-decoration:none;min-height:44px}
+.ring svg{width:22px;height:22px;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:3.5}
+.ring .rt{stroke:var(--sunk)}
+.ring .rf{stroke:var(--ok);stroke-linecap:round;transition:stroke-dasharray .4s}
 
 /* bottom nav */
 .nav{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--surface);border-top:1px solid var(--line);
@@ -97,11 +101,16 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .progress{height:10px;border-radius:99px;background:var(--sunk);overflow:hidden}
 .progress > i{display:block;height:100%;background:var(--ok);border-radius:99px;transition:width .4s}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px}
-.continue{background:var(--evf);color:var(--evf-ink);border-radius:var(--r);padding:20px;display:flex;flex-direction:column;gap:12px}
+.continue{box-shadow:0 0 0 1px var(--evf-edge) inset;background:var(--evf);color:var(--evf-ink);border-radius:var(--r);padding:20px;display:flex;flex-direction:column;gap:12px}
 .continue .eyebrow{color:var(--evf-dim)}
 .continue h2{color:var(--evf-ink)}
 .howto{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .howto div{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px;font-size:14px;line-height:1.4}
+.howto-d summary{cursor:pointer;list-style:none;font-family:var(--f-display);font-weight:700;font-size:19px;min-height:44px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.howto-d summary::-webkit-details-marker{display:none}
+.howto-d summary::after,.recipe .r-head::after{content:"";flex:none;width:10px;height:10px;border-right:2.5px solid var(--muted);border-bottom:2.5px solid var(--muted);transform:rotate(45deg) translate(-2px,-2px);transition:transform .2s}
+.howto-d[open] summary::after,.recipe[open] .r-head::after{transform:rotate(-135deg) translate(-2px,-2px)}
+.howto-d[open] summary{margin-bottom:10px}
 .howto b{display:block;font-family:var(--f-display);font-size:16px;margin-bottom:2px}
 @media (max-width:460px){.howto{grid-template-columns:1fr}}
 .unit{display:flex;flex-direction:column;gap:10px}
@@ -123,6 +132,8 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 
 /* lesson */
 .crumbs{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:center}
+.back{display:inline-flex;align-items:center;gap:4px;min-height:44px;padding:0 14px 0 10px;margin-left:-4px;border-radius:999px;background:var(--surface);border:1px solid var(--line);color:var(--ink);text-decoration:none;font-weight:700;font-size:15px}
+.back span{font-size:20px;line-height:1;color:var(--muted)}
 .evf{background:var(--evf);color:var(--evf-ink);border-radius:10px;padding:10px 14px;font-family:var(--f-mono);font-size:14px;font-weight:700;letter-spacing:.04em;
   display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center}
 .evf span{white-space:nowrap}
@@ -166,7 +177,7 @@ td:first-child{font-weight:700;white-space:nowrap}
 .tsize span{font-size:19px;margin-left:1px}
 .outline{display:flex;flex-wrap:wrap;gap:6px}
 .outline .chip{font-size:13px;min-height:32px;padding:4px 10px}
-[id^="sec-"]{scroll-margin-top:80px}
+[id^="sec-"],[id^="rx-"],#glosario,[data-stage]{scroll-margin-top:84px}
 .practice-btn{align-self:flex-start}
 .practice{position:fixed;inset:0;z-index:50;background:var(--bg);display:flex;flex-direction:column;gap:16px;
   padding:calc(16px + env(safe-area-inset-top,0px)) max(20px, env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(20px, env(safe-area-inset-left,0px))}
@@ -213,6 +224,7 @@ td:first-child{font-weight:700;white-space:nowrap}
 
 /* simulator */
 .sim-frame{position:relative;border-radius:12px;overflow:hidden;background:#000;aspect-ratio:3/2;max-width:100%}
+@media (max-width:700px) and (min-height:640px){.sim-frame{position:sticky;top:calc(env(safe-area-inset-top,0px) + 70px);z-index:5;box-shadow:0 6px 16px -6px rgba(0,0,0,.45)}}
 .sim-frame svg{position:absolute;inset:0;width:100%;height:100%;display:block;transition:filter .25s}
 .sim-noise{position:absolute;inset:0;mix-blend-mode:overlay;pointer-events:none;background-size:160px 160px}
 .sim-osd{position:absolute;left:0;right:0;bottom:0;padding:6px 10px;background:linear-gradient(transparent,rgba(0,0,0,.65));
@@ -221,7 +233,7 @@ td:first-child{font-weight:700;white-space:nowrap}
 .sim-mode{position:absolute;left:10px;top:8px;font:800 15px var(--f-mono);color:#EEF2EE;text-shadow:0 1px 2px #000}
 .sim-focus{position:absolute;width:13%;aspect-ratio:1;border:2px solid #3FD07A;border-radius:3px;left:37.5%;top:47%;box-shadow:0 0 0 1px rgba(0,0,0,.4)}
 @keyframes blink{to{visibility:hidden}}
-@media (prefers-reduced-motion: reduce){.sim-osd .blink{animation:none;text-decoration:underline}.progress > i{transition:none}.sim-frame svg{transition:none}}
+@media (prefers-reduced-motion: reduce){.howto-d summary::after,.recipe .r-head::after,.ring .rf{transition:none}.sim-osd .blink{animation:none;text-decoration:underline}.progress > i{transition:none}.sim-frame svg{transition:none}}
 .meter{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
 .meter-bar{position:relative;height:28px;margin-top:22px}
 .meter-ticks{position:absolute;inset:0;display:flex;justify-content:space-between;align-items:flex-end}
@@ -244,7 +256,7 @@ td:first-child{font-weight:700;white-space:nowrap}
 .verdict li{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:14px;line-height:1.35}
 .verdict b{display:block;font-family:var(--f-mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
 .verdict .w{border-color:var(--warn);background:var(--warn-soft)}
-@media (max-width:420px){.verdict{grid-template-columns:1fr}}
+@media (max-width:340px){.verdict{grid-template-columns:1fr}}
 
 /* white balance demo */
 .wb-frame{position:relative;border-radius:12px;overflow:hidden;aspect-ratio:16/9;max-width:100%}
@@ -253,6 +265,10 @@ td:first-child{font-weight:700;white-space:nowrap}
 
 /* recipes */
 .recipe{display:flex;flex-direction:column;gap:10px}
+.recipe summary{list-style:none;cursor:pointer;display:flex;flex-direction:column;gap:10px}
+.recipe summary::-webkit-details-marker{display:none}
+.recipe .r-head{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.recipe[open] summary{margin-bottom:4px}
 .recipe dl{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;margin:0;font-size:15px}
 .recipe dt{font-family:var(--f-mono);font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding-top:3px}
 .recipe dd{margin:0}
@@ -275,7 +291,7 @@ body.signin-on .wrap, body.signin-on .nav{display:none}
 <div class="wrap">
   <header class="top">
     <a class="brand" href="#programa" style="text-decoration:none;color:inherit"><span class="brand-mark" aria-hidden="true"></span>Escuela α6500</a>
-    <span class="ring" id="ring"></span>
+    <a class="ring" id="ring" href="#programa"></a>
     <button type="button" class="tsize" id="tsize" aria-label="Tamaño del texto">A<span>A</span></button>
   </header>
   <main id="app" aria-live="polite"></main>
@@ -1279,8 +1295,8 @@ function mountCamera(el){
     <button type="button" data-v="lens" aria-pressed="false">Objetivo</button>
    </div>
    <div class="cam-stage" data-stage></div>
-   <div class="chips" data-chips aria-label="Partes"></div>
    <div class="card cam-info" data-info aria-live="polite"></div>
+   <div class="chips" data-chips aria-label="Partes"></div>
    <p class="muted" style="font-size:14px">Esquema simplificado, no a escala. La posición exacta de cada botón puede variar ligeramente.</p>
   </div>`;
   const stage = el.querySelector("[data-stage]"), info = el.querySelector("[data-info]"), chips = el.querySelector("[data-chips]");
@@ -1299,7 +1315,10 @@ function mountCamera(el){
   }
   el.addEventListener("click", e => {
     const v = e.target.closest(".cam-tabs button"); if(v){ view = v.dataset.v; draw(); return; }
-    const h = e.target.closest(".hs,.chip"); if(h) pick(h.dataset.id);
+    const h = e.target.closest(".hs,.chip"); if(!h) return;
+    pick(h.dataset.id);
+    // A name tapped in the list below: bring the drawing and its explanation back into view.
+    if(h.classList.contains("chip") && info.getBoundingClientRect().top < 70) stage.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"});
   });
   el.addEventListener("keydown", e => { const h = e.target.closest(".hs"); if(h && (e.key === "Enter" || e.key === " ")){ e.preventDefault(); pick(h.dataset.id); } });
   draw();
@@ -1689,7 +1708,11 @@ function openPractice(l, onChange){
 const app = document.getElementById("app");
 const doneCount = () => LESSONS.filter(l => S.done[l.id]).length;
 const nextLesson = () => LESSONS.find(l => !S.done[l.id]) || null;
-function updateRing(){ const r = document.getElementById("ring"); r.textContent = `${doneCount()}/${LESSONS.length}`; r.setAttribute("aria-label", `${doneCount()} de ${LESSONS.length} lecciones completadas`); }
+function updateRing(){
+  const r = document.getElementById("ring"), n = doneCount(), c = 2 * Math.PI * 9;
+  r.innerHTML = `<svg viewBox="0 0 22 22" aria-hidden="true"><circle class="rt" cx="11" cy="11" r="9"/><circle class="rf" cx="11" cy="11" r="9" stroke-dasharray="${(n / LESSONS.length * c).toFixed(1)} ${c.toFixed(1)}"/></svg>${n}/${LESSONS.length}`;
+  r.setAttribute("aria-label", `${n} de ${LESSONS.length} lecciones completadas`);
+}
 
 function evfHTML(items){ return `<div class="evf" aria-label="Ajustes de esta lección">${items.map((x,i) => `<span class="${i===0?"g":""}">${esc(x)}</span>`).join("")}</div>`; }
 
@@ -1712,7 +1735,7 @@ function viewHome(){
    <section class="hero stack">
     <span class="eyebrow">Sony α6500 · objetivo 16-50 mm</span>
     <h1>Del iPhone a tu primera cámara de verdad</h1>
-    <p>Ya sabes mirar y componer. Aquí aprendes a decirle a la cámara exactamente lo que quieres. Son ${LESSONS.length} lecciones cortas que se hacen con la cámara en la mano. No solo aprendes qué hace cada ajuste: aprendes a elegirlo según lo que quieres capturar.</p>
+    ${n === 0 ? `<p>Ya sabes mirar y componer. Aquí aprendes a decirle a la cámara exactamente lo que quieres. Son ${LESSONS.length} lecciones cortas que se hacen con la cámara en la mano. No solo aprendes qué hace cada ajuste: aprendes a elegirlo según lo que quieres capturar.</p>` : ""}
     <div class="stack" style="gap:6px">
      <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="${LESSONS.length}" aria-valuenow="${n}" aria-label="Progreso"><i style="width:${(n/LESSONS.length*100).toFixed(1)}%"></i></div>
      <span class="muted" style="font-size:15px">${n === 0 ? "Aún no has empezado." : n === LESSONS.length ? "¡Programa completado! 🎉" : `${n} de ${LESSONS.length} lecciones completadas.`}</span>
@@ -1726,8 +1749,8 @@ function viewHome(){
     <div class="btn-row"><a class="btn btn-primary" href="#leccion-${last.id}">${n === 0 ? "Empezar" : "Seguir"}</a></div>
    </section>` : ""}
    ${reviewHTML()}
-   <section class="stack" style="gap:10px">
-    <h2>Cómo funciona</h2>
+   <${n === 0 ? "section" : "details"} class="stack howto-d" style="gap:10px">
+    ${n === 0 ? "<h2>Cómo funciona</h2>" : "<summary>Cómo funciona cada lección</summary>"}
     <div class="howto">
      <div><b>1 · Lee</b>Unos minutos de explicación, comparada con lo que ya conoces del iPhone.</div>
      <div><b>2 · Hazlo</b>Pasos con la cámara en la mano. Márcalos según los haces.</div>
@@ -1735,7 +1758,7 @@ function viewHome(){
      <div><b>4 · Misión y cuaderno</b>Una foto con una intención clara, y una nota de qué querías, qué ajustaste y qué pasó.</div>
     </div>
     <p class="muted" style="font-size:15px">Ve a tu ritmo, en orden. ${Sync.on && Sync.user ? "Tu progreso y tus notas se guardan en tu cuenta, y también funcionan sin conexión." : "Tu progreso y tus notas se guardan en este dispositivo."}</p>
-   </section>
+   </${n === 0 ? "section" : "details"}>
    ${UNITS.map(u => `
    <section class="unit">
     <div class="unit-head"><h2>${u.id}. ${esc(u.title)}</h2><span class="eyebrow">${u.lessons.length} lecciones</span></div>
@@ -1773,7 +1796,7 @@ function viewLesson(l){
   app.innerHTML = `
   <article class="stack-l">
    <div class="stack">
-    <div class="crumbs"><a href="#programa" class="eyebrow" style="text-decoration:none">‹ Programa</a><span class="eyebrow">Unidad ${l.unit.id} · ${l.proj ? "Proyecto" : "Lección"} ${l.n} de ${LESSONS.length}</span></div>
+    <div class="crumbs"><a href="#programa" class="back"><span aria-hidden="true">‹</span>Programa</a><span class="eyebrow">Unidad ${l.unit.id} · ${l.proj ? "Proyecto" : "Lección"} ${l.n} de ${LESSONS.length}</span></div>
     <h1>${esc(l.title)}</h1>
     ${evfHTML(l.evf)}
     <p class="goal"><b>Objetivo:</b> ${esc(l.goal)}</p>
@@ -1819,7 +1842,7 @@ function viewLesson(l){
   foot();
   app.onchange = onStep;
   let tmr; const ta = app.querySelector(".notes");
-  ta.addEventListener("input", () => { clearTimeout(tmr); tmr = setTimeout(() => { const v = ta.value.trim(); if(v) S.notes[l.id] = ta.value; else delete S.notes[l.id]; save(); app.querySelector("[data-saved]").textContent = "Guardado en este dispositivo."; }, 400); });
+  ta.addEventListener("input", () => { clearTimeout(tmr); tmr = setTimeout(() => { const v = ta.value.trim(); if(v) S.notes[l.id] = ta.value; else delete S.notes[l.id]; save(); app.querySelector("[data-saved]").textContent = "Nota guardada."; }, 400); });
   function onStep(e){
     const c = e.target.closest(".steps input"); if(!c) return;
     const set = new Set(S.steps[l.id] || []); c.checked ? set.add(+c.dataset.k) : set.delete(+c.dataset.k);
@@ -1838,7 +1861,7 @@ function viewLesson(l){
 }
 
 function viewCamera(){
-  app.innerHTML = `<div class="stack-l"><div class="stack"><span class="eyebrow">Mapa de la cámara</span><h1>Cada botón, explicado</h1><p class="muted">Toca una parte del esquema o elige su nombre abajo.</p></div><div data-cam></div></div>`;
+  app.innerHTML = `<div class="stack-l"><div class="stack"><span class="eyebrow">Mapa de la cámara</span><h1>Cada botón, explicado</h1><p class="muted">Toca una parte del esquema o elige su nombre en la lista.</p></div><div data-cam></div></div>`;
   mountCamera(app.querySelector("[data-cam]"));
 }
 function viewSim(){
@@ -1847,9 +1870,10 @@ function viewSim(){
 }
 function viewRecipes(){
   app.innerHTML = `<div class="stack-l">
-   <div class="stack"><span class="eyebrow">Chuleta</span><h1>Recetas para salir a fotografiar</h1><p class="muted">Empieza por lo que quieres capturar. El planificador te propone ajustes y te explica por qué; las recetas de abajo cubren situaciones típicas.</p></div>
-   <section class="stack" style="gap:10px"><h2>Planificador: ¿qué quieres capturar?</h2><div data-planner></div></section>
-   <section class="card stack" style="gap:10px;border-color:var(--accent)"><h2 style="font-size:21px">Rutina antes de salir</h2><p class="muted" style="font-size:15px">Lo que cualquier fotógrafo revisa antes de una sesión. Un minuto que evita perder fotos.</p>
+   <div class="stack"><span class="eyebrow">Chuleta</span><h1>Recetas para salir a fotografiar</h1><p class="muted">Empieza por lo que quieres capturar. El planificador te propone ajustes y te explica por qué; las recetas de abajo cubren situaciones típicas.</p>
+    <nav class="outline" aria-label="En esta página">${[["rx-plan","Planificador"],["rx-rutina","Rutina"],["rx-recetas","Recetas"],["glosario","Glosario"]].map(([id,t]) => `<button type="button" class="chip" data-jump="${id}">${t}</button>`).join("")}</nav></div>
+   <section class="stack" style="gap:10px" id="rx-plan"><h2>Planificador: ¿qué quieres capturar?</h2><div data-planner></div></section>
+   <section class="card stack" style="gap:10px;border-color:var(--accent)" id="rx-rutina"><h2 style="font-size:21px">Rutina antes de salir</h2><p class="muted" style="font-size:15px">Lo que cualquier fotógrafo revisa antes de una sesión. Un minuto que evita perder fotos.</p>
     <ol style="margin:0;padding-left:22px;display:flex;flex-direction:column;gap:6px">
      <li>Batería cargada (y la de repuesto, si tienes).</li>
      <li>Tarjeta puesta y con espacio. Pasa y borra las fotos de la última salida.</li>
@@ -1860,13 +1884,15 @@ function viewRecipes(){
      <li>Modo de avance en <b>Disparo único</b> (o ráfaga si vas a por acción).</li>
      <li>Calidad correcta: JPEG Extra fino o RAW y JPEG.</li>
     </ol></section>
-   ${RECIPES.map(r => `<section class="card recipe"><h2 style="font-size:21px">${esc(r.t)}</h2>${evfHTML(r.evf)}<dl>${r.d.map(([a,b]) => `<dt>${esc(a)}</dt><dd>${esc(b)}</dd>`).join("")}</dl><p class="muted" style="font-size:15px"><b>Consejo:</b> ${esc(r.tip)}</p><a href="#leccion-${r.l}" style="font-size:15px;font-weight:700">Repasar la lección: ${esc(byId(r.l).title)} ›</a></section>`).join("")}
+   <section class="stack" style="gap:10px" id="rx-recetas"><h2>Recetas</h2><p class="muted" style="font-size:15px">Toca una para ver los ajustes completos.</p>
+   ${RECIPES.map(r => `<details class="card recipe"><summary><span class="r-head"><h3>${esc(r.t)}</h3></span>${evfHTML(r.evf)}</summary><dl>${r.d.map(([a,b]) => `<dt>${esc(a)}</dt><dd>${esc(b)}</dd>`).join("")}</dl><p class="muted" style="font-size:15px"><b>Consejo:</b> ${esc(r.tip)}</p><a href="#leccion-${r.l}" style="font-size:15px;font-weight:700">Repasar la lección: ${esc(byId(r.l).title)} ›</a></details>`).join("")}</section>
    <section class="stack" style="gap:10px" id="glosario"><h2>Glosario</h2><label for="gloss-q" class="muted" style="font-size:15px">Busca una palabra que no recuerdes.</label><input id="gloss-q" type="search" class="notes" style="padding:10px 14px" placeholder="Por ejemplo: apertura, ISO, RAW" autocomplete="off"><dl class="gloss" data-gloss></dl></section>
   </div>`;
   mountPlanner(app.querySelector("[data-planner]"));
   const box = app.querySelector("[data-gloss]"), q = app.querySelector("#gloss-q");
   const draw = () => { const t = q.value.trim().toLowerCase(); const items = GLOSS.filter(([a,b]) => !t || (a+" "+b).toLowerCase().includes(t)); box.innerHTML = items.length ? items.map(([a,b]) => `<div><dt>${esc(a)}</dt><dd>${esc(b)}</dd></div>`).join("") : `<p class="muted">No hay ningún término con «${esc(q.value)}».</p>`; };
   q.addEventListener("input", draw); draw();
+  app.onclick = e => { const j = e.target.closest("[data-jump]"); if(j) document.getElementById(j.dataset.jump)?.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"}); };
 }
 
 function route(){
