@@ -109,10 +109,13 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .continue .eyebrow{color:var(--accent)}
 .continue h2{font-size:24px}
 .continue .btn{width:100%}
-.howto{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.howto div{background:var(--surface);border-radius:var(--r);padding:12px 14px;font-size:15px;line-height:1.4;color:var(--muted)}
-.howto b{display:block;font-size:17px;font-weight:600;color:var(--ink);margin-bottom:2px}
-@media (max-width:460px){.howto{grid-template-columns:1fr}}
+.hero-art{background:var(--evf);border-radius:20px;padding:22px 18px 18px;margin-bottom:6px}
+.hero-art svg{display:block;width:100%;height:auto}
+.lessons.guide a,.guide .row{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:14px;align-items:start;padding:13px 14px;text-decoration:none;color:var(--ink)}
+.guide .chev{align-self:center}
+.ico{width:30px;height:30px;stroke:var(--accent);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;margin-top:1px}
+.guide .l-title{font-weight:600}
+.guide .l-sub{line-height:1.4;display:inline-block;margin-top:2px}
 .unit{display:flex;flex-direction:column;gap:8px}
 .unit-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap;padding-inline:4px}
 .unit-head .eyebrow{font-size:15px;font-weight:400}
@@ -300,8 +303,18 @@ body.signin-on #signin{display:block;position:fixed;inset:0;z-index:50;backgroun
 body.signin-on .wrap, body.signin-on .nav{display:none}
 .signin-box{max-width:440px;margin:0 auto;padding:calc(48px + env(safe-area-inset-top,0px)) 20px 40px}
 .signin-box h1{font-size:30px}
-.signin-box .brand-mark{width:64px;height:64px;border-radius:15px}
-.signin-box .brand{flex-direction:column;align-items:flex-start;gap:12px;font-size:15px;color:var(--muted);flex:none}
+.signin-box .back{background:none;border:0;align-self:flex-start;cursor:pointer}
+.welcome{display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;min-height:100%;padding-top:calc(44px + env(safe-area-inset-top,0px));padding-bottom:0}
+.welcome .brand-mark{width:84px;height:84px;border-radius:19px;box-shadow:0 10px 24px -10px rgba(0,0,0,.45)}
+.welcome h1{font-size:32px;margin-top:6px}
+.welcome .lede{max-width:32ch}
+.features{list-style:none;margin:18px 0 8px;padding:0;display:flex;flex-direction:column;gap:22px;text-align:left;width:100%}
+.features li{display:grid;grid-template-columns:40px minmax(0,1fr);gap:14px;align-items:start}
+.features .ico{width:34px;height:34px}
+.features b{display:block;font-weight:600}
+.features .muted{font-size:15px;line-height:1.4}
+.welcome-cta{display:flex;flex-direction:column;gap:10px;width:100%;margin-top:auto;position:sticky;bottom:0;padding:16px 0 calc(8px + env(safe-area-inset-bottom,0px));background:linear-gradient(transparent,var(--bg) 18px)}
+.welcome-cta .btn{width:100%}
 .signin-box .btn-primary{width:100%;margin-top:6px}
 .si-msg{margin:0;min-height:1.2em;color:var(--bad);font-size:15px}
 .si-msg:empty{display:none}
@@ -1751,19 +1764,55 @@ function reviewHTML(){
    <p class="muted" style="font-size:14px">Recordar sin mirar es lo que fija lo aprendido. Un repaso al día basta.</p>
   </section>`;
 }
+const ICON = {
+  path:'<path d="M4 6h16M4 12h16M4 18h10"/>',
+  practice:'<circle cx="12" cy="12" r="9"/><path d="M10 8.5v7l5.5-3.5z"/>',
+  camera:'<rect x="3" y="7" width="18" height="13" rx="2"/><circle cx="12" cy="13.5" r="3.5"/><path d="M8 7l1.5-3h5L16 7"/>',
+  sim:'<circle cx="12" cy="12" r="9"/><path d="M12 3v4M12 17v4M3 12h4M17 12h4"/><circle cx="12" cy="12" r="2.5"/>',
+  recipes:'<path d="M6 3h9l3 3v15H6z"/><path d="M9 10h6M9 14h6M9 18h4"/>',
+  notes:'<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/>',
+  cloud:'<path d="M7 18a4 4 0 0 1-.5-8A6 6 0 0 1 18 9a4.5 4.5 0 0 1-.5 9z"/>',
+  lock:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>'
+};
+const icon = k => `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true">${ICON[k]}</svg>`;
+// What the guide offers, in the order she'll meet it. Used on the home tab and the welcome screen.
+const GUIDE = [
+  ["path", "#programa", "Lecciones en orden", "24 lecciones cortas, de encender la cámara a hacer fotos con intención. Cada una: lees, lo haces con la cámara y cumples una misión."],
+  ["practice", null, "Modo práctica", "Dentro de cada lección: un paso por pantalla, con botones grandes, para seguirlo con la cámara en la mano."],
+  ["camera", "#camara", "Mapa de la cámara", "Toca cualquier botón o rueda del dibujo y te explica para qué sirve."],
+  ["sim", "#simulador", "Simulador", "Prueba apertura, velocidad e ISO y mira el resultado al instante, sin gastar fotos."],
+  ["recipes", "#recetas", "Recetas y glosario", "Ajustes listos para retratos, paisajes, noche o niños, y las palabras que no recuerdes."],
+  ["notes", null, "Tu cuaderno", "Al final de cada lección apunta qué querías, qué ajustaste y qué pasó. Lo verás todo junto aquí."]
+];
+function guideRows(){
+  return `<ul class="lessons guide">${GUIDE.map(([k, href, t, d]) => {
+    const inner = `${icon(k)}<span><span class="l-title">${t}</span><br><span class="l-sub">${d}</span></span>`;
+    return `<li>${href ? `<a href="${href}">${inner}<span class="chev" aria-hidden="true">›</span></a>` : `<div class="row">${inner}<span></span></div>`}</li>`;
+  }).join("")}</ul>`;
+}
+
 function viewHome(){
   const n = doneCount(), nx = nextLesson(), last = S.last && byId(S.last) && !S.done[S.last] ? byId(S.last) : nx;
+  const guide = `
+   <${n === 0 ? "section" : "details"} class="stack howto-d" style="gap:10px">
+    ${n === 0 ? "<h2>Cómo usar esta guía</h2>" : "<summary>Cómo usar esta guía</summary>"}
+    ${guideRows()}
+    <p class="muted" style="font-size:15px">Ve a tu ritmo, en orden. ${Sync.on && Sync.user ? "Tu progreso y tus notas se guardan en tu cuenta, y también funcionan sin conexión." : "Tu progreso y tus notas se guardan en este dispositivo."}</p>
+   </${n === 0 ? "section" : "details"}>
+  `;
   app.innerHTML = `
   <div class="stack-l">
    <section class="hero stack">
-    <span class="eyebrow">Sony α6500 · objetivo 16-50 mm</span>
-    <h1>Del iPhone a tu primera cámara de verdad</h1>
-    ${n === 0 ? `<p>Ya sabes mirar y componer. Aquí aprendes a decirle a la cámara lo que quieres, en ${LESSONS.length} lecciones cortas que se hacen con la cámara en la mano.</p>` : ""}
+    ${n === 0 ? `<div class="hero-art" aria-hidden="true" inert>${cameraSVG("back")}</div>` : ""}
+    <span class="eyebrow">${n === 0 ? "Sony α6500 · objetivo 16-50 mm" : "Hola de nuevo"}</span>
+    <h1>${n === 0 ? "Bienvenida a tu escuela de fotografía" : "Tu escuela"}</h1>
+    ${n === 0 ? `<p>Ya sabes mirar y componer. Esta guía te enseña a decirle a la cámara lo que quieres, con la cámara en la mano y a tu ritmo.</p>` : ""}
     <div class="stack" style="gap:6px">
      <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="${LESSONS.length}" aria-valuenow="${n}" aria-label="Progreso"><i style="width:${(n/LESSONS.length*100).toFixed(1)}%"></i></div>
      <span class="muted" style="font-size:15px">${n === 0 ? "Aún no has empezado." : n === LESSONS.length ? "¡Programa completado!" : `${n} de ${LESSONS.length} lecciones completadas.`}</span>
     </div>
    </section>
+   ${n === 0 ? guide : ""}
    ${last ? `
    <section class="continue">
     <span class="eyebrow">${n === 0 ? "Empieza aquí" : "Continúa"} · Lección ${last.n}</span>
@@ -1772,16 +1821,7 @@ function viewHome(){
     <div class="btn-row"><a class="btn btn-primary" href="#leccion-${last.id}">${n === 0 ? "Empezar" : "Seguir"}</a></div>
    </section>` : ""}
    ${reviewHTML()}
-   <${n === 0 ? "section" : "details"} class="stack howto-d" style="gap:10px">
-    ${n === 0 ? "<h2>Cómo funciona</h2>" : "<summary>Cómo funciona cada lección</summary>"}
-    <div class="howto">
-     <div><b>Lee</b>Unos minutos de explicación, comparada con lo que ya conoces del iPhone.</div>
-     <div><b>Hazlo</b>Pasos con la cámara en la mano. Márcalos según los haces.</div>
-     <div><b>Piénsalo</b>Situaciones reales: decide qué harías antes de ver la respuesta.</div>
-     <div><b>Misión y cuaderno</b>Una foto con una intención clara, y una nota de qué querías, qué ajustaste y qué pasó.</div>
-    </div>
-    <p class="muted" style="font-size:15px">Ve a tu ritmo, en orden. ${Sync.on && Sync.user ? "Tu progreso y tus notas se guardan en tu cuenta, y también funcionan sin conexión." : "Tu progreso y tus notas se guardan en este dispositivo."}</p>
-   </${n === 0 ? "section" : "details"}>
+   ${n === 0 ? "" : guide}
    ${UNITS.map(u => `
    <section class="unit">
     <div class="unit-head"><h2>${u.id}. ${esc(u.title)}</h2><span class="eyebrow">${u.lessons.length} lecciones</span></div>
@@ -1945,7 +1985,7 @@ function showSignIn(){
   const host = document.getElementById("signin");
   let email = "";
   const shell = (title, intro, form) => `<div class="signin-box stack">
-      <span class="brand"><span class="brand-mark" aria-hidden="true"></span>Escuela α6500</span>
+      <button type="button" class="back" data-welcome><span aria-hidden="true">‹</span>Inicio</button>
       <h1>${title}</h1><p class="muted">${intro}</p>
       <form class="stack" style="gap:10px" novalidate>${form}<p class="si-msg" role="alert"></p></form></div>`;
   const field = (id, label, type, ac, extra = "") => {
@@ -1954,6 +1994,7 @@ function showSignIn(){
       ? `<div class="pw">${input}<button type="button" class="linkbtn" data-peek aria-controls="${id}" aria-pressed="false">Mostrar</button></div>` : input);
   };
   host.onclick = e => {
+    if(e.target.closest("[data-welcome]")){ welcome(); return; }
     const b = e.target.closest("[data-peek]"); if(!b) return;
     const i = host.querySelector("#" + b.getAttribute("aria-controls")), show = i.type === "password";
     i.type = show ? "text" : "password"; b.textContent = show ? "Ocultar" : "Mostrar"; b.setAttribute("aria-pressed", show);
@@ -1971,6 +2012,25 @@ function showSignIn(){
   const idle = b => { b.disabled = false; b.textContent = b.dataset.t; };
   const done = async () => { host.innerHTML = `<div class="signin-box stack"><h1>Cargando tu progreso…</h1></div>`; await Sync.pull(); hideSignIn(); };
 
+  // First screen on a new device: what the guide is, before asking for anything.
+  const welcome = () => {
+    host.innerHTML = `<div class="signin-box welcome">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <h1>Bienvenida a Escuela α6500</h1>
+      <p class="muted lede">Tu guía para aprender a usar tu Sony α6500, en español y con la cámara en la mano.</p>
+      <ul class="features">
+       ${[["path","Aprende paso a paso","24 lecciones cortas, desde el primer encendido hasta hacer fotos con intención."],
+          ["camera","Conoce cada botón","Un mapa de la cámara: tocas una rueda o un botón y te dice para qué sirve."],
+          ["sim","Practica sin gastar fotos","Un simulador para ver qué cambian la apertura, la velocidad y el ISO."],
+          ["lock","Tu progreso, a salvo","Con tu cuenta, tus lecciones y tu cuaderno se guardan y nadie más puede cambiarlos."]]
+         .map(([k,t,d]) => `<li>${icon(k)}<span><b>${t}</b><span class="muted">${d}</span></span></li>`).join("")}
+      </ul>
+      <div class="welcome-cta">
+       <button type="button" class="btn btn-primary" data-go="signup">Crear mi cuenta</button>
+       <button type="button" class="btn btn-ghost" data-go="login">Ya tengo cuenta</button>
+      </div></div>`;
+    host.querySelectorAll("[data-go]").forEach(b => b.onclick = () => login(b.dataset.go === "signup"));
+  };
   const login = (signup) => {
     host.innerHTML = shell(signup ? "Crea tu cuenta" : "Entra en tu escuela",
       signup ? "Elige tu correo y una contraseña. Solo tendrás que escribirla una vez en cada dispositivo."
@@ -2025,7 +2085,7 @@ function showSignIn(){
       done();
     };
   };
-  return {login, reset};
+  return {welcome, login, reset};
 }
 function hideSignIn(){
   document.body.classList.remove("signin-on");
@@ -2054,7 +2114,7 @@ function startApp(){
     }
     if(!Sync.user){ showSignIn().login(false); document.querySelector("#signin .si-msg").textContent = "El enlace ha caducado o ya se usó. Pide otro."; return; }
   }
-  if(Sync.on && !Sync.user) showSignIn().login(false);
+  if(Sync.on && !Sync.user) showSignIn().welcome();
   else startApp();
 })();
 })();
