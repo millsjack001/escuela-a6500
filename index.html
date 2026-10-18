@@ -236,7 +236,7 @@ td:first-child{font-weight:600;white-space:nowrap}
 .cam-tabs button[aria-pressed="true"],.seg button[aria-pressed="true"]{background:var(--surface);font-weight:600;box-shadow:0 3px 8px rgba(0,0,0,.12),0 3px 1px rgba(0,0,0,.04)}
 :root[data-theme="dark"] .cam-tabs button[aria-pressed="true"],:root[data-theme="dark"] .seg button[aria-pressed="true"]{background:#636366}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .cam-tabs button[aria-pressed="true"],:root:not([data-theme="light"]) .seg button[aria-pressed="true"]{background:#636366}}
-.cam-stage{background:var(--surface);border-radius:var(--r);padding:12px}
+.cam-stage{background:var(--surface);border-radius:var(--r);padding:6px}
 .cam-stage svg{display:block;width:100%;height:auto}
 .hs{cursor:pointer}
 .hs .hl{fill:transparent;stroke:transparent;stroke-width:2.5}
@@ -245,11 +245,14 @@ td:first-child{font-weight:600;white-space:nowrap}
 .hs:focus{outline:none}
 .pin{fill:var(--cam-hi)}
 .pin-t{fill:#111;font:700 10px var(--f-mono)}
-.cam-label{fill:var(--cam-ink);font:600 9px var(--f-body);letter-spacing:.04em}
+.cam-label{fill:var(--cam-ink);font:600 11px var(--f-body);letter-spacing:.02em}
 .cam-info{min-height:120px}
 .cam-info h3{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap;font-size:20px;font-weight:700}
 .cam-info .en{font-size:13px;color:var(--muted);font-weight:400}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips-row{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-inline:-16px;padding-inline:16px}
+.chips-row::-webkit-scrollbar{display:none}
+.chips-row .chip{flex:none}
 .chip{border:0;background:var(--surface);border-radius:999px;padding:7px 14px;font-size:15px;cursor:pointer;min-height:36px;box-shadow:0 0 0 .5px var(--line) inset}
 .card .chip,.cam-info .chip{background:var(--fill);box-shadow:none}
 .chip[aria-pressed="true"],.card .chip[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);box-shadow:none;font-weight:600}
@@ -325,6 +328,11 @@ body.signin-on .wrap, body.signin-on .nav{display:none}
 .welcome .brand-mark{width:84px;height:84px;border-radius:19px;box-shadow:0 10px 24px -10px rgba(0,0,0,.45)}
 .welcome h1{font-size:32px;margin-top:6px}
 .welcome .lede{max-width:32ch}
+.install{display:grid;grid-template-columns:34px minmax(0,1fr);gap:12px;align-items:start;text-align:left;width:100%;background:var(--surface);border-radius:var(--r);padding:14px 16px}
+.install b{display:block;font-weight:600}
+.install .muted{font-size:15px;line-height:1.4}
+.install .ico{width:30px;height:30px}
+.share-ico{width:18px;height:18px;vertical-align:-3px;stroke:var(--accent);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .features{list-style:none;margin:18px 0 8px;padding:0;display:flex;flex-direction:column;gap:22px;text-align:left;width:100%}
 .features li{display:grid;grid-template-columns:40px minmax(0,1fr);gap:14px;align-items:start}
 .features .ico{width:34px;height:34px}
@@ -1308,12 +1316,12 @@ function cameraSVG(view){
  ${hs("flashbtn",`<circle class="hl" cx="150" cy="40" r="15"/><circle cx="150" cy="40" r="10" fill="var(--cam-3)"/><path d="M152 33l-5 8h4l-2 7 6-9h-4z" fill="var(--cam-ink)"/>`)}
  ${hs("pantalla",`<rect class="hl" x="16" y="86" width="244" height="130" rx="8"/><rect x="22" y="92" width="232" height="118" rx="5" fill="#07090A"/><text x="138" y="155" text-anchor="middle" class="cam-label" opacity=".6">PANTALLA TÁCTIL</text>`)}
  ${hs("menu",`<rect class="hl" x="234" y="26" width="58" height="30" rx="14"/><rect x="240" y="31" width="46" height="20" rx="10" fill="var(--cam-3)"/><text x="263" y="45" text-anchor="middle" class="cam-label">MENU</text>`)}
- ${hs("afmf",`<circle class="hl" cx="344" cy="44" r="26"/><path d="M322 30a26 26 0 0 1 20-12" stroke="var(--cam-3)" stroke-width="8" fill="none" stroke-linecap="round"/><circle cx="344" cy="46" r="13" fill="var(--cam-3)"/><text x="344" y="43" text-anchor="middle" class="cam-label" style="font-size:6.5px">AF/MF</text><text x="344" y="52" text-anchor="middle" class="cam-label" style="font-size:6.5px">AEL</text>`)}
+ ${hs("afmf",`<circle class="hl" cx="344" cy="44" r="26"/><path d="M322 30a26 26 0 0 1 20-12" stroke="var(--cam-3)" stroke-width="8" fill="none" stroke-linecap="round"/><circle cx="344" cy="46" r="13" fill="var(--cam-3)"/><text x="344" y="43" text-anchor="middle" class="cam-label" style="font-size:8px">AF/MF</text><text x="344" y="52" text-anchor="middle" class="cam-label" style="font-size:8px">AEL</text>`)}
  ${hs("movie",`<circle class="hl" cx="381" cy="88" r="12"/><circle cx="381" cy="88" r="7" fill="var(--cam-3)"/><circle cx="381" cy="88" r="3.5" fill="#E0352B"/>`)}
  ${hs("fn",`<circle class="hl" cx="334" cy="96" r="16"/><circle cx="334" cy="96" r="11" fill="var(--cam-3)"/><text x="334" y="99.5" text-anchor="middle" class="cam-label">Fn</text>`)}
  ${hs("rueda",`<circle class="hl" cx="322" cy="160" r="44"/><circle cx="322" cy="160" r="38" fill="var(--cam-2)"/><circle cx="322" cy="160" r="38" fill="none" stroke="var(--cam-3)" stroke-width="3" stroke-dasharray="2 3"/><text x="322" y="133" text-anchor="middle" class="cam-label">DISP</text><text x="349" y="163" text-anchor="middle" class="cam-label">ISO</text><text x="322" y="192" text-anchor="middle" class="cam-label" style="font-size:11px">±</text><text x="295" y="163.5" text-anchor="middle" class="cam-label" style="font-size:10px">◷</text>`)}
  ${hs("centro",`<circle class="hl" cx="322" cy="160" r="15"/><circle cx="322" cy="160" r="11" fill="var(--cam-3)"/>`)}
- ${hs("c3",`<circle class="hl" cx="278" cy="208" r="12"/><circle cx="278" cy="208" r="8" fill="var(--cam-3)"/><text x="278" y="211" text-anchor="middle" class="cam-label" style="font-size:7px">C3</text>`)}
+ ${hs("c3",`<circle class="hl" cx="278" cy="208" r="12"/><circle cx="278" cy="208" r="8" fill="var(--cam-3)"/><text x="278" y="211" text-anchor="middle" class="cam-label" style="font-size:9px">C3</text>`)}
  ${hs("play",`<circle class="hl" cx="368" cy="208" r="12"/><circle cx="368" cy="208" r="8" fill="var(--cam-3)"/><path d="M366 204.5v7l5.5-3.5z" fill="var(--cam-ink)"/>`)}
 </svg>`;
   if(view === "top") return `
@@ -1326,12 +1334,12 @@ function cameraSVG(view){
  <text x="200" y="24" text-anchor="middle" class="cam-label" opacity=".7">← ATRÁS (VISOR) · DELANTE (OBJETIVO) ↓</text>
  ${hs("zapata",`<rect class="hl" x="44" y="48" width="84" height="38" rx="5"/><rect x="50" y="54" width="72" height="26" rx="3" fill="var(--cam-2)"/><path d="M54 60h64M54 74h64" stroke="var(--cam-3)" stroke-width="2"/>`)}
  ${hs("flash",`<rect class="hl" x="134" y="48" width="88" height="34" rx="8"/><rect x="140" y="54" width="76" height="22" rx="6" fill="var(--cam-2)"/><text x="178" y="69" text-anchor="middle" class="cam-label">FLASH</text>`)}
- ${hs("dial",`<circle class="hl" cx="290" cy="74" r="28"/><circle cx="290" cy="74" r="23" fill="var(--cam-2)"/><circle cx="290" cy="74" r="23" fill="none" stroke="var(--cam-3)" stroke-width="4" stroke-dasharray="1.5 2.5"/><text x="290" y="70" text-anchor="middle" class="cam-label" style="font-size:7px">P A S M</text><text x="290" y="81" text-anchor="middle" class="cam-label" style="font-size:7px">AUTO</text>`)}
+ ${hs("dial",`<circle class="hl" cx="290" cy="74" r="28"/><circle cx="290" cy="74" r="23" fill="var(--cam-2)"/><circle cx="290" cy="74" r="23" fill="none" stroke="var(--cam-3)" stroke-width="4" stroke-dasharray="1.5 2.5"/><text x="290" y="70" text-anchor="middle" class="cam-label" style="font-size:8.5px">P A S M</text><text x="290" y="81" text-anchor="middle" class="cam-label" style="font-size:7px">AUTO</text>`)}
  ${hs("dialcontrol",`<rect class="hl" x="328" y="36" width="56" height="26" rx="8"/><rect x="334" y="42" width="44" height="14" rx="6" fill="var(--cam-3)"/><path d="M340 42v14M346 42v14M352 42v14M358 42v14M364 42v14M370 42v14" stroke="var(--cam-2)" stroke-width="1.5"/>`)}
  ${hs("onoff",`<rect class="hl" x="312" y="106" width="24" height="22" rx="6"/><rect x="316" y="111" width="16" height="10" rx="3" fill="var(--cam-3)"/>`)}
  ${hs("disparador",`<circle class="hl" cx="352" cy="108" r="20"/><circle cx="352" cy="108" r="16" fill="var(--cam-2)"/><circle cx="352" cy="108" r="10" fill="var(--cam-3)"/>`)}
- ${hs("c1",`<circle class="hl" cx="352" cy="78" r="12"/><circle cx="352" cy="78" r="8" fill="var(--cam-3)"/><text x="352" y="81" text-anchor="middle" class="cam-label" style="font-size:7px">C1</text>`)}
- ${hs("c2",`<circle class="hl" cx="252" cy="100" r="12"/><circle cx="252" cy="100" r="8" fill="var(--cam-3)"/><text x="252" y="103" text-anchor="middle" class="cam-label" style="font-size:7px">C2</text>`)}
+ ${hs("c1",`<circle class="hl" cx="352" cy="78" r="12"/><circle cx="352" cy="78" r="8" fill="var(--cam-3)"/><text x="352" y="81" text-anchor="middle" class="cam-label" style="font-size:9px">C1</text>`)}
+ ${hs("c2",`<circle class="hl" cx="252" cy="100" r="12"/><circle cx="252" cy="100" r="8" fill="var(--cam-3)"/><text x="252" y="103" text-anchor="middle" class="cam-label" style="font-size:9px">C2</text>`)}
 </svg>`;
   return `
 <svg viewBox="0 0 400 180" role="img" aria-label="Objetivo 16-50 mm visto de lado">
@@ -1375,9 +1383,22 @@ function mountCamera(el){
     chips.innerHTML = PARTS[view].map(p => `<button type="button" class="chip" data-id="${p.id}" aria-pressed="false">${esc(p.n)}</button>`).join("");
     pick(PARTS[view][0].id);
   }
+  // Some buttons are drawn only ~20 points wide, so a tap on the drawing goes to the closest part
+  // within 22 points. Big parts (screen, wheel) count as a little farther, so a tap just beside a
+  // small button that lands on the screen's edge still picks the button.
+  const nearest = (x, y) => {
+    let best = null, bs = Infinity;
+    stage.querySelectorAll(".hs").forEach(g => {
+      const r = g.getBoundingClientRect();
+      const d = Math.hypot(Math.max(r.left - x, 0, x - r.right), Math.max(r.top - y, 0, y - r.bottom));
+      const score = d + Math.sqrt(r.width * r.height) * .15;
+      if(d <= 22 && score < bs){ best = g; bs = score; }
+    });
+    return best;
+  };
   el.addEventListener("click", e => {
     const v = e.target.closest(".cam-tabs button"); if(v){ view = v.dataset.v; draw(); return; }
-    const h = e.target.closest(".hs,.chip"); if(!h) return;
+    const h = e.target.closest(".chip") || (stage.contains(e.target) && e.detail ? nearest(e.clientX, e.clientY) : e.target.closest(".hs")); if(!h) return;
     pick(h.dataset.id);
     // A name tapped in the list below: bring the drawing and its explanation back into view.
     if(h.classList.contains("chip") && info.getBoundingClientRect().top < 70) stage.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"});
@@ -1619,13 +1640,13 @@ function mountSim(el, opts){
     <div class="meter-bar"><div class="meter-ticks">${[-3,-2,-1,0,1,2,3].map((v,i,a) => `<span class="big"><b>${v>0?"+"+v:v}</b></span>` + (i < a.length-1 ? "<span></span><span></span>" : "")).join("")}</div><div class="meter-mark" data-mark></div></div>
    </div>
    <div class="seg" role="group" aria-label="Modo">${["P","A","S","M"].map(m => `<button type="button" data-mode="${m}" aria-pressed="false">${m}</button>`).join("")}</div>
-   <div class="chips" role="group" aria-label="Escena">${SCENES.map(s => `<button type="button" class="chip" data-scene="${s.id}" aria-pressed="false">${s.n}</button>`).join("")}</div>
    <div class="ctrls">
-    <div class="ctrl"><label class="lab" for="sim-zoom">Zoom <small data-zoomtxt></small></label><output data-zoomv style="font:700 18px var(--f-mono)"></output><input type="range" id="sim-zoom" min="16" max="50" step="1" value="${SIM.f}"></div>
     <div class="ctrl" data-c="N"><div class="lab">Apertura <small data-sub></small></div><div class="stepper"><button type="button" data-d="-1" aria-label="Abrir (F más bajo)">−</button><output></output><button type="button" data-d="1" aria-label="Cerrar (F más alto)">+</button></div></div>
     <div class="ctrl" data-c="t"><div class="lab">Velocidad <small data-sub></small></div><div class="stepper"><button type="button" data-d="-1" aria-label="Más rápida">−</button><output></output><button type="button" data-d="1" aria-label="Más lenta">+</button></div></div>
     <div class="ctrl" data-c="iso"><div class="lab">ISO <small data-sub></small><button type="button" class="chip" data-isoauto style="margin-top:6px">ISO AUTO</button></div><div class="stepper"><button type="button" data-d="-1" aria-label="ISO más bajo">−</button><output></output><button type="button" data-d="1" aria-label="ISO más alto">+</button></div></div>
+    <div class="ctrl"><label class="lab" for="sim-zoom">Zoom <small data-zoomtxt></small></label><output data-zoomv style="font:700 18px var(--f-mono)"></output><input type="range" id="sim-zoom" min="16" max="50" step="1" value="${SIM.f}"></div>
    </div>
+   <div class="chips chips-row" role="group" aria-label="Escena">${SCENES.map(s => `<button type="button" class="chip" data-scene="${s.id}" aria-pressed="false">${s.n}</button>`).join("")}</div>
    <ul class="verdict" data-verdict></ul>
    <p class="muted" style="font-size:14px">Simulación aproximada para entender la relación entre ajustes. Los valores de apertura mínima según el zoom son aproximados para el 16-50 mm.</p>
   </div>`;
@@ -1992,7 +2013,8 @@ const ICON = {
   recipes:'<path d="M6 3h9l3 3v15H6z"/><path d="M9 10h6M9 14h6M9 18h4"/>',
   notes:'<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/>',
   cloud:'<path d="M7 18a4 4 0 0 1-.5-8A6 6 0 0 1 18 9a4.5 4.5 0 0 1-.5 9z"/>',
-  lock:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>'
+  lock:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',
+  phone:'<rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/>'
 };
 const icon = k => `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true">${ICON[k]}</svg>`;
 // What the guide offers, in the order she'll meet it. Used on the home tab and the welcome screen.
@@ -2030,6 +2052,7 @@ function viewHome(){
      <span class="muted" style="font-size:15px">${n === 0 ? "Aún no has empezado." : n === LESSONS.length ? "¡Programa completado!" : `${n} de ${LESSONS.length} lecciones completadas.`}</span>
     </div>
    </section>
+   ${installHint()}
    ${last ? `
    <section class="continue">
     <span class="eyebrow">${n === 0 ? "Empieza aquí" : "Continúa"} · Lección ${last.n}</span>
@@ -2044,7 +2067,7 @@ function viewHome(){
     <div class="unit-head"><h2>${u.id}. ${esc(u.title)}</h2><span class="eyebrow">${u.lessons.length} lecciones</span></div>
     <ul class="lessons">${u.lessons.map(l => {
       const st = S.steps[l.id] || [], done = !!S.done[l.id], part = !done && st.length > 0;
-      return `<li><a href="#leccion-${l.id}"><span class="num ${done?"done":part?"part":""} ${l.proj?"proj":""}">${done?"✓":l.proj?"★":l.n}</span><span><span class="l-title">${esc(l.title)}</span><br><span class="l-sub">${esc(l.sub)} · ${l.min} min</span></span><span class="chev" aria-hidden="true">›</span></a></li>`;
+      return `<li><a href="#leccion-${l.id}"><span class="num ${done?"done":part?"part":""} ${l.proj?"proj":""}">${done?"✓":l.proj?"★":l.n}</span><span><span class="l-title">${esc(l.title)}</span><br><span class="l-sub">${esc(l.sub)} · <span style="white-space:nowrap">${l.min} min</span></span></span><span class="chev" aria-hidden="true">›</span></a></li>`;
     }).join("")}</ul>
    </section>`).join("")}
    ${Object.keys(S.notes).length ? `<section class="stack" style="gap:10px"><h2>Tu cuaderno</h2>${LESSONS.filter(l => S.notes[l.id]).map(l => `<details class="card"><summary style="cursor:pointer;font-weight:700">${l.proj?"★":l.n} · ${esc(l.title)}</summary><p style="white-space:pre-wrap;margin-top:10px">${esc(S.notes[l.id])}</p><a href="#leccion-${l.id}" style="font-size:15px">Abrir ›</a></details>`).join("")}</section>` : ""}
@@ -2172,7 +2195,7 @@ function viewCamera(){
   mountCamera(app.querySelector("[data-cam]"));
 }
 function viewSim(){
-  app.innerHTML = `<div class="stack-l"><div class="stack"><h1>Juega con la luz</h1><p class="muted">Elige un modo y una escena. Lo que eliges tú se ajusta con − y +; lo demás lo decide la cámara, igual que en tu α6500.</p></div><div data-sim></div></div>`;
+  app.innerHTML = `<div class="stack-l"><div class="stack"><h1>Juega con la luz</h1><p class="muted">Cambia los ajustes con − y +. Lo demás lo decide la cámara, como en tu α6500.</p></div><div data-sim></div></div>`;
   mountSim(app.querySelector("[data-sim]"));
 }
 function viewRecipes(){
@@ -2225,6 +2248,11 @@ Sync.onState(st => {
   const el = document.querySelector("[data-syncst]"); if(el) el.textContent = syncLabel();
 });
 
+// In Safari on an iPhone, before the app is on the home screen.
+const inSafari = () => /iPhone|iPad|iPod/.test(navigator.userAgent) && !navigator.standalone && !matchMedia("(display-mode: standalone)").matches;
+const SHARE_ICON = `<svg class="share-ico" viewBox="0 0 24 24" aria-label="Compartir"><path d="M12 3v12M8 7l4-4 4 4"/><path d="M8 10H6v11h12V10h-2"/></svg>`;
+const installHint = () => inSafari() ? `<div class="install">${icon("phone")}<span><b>Ponla en tu pantalla de inicio</b><span class="muted">Toca ${SHARE_ICON} abajo y luego «Añadir a pantalla de inicio». Se abrirá como una app, a pantalla completa. Entra desde allí: Safari y la app guardan la sesión por separado.</span></span></div>` : "";
+
 function showSignIn(){
   document.body.classList.add("signin-on");
   const host = document.getElementById("signin");
@@ -2262,6 +2290,7 @@ function showSignIn(){
       <span class="brand-mark" aria-hidden="true"></span>
       <h1>Bienvenida a Escuela α6500</h1>
       <p class="muted lede">Tu guía para aprender a usar tu Sony α6500, en español y con la cámara en la mano.</p>
+      ${installHint()}
       <ul class="features">
        ${[["path","Aprende paso a paso","24 lecciones cortas, desde el primer encendido hasta hacer fotos con intención."],
           ["camera","Conoce cada botón","Un mapa de la cámara: tocas una rueda o un botón y te dice para qué sirve."],
