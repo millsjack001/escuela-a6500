@@ -92,7 +92,7 @@ body.in-lesson .top .top-back{display:inline-flex}
 .ring svg{width:22px;height:22px;transform:rotate(-90deg)}
 .ring circle{fill:none;stroke-width:3.5}
 .ring .rt{stroke:var(--sunk)}
-.ring .rf{stroke:var(--ok);stroke-linecap:round;transition:stroke-dasharray .4s}
+.ring .rf{stroke:var(--ok);stroke-linecap:round;transition:stroke-dasharray .28s ease-out}
 
 /* tab bar */
 .nav{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--bar);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);box-shadow:0 -.5px 0 var(--line);
@@ -117,7 +117,7 @@ body.in-lesson .top .top-back{display:inline-flex}
 .hero{padding-top:6px}
 .hero p{font-size:17px;color:var(--muted);max-width:60ch}
 .progress{height:6px;border-radius:99px;background:var(--sunk);overflow:hidden}
-.progress > i{display:block;height:100%;background:var(--ok);border-radius:99px;transition:width .4s}
+.progress > i{display:block;height:100%;background:var(--ok);border-radius:99px;transition:width .28s ease-out}
 .card{background:var(--surface);border-radius:var(--r);padding:16px}
 .continue{background:var(--surface);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:12px;box-shadow:0 1px 2px rgba(0,0,0,.04),0 8px 24px -12px rgba(0,0,0,.18)}
 .continue .eyebrow{color:var(--accent)}
@@ -230,18 +230,25 @@ td:first-child{font-weight:600;white-space:nowrap}
 .lesson-foot .btn{width:100%}
 .lesson-foot .muted{text-decoration:none;min-height:44px;display:inline-flex;align-items:center}
 .sheet-bg{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.35);display:flex;align-items:flex-end;animation:fade .2s ease-out}
-.sheet{width:100%;max-width:680px;margin:0 auto;background:var(--surface);border-radius:14px 14px 0 0;padding:28px 20px calc(20px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;animation:rise .32s cubic-bezier(.2,.9,.3,1)}
+.sheet{width:100%;max-width:680px;margin:0 auto;background:var(--surface);border-radius:14px 14px 0 0;padding:28px 20px calc(20px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;animation:rise .28s cubic-bezier(.2,.9,.3,1)}
 .sheet .btn{width:100%}
 .sheet .progress{width:100%;margin:4px 0 8px}
 .sheet-check{width:72px;height:72px}
 .sheet-check circle{fill:var(--ok)}
-.sheet-check path{fill:none;stroke:#fff;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:44;stroke-dashoffset:44;animation:draw .45s .15s ease-out forwards}
+.sheet-check path{fill:none;stroke:#fff;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:44;stroke-dashoffset:44;animation:draw .28s .12s ease-out forwards}
 .sheet-bg.out{opacity:0;transition:opacity .2s}
 @keyframes fade{from{opacity:0}}
 @keyframes rise{from{transform:translateY(100%)}}
 @keyframes draw{to{stroke-dashoffset:0}}
 @media (prefers-reduced-motion: reduce){.sheet-bg,.sheet{animation:none}.sheet-check path{animation:none;stroke-dashoffset:0}}
 .donebar{display:flex;align-items:center;gap:10px;color:var(--ok);font-weight:600}
+/* Gentle motion, iOS-style: short (under 300ms), eased out, no overshoot. All of it is off under reduced motion. */
+.steps .box.tick{animation:tick .2s ease-out}
+.donebar.in{animation:fadeup .22s ease-out}
+.practice{animation:fadeup .25s ease-out}
+@keyframes tick{from{transform:scale(.8)}}
+@keyframes fadeup{from{opacity:0;transform:translateY(8px)}}
+@media (prefers-reduced-motion: reduce){.steps .box.tick,.donebar.in,.practice{animation:none}}
 
 /* camera map */
 .cam-tabs,.seg{display:flex;gap:2px;background:var(--fill);border-radius:9px;padding:2px}
@@ -313,7 +320,7 @@ td:first-child{font-weight:600;white-space:nowrap}
 /* white balance demo */
 .wb-frame{position:relative;border-radius:var(--r);overflow:hidden;aspect-ratio:16/9;max-width:100%}
 .wb-frame svg{position:absolute;inset:0;width:100%;height:100%}
-.wb-cast{position:absolute;inset:0;mix-blend-mode:multiply;transition:background .3s,opacity .3s}
+.wb-cast{position:absolute;inset:0;mix-blend-mode:multiply;transition:background .25s,opacity .25s}
 
 /* recipes */
 .recipe{display:flex;flex-direction:column;gap:10px}
@@ -330,6 +337,7 @@ td:first-child{font-weight:600;white-space:nowrap}
 .howto-d[open] summary{margin-bottom:10px}
 .howto-d summary::after,.recipe .r-head::after,.think summary::after{content:"";flex:none;width:9px;height:9px;border-right:2px solid #C4C4C7;border-bottom:2px solid #C4C4C7;transform:rotate(45deg) translate(-2px,-2px);transition:transform .2s}
 .howto-d[open] summary::after,.recipe[open] .r-head::after,.think[open] summary::after{transform:rotate(-135deg) translate(-2px,-2px)}
+@media (prefers-reduced-motion: reduce){.howto-d summary::after,.recipe .r-head::after,.think summary::after{transition:none}}
 
 /* sign-in */
 #signin{display:none}
@@ -2158,10 +2166,10 @@ function viewLesson(l){
    </section>
    <div class="lesson-foot" data-foot></div>
   </article>`;
-  function foot(){
+  function foot(fresh){
     const done = !!S.done[l.id];
     app.querySelector("[data-foot]").innerHTML = `
-     ${done ? `<div class="donebar">✓ Lección completada</div>` : ""}
+     ${done ? `<div class="donebar${fresh ? " in" : ""}">✓ Lección completada</div>` : ""}
      <div class="btn-row">
       ${done ? (next ? `<a class="btn btn-primary" href="#leccion-${next.id}">Siguiente: ${esc(next.title)}</a>` : `<a class="btn btn-primary" href="#programa">Volver al programa</a>`)
              : `<button type="button" class="btn btn-primary" data-complete>Marcar como completada</button>`}
@@ -2179,12 +2187,13 @@ function viewLesson(l){
   function onStep(e){
     const c = e.target.closest(".steps input"); if(!c) return;
     const set = new Set(S.steps[l.id] || []); c.checked ? set.add(+c.dataset.k) : set.delete(+c.dataset.k);
+    const box = c.nextElementSibling?.querySelector(".box"); if(box){ box.classList.remove("tick"); if(c.checked){ void box.offsetWidth; box.classList.add("tick"); } }
     S.steps[l.id] = [...set]; save();
   }
   app.onclick = e => {
     const j = e.target.closest("[data-jump]"); if(j){ document.getElementById(j.dataset.jump)?.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"}); return; }
     if(e.target.closest("[data-practice]")){ openPractice(l, () => { const done = new Set(S.steps[l.id] || []); app.querySelectorAll(".steps input").forEach(c => c.checked = done.has(+c.dataset.k)); }); return; }
-    if(e.target.closest("[data-complete]")){ S.done[l.id] = true; save(); updateRing(); foot(); celebrate(l, next); }
+    if(e.target.closest("[data-complete]")){ S.done[l.id] = true; save(); updateRing(); foot(true); celebrate(l, next); }
     else if(e.target.closest("[data-undo]")){ delete S.done[l.id]; save(); updateRing(); foot(); }
     const o = e.target.closest("[data-opensim]"); if(o){ SIM.mode = o.dataset.opensim; if(l.id === "iso") SIM.scene = "interior"; location.hash = "simulador"; }
   };
@@ -2252,9 +2261,23 @@ function viewRecipes(){
   app.onclick = e => { const j = e.target.closest("[data-jump]"); if(j) document.getElementById(j.dataset.jump)?.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"}); };
 }
 
+// Screen changes move like iOS: opening a lesson pushes it in from the right, going back slides
+// from the left, switching tabs is a quick cross-fade. Re-renders in place (keepScroll) don't move.
+const calm = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+let lastHash = null;
+function screenMotion(from, to){
+  if(from === null || from === to || calm()) return;
+  const li = x => x.startsWith("leccion-") ? LESSONS.findIndex(l => l.id === x.slice(8)) : -1;
+  const a = li(from), b = li(to);
+  const dx = b >= 0 && (a < 0 || b > a) ? 28 : a >= 0 ? -28 : 0;
+  app.animate(dx ? [{opacity: 0, transform: `translateX(${dx}px)`}, {opacity: 1, transform: "none"}] : [{opacity: 0}, {opacity: 1}],
+    {duration: dx ? 260 : 160, easing: "cubic-bezier(.25,.1,.25,1)"});
+}
 function route(keepScroll){
   const y = scrollY;
   const h = (location.hash || "#programa").slice(1);
+  if(keepScroll !== true) screenMotion(lastHash, h);
+  lastHash = h;
   app.onclick = null; app.onchange = null;
   let tab = "programa";
   if(h.startsWith("leccion-") && byId(h.slice(8))) viewLesson(byId(h.slice(8)));
@@ -2395,6 +2418,22 @@ function hideSignIn(){
   document.getElementById("signin").innerHTML = "";
   startApp();
 }
+
+// Fold-out cards (recipes, Piénsalo answers, notebook, how-to) open and close with a short height
+// animation instead of snapping, the way iOS expands a row.
+function foldCard(d){
+  const s = d.querySelector(":scope > summary"), closing = d.open && !d._closing;
+  const from = d.offsetHeight; d._a?.cancel();
+  d.open = false; const shut = d.offsetHeight; d.open = true; const full = d.offsetHeight;
+  d._closing = closing; d.style.overflow = "hidden";
+  const a = d._a = d.animate({height: [`${from}px`, `${closing ? shut : full}px`]}, {duration: 240, easing: "cubic-bezier(.25,.1,.25,1)"});
+  if(!closing) [...d.children].filter(c => c !== s).forEach(c => c.animate({opacity: [0, 1]}, {duration: 240, easing: "ease-out"}));
+  a.onfinish = () => { if(d._closing) d.open = false; d._closing = false; d._a = null; d.style.overflow = ""; };
+}
+document.addEventListener("click", e => {
+  const s = e.target.closest("details > summary"); if(!s || calm()) return;
+  e.preventDefault(); foldCard(s.parentElement);
+});
 
 let started = false;
 function startApp(){
