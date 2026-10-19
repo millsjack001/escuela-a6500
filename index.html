@@ -75,7 +75,7 @@ button{font:inherit;color:inherit}
 /* Feel like an app, not a web page: no grey tap flash, no link previews on long press, no selecting
    buttons and labels, no double-tap or pinch zoom, no rubber-band of the whole page.
    Reading text and the fields she types in stay selectable. */
-html{-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;touch-action:pan-x pan-y;overscroll-behavior:none}
+html{-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;touch-action:pan-x pan-y;overscroll-behavior:none;overflow-x:hidden}
 body{overscroll-behavior:none;overflow-x:clip}
 .prose,.goal,.think p,.callout,.mission,.table-wrap,.gloss,.recipe dl,.recipe p,.cam-info p,.review p{-webkit-user-select:text;user-select:text}
 :is(.prose,.callout,.mission,.recipe,.review) :is(a,button,label,summary){-webkit-user-select:none;user-select:none}
@@ -370,7 +370,7 @@ td:first-child{font-weight:600;white-space:nowrap}
 .cm-row.on .v{color:#fff}
 .cm-note{position:absolute;left:2cqw;right:2cqw;bottom:2cqh;background:#2C2C2E;border-radius:6px;font-size:4.8cqh;padding:2cqh 3cqw;box-shadow:0 2px 10px rgba(0,0,0,.6)}
 /* the camera body: top plate, back with screen and controls, lens */
-.cam{background:linear-gradient(#27282B,#1A1B1D);border-radius:20px;padding:6px 6px 8px;color:#E6E6E8;box-shadow:0 10px 24px -10px rgba(0,0,0,.55),inset 0 1px 0 #3A3B3F;-webkit-user-select:none;user-select:none}
+.cam{touch-action:none;background:linear-gradient(#27282B,#1A1B1D);border-radius:20px;padding:6px 6px 8px;color:#E6E6E8;box-shadow:0 10px 24px -10px rgba(0,0,0,.55),inset 0 1px 0 #3A3B3F;-webkit-user-select:none;user-select:none}
 @media (max-width:700px) and (min-height:740px){.cam{position:sticky;top:calc(env(safe-area-inset-top,0px) + 58px);z-index:5}}
 .cam .sim-frame{position:relative;top:auto;z-index:auto;box-shadow:0 0 0 2px #0B0B0C;border-radius:4px}
 .cam-top{display:flex;align-items:center;gap:8px;height:50px;padding:0 2px 6px;border-bottom:1px solid #303134;margin-bottom:8px}
@@ -528,6 +528,7 @@ body.signin-on .wrap, body.signin-on .nav{display:none}
 </nav>
 
 <script>
+const APP_BUILD = "19 oct · cámara fija";
 (function(){
 "use strict";
 
@@ -1927,6 +1928,7 @@ function mountSim(el, opts){
      <li>El <b>disparador</b> hace la foto. Puedes tocar la pantalla para mover el enfoque, como en la cámara.</li>
     </ul>
     <p class="muted" style="font-size:14px">Simulación aproximada para entender la relación entre ajustes. El menú es una versión resumida del de la α6500, con las mismas pestañas y en el mismo orden.</p>
+    <p class="muted" style="font-size:13px">Versión ${APP_BUILD}</p>
    </details>
   </div>`;
   const $ = s => el.querySelector(s);
@@ -2232,9 +2234,10 @@ function mountSim(el, opts){
     return {r: rr, z, bg, mv, shakeRatio, shakeEff, steady, cast, bw};
   }
 
-  // iPhone can start moving the page before it honours touch-action, so a finger on a dial or the
-  // wheel keeps the page still explicitly.
+  // A finger anywhere on the camera body works the camera, like holding the real one, so it never
+  // scrolls the page. iPhone can ignore touch-action, so the moves are cancelled explicitly too.
   function holdStill(node){ node.addEventListener("touchmove", e => e.preventDefault(), {passive: false}); }
+  holdStill($("[data-cam]"));
   /* --- top-plate dials and the lens ring: drag sideways, one click every few millimetres --- */
   const modeStrip = $("[data-modestrip]"), MSTEP = 38;
   let modeDrag = 0;
@@ -2246,23 +2249,30 @@ function mountSim(el, opts){
     const kn = $("[data-knob=mode]"); kn.setAttribute("aria-valuetext", SIM.mode); kn.setAttribute("aria-valuenow", i); kn.setAttribute("aria-valuemin", 0); kn.setAttribute("aria-valuemax", MODE_DIAL.length - 1);
   }
   function knob(kn, step, onStep, onMove, tapFlip){
+    // A finger is followed with touch events and every one is cancelled, so iPhone never pans the
+    // page from a dial; a mouse uses pointer events.
     let dr = null;
-    holdStill(kn);
-    kn.addEventListener("pointerdown", e => { dr = {x: e.clientX, acc: 0, moved: false, id: e.pointerId, px: step * (kn.getBoundingClientRect().width / kn.offsetWidth || 1)}; kn.setPointerCapture(e.pointerId); kn.classList.add("held"); });
-    kn.addEventListener("pointermove", e => {
-      if(!dr || e.pointerId !== dr.id) return;
-      const dx = e.clientX - dr.x; dr.x = e.clientX; dr.acc += dx;
+    const start = (x, id) => { dr = {x, acc: 0, moved: false, id, px: step * (kn.getBoundingClientRect().width / kn.offsetWidth || 1)}; kn.classList.add("held"); };
+    const move = x => {
+      const dx = x - dr.x; dr.x = x; dr.acc += dx;
       if(Math.abs(dr.acc) > 3) dr.moved = true;
       onMove && onMove(dx, dr);
       while(Math.abs(dr.acc) >= dr.px){ const sgn = Math.sign(dr.acc); dr.acc -= sgn * dr.px; onStep(sgn); }
-    });
-    const end = e => {
-      if(!dr || e.pointerId !== dr.id) return;
+    };
+    const end = (x, tap) => {
       const d = dr; dr = null; kn.classList.remove("held");
-      if(!d.moved){ const b = kn.getBoundingClientRect(); onStep((e.clientX < b.left + b.width / 2 ? -1 : 1) * (tapFlip ? -1 : 1)); } // a tap turns it one click that way
+      if(tap && !d.moved){ const b = kn.getBoundingClientRect(); onStep((x < b.left + b.width / 2 ? -1 : 1) * (tapFlip ? -1 : 1)); } // a tap turns it one click that way
       onMove && onMove(null, d);
     };
-    kn.addEventListener("pointerup", end); kn.addEventListener("pointercancel", end);
+    const touch = (e, id) => [...e.changedTouches].find(t => t.identifier === id);
+    kn.addEventListener("touchstart", e => { e.preventDefault(); if(dr) return; const t = e.changedTouches[0]; start(t.clientX, "t" + t.identifier); }, {passive: false});
+    kn.addEventListener("touchmove", e => { e.preventDefault(); const t = dr && touch(e, +dr.id.slice(1)); if(t) move(t.clientX); }, {passive: false});
+    const tEnd = e => { const t = dr && touch(e, +String(dr.id).slice(1)); if(t){ e.preventDefault(); end(t.clientX, e.type === "touchend"); } };
+    kn.addEventListener("touchend", tEnd, {passive: false}); kn.addEventListener("touchcancel", tEnd, {passive: false});
+    kn.addEventListener("pointerdown", e => { if(e.pointerType === "touch" || dr) return; start(e.clientX, e.pointerId); kn.setPointerCapture(e.pointerId); });
+    kn.addEventListener("pointermove", e => { if(dr && e.pointerId === dr.id) move(e.clientX); });
+    const pEnd = e => { if(dr && e.pointerId === dr.id) end(e.clientX, e.type === "pointerup"); };
+    kn.addEventListener("pointerup", pEnd); kn.addEventListener("pointercancel", pEnd);
     kn.addEventListener("keydown", e => { const k = {ArrowLeft: -1, ArrowDown: -1, ArrowRight: 1, ArrowUp: 1}[e.key]; if(k){ e.preventDefault(); onStep(k); } });
   }
   const knurl = (kn) => { let off = 0; return (dx) => { if(dx === null) return; off += dx; kn.style.backgroundPosition = `${off.toFixed(1)}px 0`; }; };
@@ -2274,7 +2284,6 @@ function mountSim(el, opts){
 
   // The control wheel: every ~30° of a finger going round it is one click (clockwise = down / next).
   const wheel = $("[data-wheel]"), ring = $("[data-ring]");
-  holdStill(wheel);
   let spin = null, spun = false, ringA = 0;
   const angle = e => { const b = wheel.getBoundingClientRect(); return Math.atan2(e.clientY - (b.top + b.height / 2), e.clientX - (b.left + b.width / 2)) * 180 / Math.PI; };
   wheel.addEventListener("pointerdown", e => { spin = {a: angle(e), acc: 0, id: e.pointerId}; spun = false; });
