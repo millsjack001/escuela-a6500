@@ -306,7 +306,7 @@ td:first-child{font-weight:600;white-space:nowrap}
 /* simulator */
 .sim-frame{position:relative;border-radius:var(--r);overflow:hidden;background:#000;aspect-ratio:3/2;max-width:100%}
 @media (max-width:700px) and (min-height:640px){.sim-frame{position:sticky;top:calc(env(safe-area-inset-top,0px) + 60px);z-index:5;box-shadow:0 8px 20px -8px rgba(0,0,0,.45)}}
-.sim-frame > svg{position:absolute;inset:0;width:100%;height:100%;display:block;transition:filter .25s}
+.sim-frame > svg{position:absolute;inset:0;width:100%;height:100%;display:block}
 .sim-noise{position:absolute;inset:0;mix-blend-mode:overlay;pointer-events:none;background-size:160px 160px}
 .sim-osd{position:absolute;left:0;right:0;bottom:0;padding:6px 10px;background:linear-gradient(transparent,rgba(0,0,0,.65));
   font:600 13px var(--f-mono);color:#EEF2EE;display:flex;gap:12px;flex-wrap:wrap;text-shadow:0 1px 2px #000}
@@ -314,7 +314,7 @@ td:first-child{font-weight:600;white-space:nowrap}
 .sim-mode{position:absolute;left:10px;top:8px;font:700 15px var(--f-mono);color:#EEF2EE;text-shadow:0 1px 2px #000}
 .sim-focus{position:absolute;width:13%;aspect-ratio:1;border:2px solid #3FD07A;border-radius:3px;left:37.5%;top:47%;box-shadow:0 0 0 1px rgba(0,0,0,.4)}
 @keyframes blink{to{visibility:hidden}}
-@media (prefers-reduced-motion: reduce){.btn,.steps .box,.howto-d summary::after,.recipe .r-head::after,.ring .rf{transition:none}.sim-osd .blink{animation:none;text-decoration:underline}.progress > i{transition:none}.sim-frame > svg{transition:none}}
+@media (prefers-reduced-motion: reduce){.btn,.steps .box,.howto-d summary::after,.recipe .r-head::after,.ring .rf{transition:none}.sim-osd .blink{animation:none;text-decoration:underline}.progress > i{transition:none}}
 .meter{font-size:13px;color:var(--muted)}
 .meter-bar{position:relative;height:28px;margin-top:22px}
 .meter-ticks{position:absolute;inset:0;display:flex;justify-content:space-between;align-items:flex-end}
@@ -341,49 +341,14 @@ td:first-child{font-weight:600;white-space:nowrap}
 .verdict .w{background:var(--warn-card);box-shadow:0 0 0 1px var(--warn-edge) inset}
 .verdict .w b{color:var(--warn)}
 @media (max-width:340px){.verdict{grid-template-columns:1fr}}
-/* simulator controls that work like the camera: pick a value, then turn a dial */
+/* simulator */
 .sim{gap:12px}
-.sim-live{gap:12px}
+.sim-wb{position:absolute;inset:0;mix-blend-mode:soft-light;pointer-events:none;opacity:0}
+.sim-grid{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;stroke:rgba(255,255,255,.7);stroke-width:1}
+.sim-grid line{vector-effect:non-scaling-stroke}
 .meter-txt{display:flex;justify-content:space-between;align-items:baseline}
 .meter-txt b{font-weight:600;color:var(--ink)}
 .sim .meter-bar{margin-top:16px;height:24px}
-.sim-wb{position:absolute;inset:0;mix-blend-mode:soft-light;pointer-events:none;opacity:0}
-.sim-grid{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;stroke:rgba(255,255,255,.7);stroke-width:1;vector-effect:non-scaling-stroke}
-.sim-grid line{vector-effect:non-scaling-stroke}
-.sim-osd{align-items:center}
-.osd-b{border:0;background:none;color:inherit;font:inherit;text-shadow:inherit;padding:3px 5px;margin:-3px -5px;border-radius:5px;cursor:pointer;min-height:26px}
-.osd-b.on{box-shadow:0 0 0 1.5px #FF9F43 inset;color:#FFD9B8}
-.osd-b.blink{color:#FFB020;animation:blink 1s steps(2,start) infinite}
-.sim-menubtn{position:absolute;right:8px;top:6px;border:0;border-radius:7px;background:rgba(0,0,0,.6);color:#fff;font:700 12px var(--f-body);letter-spacing:.05em;padding:0 11px;min-height:32px;cursor:pointer}
-.menu-open .sim-menubtn,.menu-open .sim-osd,.menu-open .sim-mode,.menu-open .sim-focus{visibility:hidden}
-.params{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:2px;background:var(--fill);border-radius:10px;padding:2px}
-.params button{border:0;background:transparent;border-radius:8px;padding:5px 2px;cursor:pointer;color:var(--ink);display:flex;flex-direction:column;align-items:center;gap:1px;min-height:48px;justify-content:center}
-.params small{font-size:11.5px;color:var(--muted);font-weight:500;white-space:nowrap}
-.params b{font:600 14.5px var(--f-mono);white-space:nowrap;letter-spacing:-.03em}
-.params button.auto b{color:var(--muted);font-weight:400}
-.params button[aria-pressed="true"]{background:var(--surface);box-shadow:0 3px 8px rgba(0,0,0,.12),0 3px 1px rgba(0,0,0,.04)}
-.params button[aria-pressed="true"] small{color:var(--accent)}
-:root[data-theme="dark"] .params button[aria-pressed="true"]{background:#636366}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .params button[aria-pressed="true"]{background:#636366}}
-:root[data-theme="dark"] .params button[aria-pressed="true"] small{color:var(--ink)}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .params button[aria-pressed="true"] small{color:var(--ink)}}
-.dialcard{background:var(--surface);border-radius:var(--r);padding:10px;display:flex;flex-direction:column;gap:10px}
-.dial-row{display:grid;grid-template-columns:40px minmax(0,1fr) 40px;gap:6px;align-items:center}
-.dial-step{border:0;background:var(--fill);border-radius:10px;height:52px;font-size:22px;font-weight:500;cursor:pointer;color:var(--ink);line-height:1}
-.dial-step:disabled{opacity:.3;cursor:default}
-.dial{position:relative;height:52px;overflow:hidden;touch-action:none;cursor:grab;border-radius:10px;background:var(--fill);
-  -webkit-mask-image:linear-gradient(90deg,transparent,#000 22%,#000 78%,transparent);mask-image:linear-gradient(90deg,transparent,#000 22%,#000 78%,transparent)}
-.dial:active{cursor:grabbing}
-.dial-track{position:absolute;left:50%;top:0;bottom:0;will-change:transform}
-.dial-track span{position:absolute;top:0;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:8px;font:500 13px var(--f-mono);color:var(--muted);white-space:nowrap;letter-spacing:-.03em}
-.dial-track span::before{content:"";position:absolute;top:0;left:50%;width:1.5px;height:10px;background:var(--ctl)}
-.dial-track span.on{color:var(--ink);font-weight:700;font-size:16px}
-.dial-track span.no{opacity:.3}
-.dial-mark{position:absolute;left:50%;top:0;width:3px;height:16px;margin-left:-1.5px;border-radius:0 0 2px 2px;background:var(--accent)}
-.dial.off .dial-track{opacity:.45}
-.dial.off .dial-mark{background:var(--ctl)}
-.dial-hint{font-size:14px;color:var(--muted);line-height:1.35;min-height:2.7em}
-.dial-hint.nudge{color:var(--ink);animation:fadeup .2s ease-out}
 /* the camera's MENU on the simulator screen; sizes follow the screen (container units) */
 .cm{position:absolute;inset:0;background:#0A0A0B;color:#F2F2F2;display:flex;flex-direction:column;container-type:size;font-family:var(--f-body);letter-spacing:0}
 .cm button{font:inherit;color:inherit;cursor:pointer}
@@ -404,17 +369,81 @@ td:first-child{font-weight:600;white-space:nowrap}
 .cm-row.on{background:#E2640F;color:#fff;box-shadow:none}
 .cm-row.on .v{color:#fff}
 .cm-note{position:absolute;left:2cqw;right:2cqw;bottom:2cqh;background:#2C2C2E;border-radius:6px;font-size:4.8cqh;padding:2cqh 3cqw;box-shadow:0 2px 10px rgba(0,0,0,.6)}
-.wheelpad{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;padding:6px 0}
-.wp-btn{justify-self:start;border:0;border-radius:999px;background:#2C2C2E;color:#fff;font:700 13px var(--f-body);letter-spacing:.05em;padding:0 16px;min-height:44px;cursor:pointer}
-.wheel{position:relative;width:184px;height:184px;border-radius:50%;touch-action:none;
-  background:repeating-conic-gradient(#2A2A2D 0 4deg,#333337 4deg 8deg);box-shadow:inset 0 0 0 2px #4A4A4E,0 4px 14px rgba(0,0,0,.28)}
-.wk{position:absolute;border:0;background:none;color:#EDEDED;font:700 13px var(--f-body);width:58px;height:50px;display:grid;place-items:center;cursor:pointer;border-radius:12px}
-.wk svg{width:20px;height:16px;fill:none;stroke:currentColor;stroke-width:1.6}
-.wk.up{top:4px;left:63px}.wk.down{bottom:4px;left:63px;font-size:18px}.wk.left{left:4px;top:67px}.wk.right{right:4px;top:67px}
-.wk.ok{left:50%;top:50%;width:70px;height:70px;margin:-35px 0 0 -35px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#3A3A3D,#1C1C1E);box-shadow:inset 0 0 0 1.5px #555}
+/* the camera body: top plate, back with screen and controls, lens */
+.cam{background:linear-gradient(#27282B,#1A1B1D);border-radius:20px;padding:6px 6px 8px;color:#E6E6E8;box-shadow:0 10px 24px -10px rgba(0,0,0,.55),inset 0 1px 0 #3A3B3F;-webkit-user-select:none;user-select:none}
+@media (max-width:700px) and (min-height:740px){.cam{position:sticky;top:calc(env(safe-area-inset-top,0px) + 58px);z-index:5}}
+.cam .sim-frame{position:relative;top:auto;z-index:auto;box-shadow:0 0 0 2px #0B0B0C;border-radius:4px}
+.cam-top{display:flex;align-items:center;gap:8px;height:50px;padding:0 2px 6px;border-bottom:1px solid #303134;margin-bottom:8px}
+.cam-shoe{flex:1;max-width:56px;height:10px;border-radius:2px;background:#303134;box-shadow:inset 0 0 0 1px #3D3E42;margin-right:auto}
+.knob{position:relative;flex:none;height:40px;border-radius:9px;overflow:hidden;touch-action:none;cursor:ew-resize;background-color:#2C2D30;box-shadow:inset 0 1px 0 #47484C,inset 0 -8px 10px -4px rgba(0,0,0,.6),0 1px 2px #000}
+.knob.knurl{background-image:repeating-linear-gradient(90deg,#4A4B4F 0 2px,#202124 2px 6px)}
+.knob.held{box-shadow:inset 0 0 0 1.5px #FF9F43,0 1px 2px #000}
+.knob[data-knob=dial]{width:62px}
+.knob.mode{width:118px}
+.knob.mode::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#2C2D30,rgba(44,45,48,0) 32%,rgba(44,45,48,0) 68%,#2C2D30);pointer-events:none}
+.mode-strip{position:absolute;left:50%;top:0;bottom:0;will-change:transform}
+.mode-strip span{position:absolute;top:0;bottom:0;width:38px;display:grid;place-items:center;font:700 11.5px var(--f-body);color:#9A9BA0;letter-spacing:-.02em;white-space:nowrap}
+.mode-strip span.on{color:#fff;font-size:14px}
+.knob-idx{position:absolute;left:50%;top:0;margin-left:-5px;border:5px solid transparent;border-top-color:#FF9F43;z-index:1}
+.cbtn{border:0;background:#2F3034;color:#EDEDEF;font:700 11px var(--f-body);letter-spacing:.03em;border-radius:999px;min-height:30px;padding:0 10px;cursor:pointer;box-shadow:inset 0 1px 0 #4A4B4F,0 1px 2px #000;flex:none}
+.cbtn.round{width:34px;height:34px;padding:0;border-radius:50%}
+.cbtn.sm{width:32px;height:32px;min-height:32px;font-size:10px}
+.cbtn:active,.shutter:active{background:#48494D}
+.shutter{width:46px;height:46px;border-radius:50%;border:0;background:#3A3B3F;box-shadow:0 0 0 4px #2A2B2E,inset 0 1px 0 #55565A,0 2px 3px #000;display:grid;place-items:center;cursor:pointer;flex:none;padding:0}
+.shutter i{width:30px;height:30px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#5A5B60,#2E2F33)}
+.shutter:active i{transform:scale(.92)}
+.cam-back{display:grid;grid-template-columns:minmax(0,1fr) 92px;gap:6px;align-items:center}
+.cam-right{display:flex;flex-direction:column;align-items:center;gap:6px}
+.cam-row{display:flex;justify-content:space-between;align-items:center;width:100%}
+.wheel{position:relative;width:92px;height:92px;border-radius:50%;touch-action:none;background:#26272A;box-shadow:inset 0 0 0 2px #4A4A4E,0 3px 8px rgba(0,0,0,.5);flex:none}
+.wheel-ring{position:absolute;inset:3px;border-radius:50%;background:repeating-conic-gradient(#2C2D31 0 5deg,#3B3C40 5deg 10deg);pointer-events:none}
+.wk{position:absolute;border:0;background:none;color:#EDEDED;font:700 10px var(--f-body);width:36px;height:30px;display:grid;place-items:center;cursor:pointer;border-radius:8px;padding:0}
+.wk svg{width:16px;height:13px;fill:none;stroke:currentColor;stroke-width:1.6}
+.wk.up{top:0;left:28px}.wk.down{bottom:0;left:28px;font-size:15px}.wk.left{left:0;top:31px;width:28px}.wk.right{right:0;top:31px;width:28px}
+.wk.ok{left:50%;top:50%;width:34px;height:34px;margin:-17px 0 0 -17px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#3E3E42,#1C1C1E);box-shadow:inset 0 0 0 1.5px #555}
 .wk:active{color:#FF9F43}
 .wk.ok:active{box-shadow:inset 0 0 0 2px #FF9F43}
-@media (prefers-reduced-motion: reduce){.osd-b.blink{animation:none;text-decoration:underline}.dial-hint.nudge{animation:none}}
+.cam-lens{display:flex;align-items:center;gap:10px;margin-top:8px;padding-top:8px;border-top:1px solid #303134}
+.cam-lens-l{font:600 12px var(--f-body);color:#A8A9AE}
+.knob.lens{flex:1;height:34px}
+.cam-lens b{font:600 13px var(--f-mono);min-width:50px;text-align:right}
+/* what the camera's screen shows */
+.sim-ex{position:absolute;inset:0;pointer-events:none;opacity:0}
+.sim-ex.dark{background:#000}.sim-ex.light{background:#fff}
+.sim-black{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none}
+.sim-osd-top{position:absolute;left:6px;right:6px;top:4px;display:flex;justify-content:space-between;align-items:baseline;font:600 10.5px var(--f-mono);color:#EEF2EE;text-shadow:0 1px 2px #000;pointer-events:none}
+.sim-osd-top .m{font-size:13px;font-weight:700}
+.cam .sim-osd{font-size:11px;gap:8px;padding:4px 6px;pointer-events:none}
+.sim-osd .histo{position:absolute;right:6px;bottom:24px;width:34%;height:26%;fill:rgba(255,255,255,.85);background:rgba(0,0,0,.4)}
+.sim-focus.eye{width:7%}
+.sim-pop{position:absolute;inset:0;pointer-events:none;font-family:var(--f-body);color:#fff;letter-spacing:0}
+.sim-pop > *{pointer-events:auto}
+.pop-side{position:absolute;right:0;top:0;bottom:0;width:50%;background:rgba(10,10,11,.88);display:flex;flex-direction:column;justify-content:center;padding:4px 0;font-size:12px}
+.pop-side b{padding:2px 8px 4px;font-size:11px;color:#C7C7CC;font-weight:600}
+.pop-side span{padding:2px 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pop-side span.on{background:#E2640F}
+.pop-side small,.pop-ev small{padding:4px 8px 0;font-size:9.5px;color:#A8A8AE}
+.pop-ev{position:absolute;left:0;right:0;bottom:0;background:rgba(10,10,11,.85);padding:6px 10px;display:flex;flex-direction:column;gap:3px;font-size:11px}
+.pop-ev small{padding:0}
+.ev-scale{position:relative;display:flex;justify-content:space-between;font:600 10px var(--f-mono);color:#C7C7CC;padding-bottom:7px;border-bottom:1px solid #8E8E93}
+.ev-scale i{position:absolute;bottom:-1px;width:3px;height:10px;margin-left:-1.5px;background:#FF9F43}
+.ev-v{font:700 15px var(--f-mono)}
+.pop-fn{position:absolute;left:0;right:0;bottom:0;background:rgba(10,10,11,.88);padding:4px;font-size:11px}
+.fn-title{padding:0 4px 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fn-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:2px}
+.fn-grid span{display:flex;flex-direction:column;align-items:center;background:#26262A;border-radius:3px;padding:2px 1px;font:600 9.5px var(--f-body);white-space:nowrap;overflow:hidden;cursor:pointer;line-height:1.25}
+.fn-grid span small{font-size:8.5px;color:#A8A8AE;font-weight:500}
+.fn-grid span.on{background:#E2640F}.fn-grid span.on small{color:#fff}
+.pop-msg,.pop-toast{position:absolute;left:8px;right:8px;top:50%;transform:translateY(-50%);background:rgba(28,28,30,.95);border-radius:6px;padding:7px 10px;font-size:12px;line-height:1.3;text-align:center}
+.pop-toast{top:auto;bottom:26px;transform:none}
+.sim-hint{font-size:15px;line-height:1.4;min-height:2.8em}
+.sim-help ul{margin:0;padding:12px 16px 4px 32px;background:var(--surface);border-radius:var(--r);display:flex;flex-direction:column;gap:6px;font-size:15px;line-height:1.4}
+.cam .cm-row{font-size:max(11px,5.5cqh)}
+.cam .cm-sub{font-size:max(10px,5cqh)}
+.cam .cm-pages button{font-size:max(10px,4.6cqh)}
+.cam .cm-title{font-size:max(12px,5.6cqh)}
+.cam .cm-note{font-size:max(10.5px,4.8cqh)}
+@media (prefers-reduced-motion: reduce){.shutter:active i{transform:none}}
 
 /* white balance demo */
 .wb-frame{position:relative;border-radius:var(--r);overflow:hidden;aspect-ratio:16/9;max-width:100%}
@@ -1657,7 +1686,7 @@ const SCENES = [
  {id:"interior", wk:3600, n:"Interior", ev:7, sky:["#D8C7A8","#E9DDC6"], g:"#9C7A55", hill:"#BCA683", tree:"#8E7556", night:false, indoor:true},
  {id:"noche", wk:4000, n:"Noche", ev:4, sky:["#0E1A33","#2A3B5E"], g:"#2E3A2C", hill:"#1D2638", tree:"#162016", night:true}
 ];
-const SIM = {mode:"A", scene:"sombra", f:50, N:5.6, t:1/125, iso:400, isoAuto:true, ev:0, sel:"N",
+const SIM = {mode:"A", scene:"sombra", f:50, N:5.6, t:1/125, iso:400, isoAuto:true, ev:0,
   // camera MENU settings the photo reacts to (indexes into their option lists below)
   minss:2, wb:0, style:0, ss:0, grid:3, mv:{}};
 const EVS = Array.from({length: 19}, (_, i) => (i - 9) / 3);
@@ -1680,7 +1709,8 @@ function solve(st){
   const handSS = 1 / (st.f * 1.5), minSS = handSS * MINSS[st.minss ?? 2][1];
   const isoFor = (N, t) => clamp(100 * Math.pow(2, Math.log2(N*N/t) - EV), 100, 6400);
   if(st.mode === "P" || st.mode === "A"){
-    if(st.mode === "P"){ N = mA; let i = AP.indexOf(N); while(N*N/Math.pow(2, L(iso)) < 1/250 && N < 8){ N = AP[++i]; } }
+    if(st.mode === "P"){ N = mA; let i = AP.indexOf(N); while(N*N/Math.pow(2, L(iso)) < 1/250 && N < 8){ N = AP[++i]; }
+      if(st.shift) N = AP[clamp(AP.indexOf(N) + st.shift, AP.indexOf(mA), AP.length - 1)]; } // program shift with the control dial
     t = N*N / Math.pow(2, L(iso));
     if(st.isoAuto && t > minSS){ iso = snap(ISOS, isoFor(N, minSS)); t = N*N / Math.pow(2, L(iso)); }
     if(t < SS[0] || t > 30) blink.t = true;
@@ -1716,7 +1746,9 @@ function sceneSVG(){
   <filter id="fBg" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur data-bgblur stdDeviation="1"/></filter>
   <filter id="fMov" x="-30%" y="-10%" width="160%" height="120%"><feGaussianBlur data-movblur stdDeviation="0 0"/></filter>
   <filter id="fShake"><feGaussianBlur data-shake stdDeviation="0"/></filter>
+  <filter id="fStyle" color-interpolation-filters="sRGB"><feColorMatrix data-sat type="saturate" values="1"/><feComponentTransfer><feFuncR data-con type="linear" slope="1" intercept="0"/><feFuncG data-con type="linear" slope="1" intercept="0"/><feFuncB data-con type="linear" slope="1" intercept="0"/></feComponentTransfer></filter>
  </defs>
+ <g data-styleg>
  <g filter="url(#fShake)">
  <g data-world>
   <rect x="-200" y="-200" width="700" height="600" fill="url(#skyG)"/>
@@ -1748,6 +1780,7 @@ function sceneSVG(){
   </g>
  </g>
  </g>
+ </g>
 </svg>`;
 }
 
@@ -1757,7 +1790,7 @@ function sceneSVG(){
 // effect]. Items with an effect change the simulated photo.
 const ONOFF = ["Activado","Desactivado"], OFFON = ["Desactivado","Activado"];
 const WB = [["Auto",0],["Luz día",5500],["Sombra",7500],["Nublado",6500],["Incandescente",3200]];
-const STYLES = [["Estándar",""],["Intenso","saturate(1.35) contrast(1.06)"],["Neutro","saturate(.72)"],["Retrato","saturate(.88) brightness(1.03)"],["Paisaje","saturate(1.22) contrast(1.1)"],["B/N","grayscale(1) contrast(1.05)"]];
+const STYLES = [["Estándar",1,1],["Intenso",1.35,1.06],["Neutro",.72,.96],["Retrato",.88,.97],["Paisaje",1.22,1.1],["B/N",0,1.05]];
 const MINSS = [["Más lento",4],["Lento",2],["Estándar",1],["Rápido",.5],["Más rápido",.25]];
 const GRIDS = ["Cuadríc. regla 3 tercios","Cuadrícula cuadrada","Cuadríc. diag.+cuad.","Desactivado"];
 const CAM_MENU = [
@@ -1806,217 +1839,112 @@ const MENU_ICON = {
   star: () => `<path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.8l-5.2 2.8 1-5.8L3.5 9.7l5.9-.8z"/>`
 };
 
-/* ---------- simulator ---------- */
+/* ---------- simulator: an α6500 in her hands ---------- */
+// The back of the camera with its real controls: mode dial, control dial, shutter and C1 on top;
+// MENU, Fn, the control wheel, playback and C3 on the right of the screen; zoom on the lens.
+// The controls do what they do on the camera, so practice here carries over.
+const MODE_DIAL = ["AUTO","P","A","S","M","1","2","Vídeo","S&Q","SCN","Pano"];
+const DRIVES = ["Disparo único","Continuo Hi","Continuo Mid","Continuo Lo","Autodisparador 10 s","Autodisparador 2 s"];
+const FN_ITEMS = [["Modo de avance","Avance"],["Modo flash","Flash"],["Modo de enfoque","Enfoque"],["Área de enfoque","Área"],["Compensación exposición","±"],["ISO","ISO"],
+  ["Modo medición","Medición"],["Balance blancos","WB"],["DRO/HDR auto","DRO"],["Estilo creativo","Estilo"],["Efecto de foto","Efecto"],["Calidad","Calidad"]];
+const SCENE_LIGHT = {sol: "Mucha luz: sol directo de mediodía.", sombra: "Luz media: a la sombra en un día despejado.", atardecer: "Poca luz, cálida: el sol está bajo.", interior: "Poca luz: dentro de casa con lámparas.", noche: "Muy poca luz: una calle de noche."};
+const MODE_HINT = {
+  AUTO: "AUTO: la cámara lo decide todo. Encuadra y pulsa el disparador.",
+  P: "P: la cámara elige apertura y velocidad. Si giras el dial de control, cambias la pareja (cambio de programa, verás P*).",
+  A: "A: gira el dial de control para cambiar la apertura. La velocidad la pone la cámara.",
+  S: "S: gira el dial de control para cambiar la velocidad. La apertura la pone la cámara.",
+  M: "M: el dial de control cambia la apertura y la rueda la velocidad. Mira el indicador MM.",
+  other: "Este modo existe en tu cámara, pero el simulador lo trata como P. Para practicar usa AUTO, P, A, S o M."
+};
 function mountSim(el, opts){
   opts = opts || {};
-  if(opts.mode){ SIM.mode = opts.mode; }
-  const calmNow = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const PARAMS = [["N","Apertura"],["t","Velocidad"],["iso","ISO"],["ev","Exp. ±"],["f","Zoom"]];
+  if(opts.mode) SIM.mode = opts.mode;
+  if(!MODE_DIAL.includes(SIM.mode)) SIM.mode = "A";
+  SIM.shift = 0; SIM.drive = SIM.drive || 0; SIM.disp = SIM.disp || 0; SIM.shots = SIM.shots || [];
   el.innerHTML = `
   <div class="stack sim">
-   <div class="sim-frame" data-frame>
-    ${sceneSVG()}
-    <div class="sim-wb" data-wb></div>
-    <div class="sim-noise" data-noise></div>
-    <svg class="sim-grid" data-grid viewBox="0 0 300 200" preserveAspectRatio="none" aria-hidden="true"></svg>
-    <div class="sim-focus" aria-hidden="true"></div>
-    <div class="sim-mode" data-osdmode></div>
-    <button type="button" class="sim-menubtn" data-k="menu" aria-label="Botón MENU de la cámara">MENU</button>
-    <div class="sim-osd" data-osd></div>
-    <div class="cm" data-menu hidden></div>
-   </div>
-   <div class="stack sim-live" data-live>
-    <div class="meter" data-meterwrap>
-     <div class="meter-txt"><span>Más oscura</span><b data-metertxt></b><span>Más clara</span></div>
-     <div class="meter-bar"><div class="meter-ticks">${[-3,-2,-1,0,1,2,3].map((v,i,a) => `<span class="big"><b>${v>0?"+"+v:v}</b></span>` + (i < a.length-1 ? "<span></span><span></span>" : "")).join("")}</div><div class="meter-mark" data-mark></div></div>
+   <div class="cam" data-cam>
+    <div class="cam-top">
+     <span class="cam-shoe" aria-hidden="true"></span>
+     <div class="knob mode" data-knob="mode" role="slider" tabindex="0" aria-label="Dial de modos"><div class="mode-strip" data-modestrip>${MODE_DIAL.map((m, i) => `<span style="left:${i * 38}px">${m}</span>`).join("")}</div><i class="knob-idx" aria-hidden="true"></i></div>
+     <div class="knob knurl" data-knob="dial" role="slider" tabindex="0" aria-label="Dial de control"></div>
+     <button type="button" class="cbtn round" data-k="c1" aria-label="Botón C1">C1</button>
+     <button type="button" class="shutter" data-k="shutter" aria-label="Disparador"><i></i></button>
     </div>
-    <div class="seg" role="group" aria-label="Modo">${["P","A","S","M"].map(m => `<button type="button" data-mode="${m}" aria-pressed="false">${m}</button>`).join("")}</div>
-    <div class="dialcard">
-     <div class="params" role="group" aria-label="Ajuste que cambia la rueda">${PARAMS.map(([k, n]) => `<button type="button" data-sel="${k}" aria-pressed="false"><small>${n}</small><b data-pv="${k}"></b></button>`).join("")}</div>
-     <div class="dial-row">
-      <button type="button" class="dial-step" data-step="-1" aria-label="Un paso menos">−</button>
-      <div class="dial" data-dial role="slider" tabindex="0"><div class="dial-track" data-track></div><i class="dial-mark" aria-hidden="true"></i></div>
-      <button type="button" class="dial-step" data-step="1" aria-label="Un paso más">+</button>
+    <div class="cam-back">
+     <div class="sim-frame" data-frame>
+      ${sceneSVG()}
+      <div class="sim-wb" data-wb></div>
+      <div class="sim-ex dark" data-dark></div>
+      <div class="sim-ex light" data-light></div>
+      <div class="sim-noise" data-noise></div>
+      <svg class="sim-grid" data-grid viewBox="0 0 300 200" preserveAspectRatio="none" aria-hidden="true"></svg>
+      <div class="sim-focus" data-focus aria-hidden="true"></div>
+      <div class="sim-osd-top" data-osdtop></div>
+      <div class="sim-osd" data-osd></div>
+      <div class="sim-pop" data-pop hidden></div>
+      <div class="cm" data-menu hidden></div>
+      <div class="sim-black" data-black></div>
      </div>
-     <p class="dial-hint" data-dhint></p>
-    </div>
-    <div class="chips chips-row" role="group" aria-label="Escena">${SCENES.map(s => `<button type="button" class="chip" data-scene="${s.id}" aria-pressed="false">${s.n}</button>`).join("")}</div>
-    <ul class="verdict" data-verdict></ul>
-    <p class="muted" style="font-size:14px">Simulación aproximada para entender la relación entre ajustes. Los valores de apertura mínima según el zoom son aproximados para el 16-50 mm.</p>
-   </div>
-   <div class="stack" data-pad hidden>
-    <div class="wheelpad">
-     <button type="button" class="wp-btn" data-k="menu">MENU</button>
-     <div class="wheel" data-wheel role="group" aria-label="Rueda de control: gírala o pulsa sus lados">
-      <button type="button" class="wk up" data-k="up" aria-label="Arriba (DISP)">DISP</button>
-      <button type="button" class="wk right" data-k="right" aria-label="Derecha (ISO)">ISO</button>
-      <button type="button" class="wk down" data-k="down" aria-label="Abajo (compensación)">±</button>
-      <button type="button" class="wk left" data-k="left" aria-label="Izquierda (modo de avance)"><svg viewBox="0 0 20 16" aria-hidden="true"><rect x="1" y="5" width="11" height="9" rx="1"/><path d="M4 3h11v9M7 1h11v9"/></svg></button>
-      <button type="button" class="wk ok" data-k="ok" aria-label="Botón central: aceptar"></button>
+     <div class="cam-right">
+      <div class="cam-row"><button type="button" class="cbtn" data-k="menu">MENU</button><button type="button" class="cbtn round sm" data-k="aef" aria-label="Botón AF/MF · AEL">AEL</button></div>
+      <button type="button" class="cbtn round" data-k="fn" aria-label="Botón Fn">Fn</button>
+      <div class="wheel" data-wheel role="group" aria-label="Rueda de control: gírala o pulsa sus lados">
+       <i class="wheel-ring" data-ring aria-hidden="true"></i>
+       <button type="button" class="wk up" data-k="up" aria-label="Arriba: DISP">DISP</button>
+       <button type="button" class="wk right" data-k="right" aria-label="Derecha: ISO">ISO</button>
+       <button type="button" class="wk down" data-k="down" aria-label="Abajo: compensación de exposición">±</button>
+       <button type="button" class="wk left" data-k="left" aria-label="Izquierda: modo de avance"><svg viewBox="0 0 20 16" aria-hidden="true"><rect x="1" y="5" width="11" height="9" rx="1"/><path d="M4 3h11v9M7 1h11v9"/></svg></button>
+       <button type="button" class="wk ok" data-k="ok" aria-label="Botón central"></button>
+      </div>
+      <div class="cam-row"><button type="button" class="cbtn round sm" data-k="c3" aria-label="Botón C3 / borrar">C3</button><button type="button" class="cbtn round sm" data-k="play" aria-label="Botón de reproducción">▶</button></div>
      </div>
-     <span></span>
     </div>
-    <p class="muted" style="font-size:15px">Como en tu cámara: <b>gira la rueda</b> (o pulsa arriba y abajo) para moverte, los lados cambian de página, el <b>centro</b> acepta y <b>MENU</b> vuelve atrás. En la cámara la pantalla no responde al dedo en los menús; aquí puedes tocar una línea para ir a ella.</p>
-    <p class="muted" style="font-size:14px">Es una versión resumida del menú de la α6500: las mismas pestañas y en el mismo orden, con menos páginas. Balance de blancos, estilo creativo, ISO, compensación, SteadyShot y cuadrícula cambian la foto del simulador.</p>
+    <div class="cam-lens">
+     <span class="cam-lens-l">Zoom</span>
+     <div class="knob knurl lens" data-knob="zoom" role="slider" tabindex="0" aria-label="Anillo de zoom del objetivo"></div>
+     <b data-zoomv></b>
+    </div>
    </div>
+   <p class="sim-hint" data-hint aria-live="polite"></p>
+   <div class="meter" data-meterwrap>
+    <div class="meter-txt"><span>Más oscura</span><b data-metertxt></b><span>Más clara</span></div>
+    <div class="meter-bar"><div class="meter-ticks">${[-3,-2,-1,0,1,2,3].map((v,i,a) => `<span class="big"><b>${v>0?"+"+v:v}</b></span>` + (i < a.length-1 ? "<span></span><span></span>" : "")).join("")}</div><div class="meter-mark" data-mark></div></div>
+   </div>
+   <section class="stack sim-light" style="gap:8px">
+    <h3>¿Con qué luz haces la foto?</h3>
+    <p class="muted" style="font-size:14px">Cambia la luz y mira cómo responde la cámara. No son ajustes recomendados: para eso está el <a href="#recetas">planificador de Recetas</a>.</p>
+    <div class="chips chips-row" role="group" aria-label="Luz de la escena">${SCENES.map(s => `<button type="button" class="chip" data-scene="${s.id}" aria-pressed="false">${s.n}</button>`).join("")}</div>
+    <p style="font-size:15px" data-scenetxt></p>
+   </section>
+   <ul class="verdict" data-verdict></ul>
+   <details class="howto-d stack sim-help" style="gap:10px"><summary>Cómo se usa</summary>
+    <ul>
+     <li><b>Dial de modos</b> (arriba): desliza para elegir AUTO, P, A, S o M.</li>
+     <li><b>Dial de control</b> (la rueda estriada de arriba): desliza o toca a un lado. En A cambia la apertura, en S la velocidad, en M la apertura.</li>
+     <li><b>Rueda de control</b>: gírala con el dedo o pulsa sus lados. ISO a la derecha, ± abajo, avance a la izquierda, DISP arriba. El centro acepta.</li>
+     <li><b>MENU</b> y <b>Fn</b> abren los menús. <b>▶</b> muestra tus fotos y <b>C3</b> las borra.</li>
+     <li>El <b>disparador</b> hace la foto. Puedes tocar la pantalla para mover el enfoque, como en la cámara.</li>
+    </ul>
+    <p class="muted" style="font-size:14px">Simulación aproximada para entender la relación entre ajustes. El menú es una versión resumida del de la α6500, con las mismas pestañas y en el mismo orden.</p>
+   </details>
   </div>`;
   const $ = s => el.querySelector(s);
+  const frame = $("[data-frame]");
   $("[data-noise]").style.backgroundImage = getNoise() ? `url(${getNoise()})` : "none";
-  let r = solve(SIM);
+  const calmNow = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // screen: live | menu | fn | iso | ev | drive | play | review
+  const V = {screen: "live", fn: 0, fnSub: null, list: 0, play: 0, toast: "", toastT: 0, focus: [43.5, 52.5]};
+  let r = null, hint = "";
+  const simMode = () => ["P","A","S","M"].includes(SIM.mode) ? SIM.mode : "P";
+  const state = () => { const {shots, mv, ...st} = SIM; return {...st, mode: simMode(), isoAuto: SIM.mode === "AUTO" ? true : SIM.isoAuto, shift: SIM.mode === "P" ? SIM.shift : 0}; };
 
-  /* --- the dial: drag it sideways like the camera's wheel; it clicks to the nearest value --- */
-  const dial = $("[data-dial]"), track = $("[data-track]");
-  const STEP = 58;
-  let D = null, pos = 0, built = "";
-  function dialModel(){
-    const user = {N: SIM.mode === "A" || SIM.mode === "M", t: SIM.mode === "S" || SIM.mode === "M"};
-    switch(SIM.sel){
-      case "N": return {labels: AP.map(fmtN), i: AP.indexOf(snap(AP, r.N)), min: AP.indexOf(r.mA), off: !user.N, set: i => { SIM.N = Math.max(AP[i], minAp(SIM.f)); }};
-      case "t": return {labels: SS.map(fmtT), i: nearestIdx(SS, r.t), min: 0, off: !user.t, set: i => { SIM.t = SS[i]; }};
-      case "iso": return {labels: ["AUTO", ...ISOS], i: SIM.isoAuto ? 0 : nearestIdx(ISOS, SIM.iso) + 1, min: 0, off: false, set: i => { SIM.isoAuto = i === 0; if(i) SIM.iso = ISOS[i - 1]; }};
-      case "ev": return {labels: EVS.map(fmtEV), i: EVS.findIndex(v => Math.abs(v - SIM.ev) < .01), min: 0, off: false, set: i => { SIM.ev = EVS[i]; }};
-      default: return {labels: FLS.map(f => f + " mm"), i: nearestIdx(FLS, SIM.f), min: 0, off: false, set: i => { SIM.f = FLS[i]; }};
-    }
-  }
-  function place(p, animate){
-    pos = p;
-    track.style.transition = animate && !calmNow() ? "transform .18s ease-out" : "none";
-    track.style.transform = `translateX(${(-(p + .5) * STEP).toFixed(1)}px)`;
-  }
-  function drawDial(){
-    D = dialModel();
-    const key = SIM.sel + "|" + D.min + "|" + D.labels.length;
-    if(key !== built){
-      track.innerHTML = D.labels.map((t, i) => `<span data-i="${i}" style="left:${i * STEP}px;width:${STEP}px"${i < D.min ? ' class="no"' : ""}>${t}</span>`).join("");
-      built = key;
-    }
-    track.querySelectorAll("span").forEach(s => s.classList.toggle("on", +s.dataset.i === D.i));
-    dial.classList.toggle("off", D.off);
-    dial.setAttribute("aria-label", PARAMS.find(p => p[0] === SIM.sel)[1]);
-    dial.setAttribute("aria-valuemin", D.min); dial.setAttribute("aria-valuemax", D.labels.length - 1);
-    dial.setAttribute("aria-valuenow", D.i); dial.setAttribute("aria-valuetext", D.labels[D.i]);
-    dial.setAttribute("aria-disabled", D.off);
-    el.querySelectorAll("[data-step]").forEach(b => b.disabled = D.off);
-    if(!drag) place(D.i, true);
-  }
-  function stepTo(i){
-    if(!D || D.off) return;
-    i = clamp(i, D.min, D.labels.length - 1);
-    if(i !== D.i){ D.set(i); render(); }
-  }
-  let drag = null;
-  dial.addEventListener("pointerdown", e => {
-    if(D.off){ nudgeHint(); return; }
-    const sp = track.querySelectorAll("span");
-    const px = sp.length > 1 ? sp[1].getBoundingClientRect().left - sp[0].getBoundingClientRect().left : STEP; // screen px per step (the text-size zoom scales it)
-    drag = {x: e.clientX, from: pos, px, moved: false, id: e.pointerId};
-    dial.setPointerCapture(e.pointerId);
-  });
-  dial.addEventListener("pointermove", e => {
-    if(!drag || e.pointerId !== drag.id) return;
-    const dx = e.clientX - drag.x;
-    if(Math.abs(dx) > 4) drag.moved = true;
-    if(!drag.moved) return;
-    const p = clamp(drag.from - dx / drag.px, D.min - .35, D.labels.length - .65);
-    place(p, false);
-    stepTo(Math.round(clamp(p, D.min, D.labels.length - 1)));
-  });
-  const endDrag = e => {
-    if(!drag || e.pointerId !== drag.id) return;
-    const d = drag; drag = null;
-    if(!d.moved){ // a tap on a value jumps to it
-      const s = document.elementFromPoint(e.clientX, e.clientY)?.closest?.("[data-i]");
-      if(s && track.contains(s)) stepTo(+s.dataset.i);
-    }
-    place(D.i, true);
-  };
-  dial.addEventListener("pointerup", endDrag);
-  dial.addEventListener("pointercancel", endDrag);
-  dial.addEventListener("keydown", e => {
-    const k = {ArrowLeft: -1, ArrowDown: -1, ArrowRight: 1, ArrowUp: 1}[e.key];
-    if(k){ e.preventDefault(); stepTo(D.i + k); }
-    if(e.key === "Home"){ e.preventDefault(); stepTo(D.min); }
-    if(e.key === "End"){ e.preventDefault(); stepTo(D.labels.length - 1); }
-  });
-  function nudgeHint(){ const h = $("[data-dhint]"); h.classList.remove("nudge"); void h.offsetWidth; h.classList.add("nudge"); }
+  /* --- drawing is batched into one frame so dragging never queues up redraws --- */
+  let queued = false;
+  const schedule = () => { if(!queued){ queued = true; requestAnimationFrame(() => { queued = false; draw(); }); } };
 
-  /* --- the camera MENU, shown on the simulator's screen --- */
-  const M = {open: false, page: 0, row: 0, sub: null, note: ""};
-  const itemAt = () => MENU_PAGES[M.page].items[M.row];
-  const keyOf = () => M.page + "." + M.row;
-  const FX = {
-    ev: {opts: () => EVS.map(fmtEV), get: () => EVS.findIndex(v => Math.abs(v - SIM.ev) < .01), set: i => { SIM.ev = EVS[i]; }},
-    iso: {opts: () => ["AUTO", ...ISOS.map(String)], get: () => SIM.isoAuto ? 0 : nearestIdx(ISOS, SIM.iso) + 1, set: i => { SIM.isoAuto = i === 0; if(i) SIM.iso = ISOS[i - 1]; }}
-  };
-  ["minss","wb","style","ss","grid"].forEach(k => FX[k] = {get: () => SIM[k], set: i => { SIM[k] = i; }});
-  const optsOf = it => it[3] && FX[it[3]].opts ? FX[it[3]].opts() : it[1];
-  function valFor(page, row){ const it = MENU_PAGES[page].items[row]; return it[3] ? FX[it[3]].get() : (SIM.mv[page + "." + row] ?? it[2]); }
-  function drawMenu(){
-    const box = $("[data-menu]");
-    box.hidden = !M.open;
-    $("[data-live]").hidden = M.open;
-    $("[data-pad]").hidden = !M.open;
-    $("[data-frame]").classList.toggle("menu-open", M.open);
-    if(!M.open) return;
-    const pg = MENU_PAGES[M.page], tab = CAM_MENU[pg.ti];
-    const note = M.note ? `<div class="cm-note" role="status">${M.note}</div>` : "";
-    if(M.sub){
-      const it = itemAt(), o = optsOf(it), cur = valFor(M.page, M.row);
-      const first = clamp(M.sub.i - 3, 0, Math.max(0, o.length - 7));
-      box.innerHTML = `<div class="cm-title"><span style="color:${tab.c}">●</span> ${esc(it[0])}</div>
-       <div class="cm-list">${o.slice(first, first + 7).map((v, j) => { const i = first + j; return `<button type="button" class="cm-row${i === M.sub.i ? " on" : ""}" data-opt="${i}"><span class="nm">${esc(String(v))}</span><span class="v">${i === cur ? "✓" : ""}</span></button>`; }).join("")}</div>${note}`;
-      return;
-    }
-    const pagesOfTab = MENU_PAGES.map((p, i) => [p, i]).filter(([p]) => p.ti === pg.ti);
-    box.innerHTML = `<div class="cm-tabs">${CAM_MENU.map((t, ti) => `<button type="button" class="cm-tab${ti === pg.ti ? " on" : ""}" data-tab="${ti}" aria-label="${esc(t.n)}" style="color:${t.c}"><svg viewBox="0 0 24 24" aria-hidden="true">${MENU_ICON[t.ic](t.num)}</svg></button>`).join("")}</div>
-     <div class="cm-sub"><span>${esc(tab.n)}</span><span class="cm-pages">${pagesOfTab.map(([p, i]) => `<button type="button" data-page="${i}"${i === M.page ? ' class="on"' : ""}>${p.pi + 1}</button>`).join("")}</span></div>
-     <div class="cm-list">${pg.items.map((it, j) => { const o = optsOf(it); return `<button type="button" class="cm-row${j === M.row ? " on" : ""}" data-row="${j}"><span class="nm">${esc(it[0])}</span><span class="v">${o ? esc(String(o[valFor(M.page, j)])) : ""}</span></button>`; }).join("")}</div>${note}`;
-  }
-  function menuKey(k){
-    M.note = "";
-    if(!M.open){ if(k === "menu"){ M.open = true; M.sub = null; scrollTo({top: 0}); } drawMenu(); return; }
-    const pg = MENU_PAGES[M.page];
-    if(M.sub){
-      const o = optsOf(itemAt());
-      if(k === "up") M.sub.i = Math.max(0, M.sub.i - 1);
-      else if(k === "down") M.sub.i = Math.min(o.length - 1, M.sub.i + 1);
-      else if(k === "ok"){ const it = itemAt(); if(it[3]) FX[it[3]].set(M.sub.i); else SIM.mv[keyOf()] = M.sub.i; M.sub = null; render(); }
-      else if(k === "menu" || k === "left") M.sub = null;
-    } else {
-      if(k === "up") M.row = (M.row - 1 + pg.items.length) % pg.items.length;
-      else if(k === "down") M.row = (M.row + 1) % pg.items.length;
-      else if(k === "left" || k === "right"){ M.page = (M.page + (k === "left" ? -1 : 1) + MENU_PAGES.length) % MENU_PAGES.length; M.row = Math.min(M.row, MENU_PAGES[M.page].items.length - 1); }
-      else if(k === "ok"){
-        const it = itemAt(), o = optsOf(it);
-        if(o) M.sub = {i: valFor(M.page, M.row)};
-        else M.note = "En la cámara esto abre otra pantalla. En el simulador no hace nada.";
-      }
-      else if(k === "menu"){ M.open = false; render(); }
-    }
-    drawMenu();
-  }
-  // Turning the wheel: every ~30° of a finger going round it is one click (clockwise = down).
-  const wheel = $("[data-wheel]");
-  let spin = null, spun = false;
-  const angle = e => { const b = wheel.getBoundingClientRect(); return Math.atan2(e.clientY - (b.top + b.height / 2), e.clientX - (b.left + b.width / 2)) * 180 / Math.PI; };
-  wheel.addEventListener("pointerdown", e => { spin = {a: angle(e), acc: 0, id: e.pointerId}; spun = false; });
-  wheel.addEventListener("pointermove", e => {
-    if(!spin || e.pointerId !== spin.id) return;
-    let a = angle(e), d = a - spin.a; if(d > 180) d -= 360; if(d < -180) d += 360;
-    spin.a = a; spin.acc += d;
-    if(!spun && Math.abs(spin.acc) > 12){ spun = true; wheel.setPointerCapture(e.pointerId); }
-    while(spun && Math.abs(spin.acc) >= 30){ const s = Math.sign(spin.acc); spin.acc -= 30 * s; menuKey(s > 0 ? "down" : "up"); }
-  });
-  const endSpin = () => { spin = null; };
-  wheel.addEventListener("pointerup", endSpin); wheel.addEventListener("pointercancel", endSpin);
-  wheel.addEventListener("click", e => { if(spun){ e.stopPropagation(); spun = false; } }, true);
-
-  function render(){
-    r = solve(SIM);
-    const sc = r.sc;
-    // reflect camera-chosen values back into state so switching modes continues from them
-    SIM.N = r.N; SIM.t = r.t; if(SIM.isoAuto) SIM._iso = r.iso;
-    // scene colours
+  function photo(st, rr){
+    const sc = rr.sc;
     $("[data-sky0]").setAttribute("stop-color", sc.sky[0]); $("[data-sky1]").setAttribute("stop-color", sc.sky[1]);
     $("[data-hill]").setAttribute("fill", sc.hill); $("[data-ground]").setAttribute("fill", sc.g);
     $("[data-trees]").setAttribute("fill", sc.tree);
@@ -2026,91 +1954,356 @@ function mountSim(el, opts){
     $("[data-lamps]").style.display = sc.night ? "" : "none";
     el.querySelectorAll("[data-win]").forEach(w => w.setAttribute("fill", sc.night ? "#FFCF6E" : "#7E97A8"));
     $("[data-house]").style.display = sc.indoor ? "none" : "";
-    // zoom
-    const z = 1 + (SIM.f - 16) / 34 * 0.6;
+    const z = 1 + (st.f - 16) / 34 * 0.6;
     $("[data-world]").setAttribute("transform", `translate(132 118) scale(${z.toFixed(3)}) translate(-132 -118)`);
-    // depth of field
-    const bg = 0.15 + 3.4 * Math.pow(SIM.f / 50, 1.6) * (3.5 / r.N);
+    const bg = 0.15 + 3.4 * Math.pow(st.f / 50, 1.6) * (3.5 / rr.N);
     $("[data-bgblur]").setAttribute("stdDeviation", bg.toFixed(2));
-    // motion of the cyclist
-    const mv = Math.min(30, 420 * r.t);
+    const mv = Math.min(30, 420 * rr.t);
     $("[data-movblur]").setAttribute("stdDeviation", `${mv.toFixed(2)} 0`);
-    // camera shake: SteadyShot gives about 2 stops of help
-    const shakeRatio = r.t / r.handSS, steady = SIM.ss === 0, shakeEff = steady ? shakeRatio / 4 : shakeRatio;
+    const shakeRatio = rr.t / rr.handSS, steady = st.ss === 0, shakeEff = steady ? shakeRatio / 4 : shakeRatio;
     $("[data-shake]").setAttribute("stdDeviation", shakeEff > 1 ? Math.min(2.2, .4 * Math.log2(shakeEff * 4)).toFixed(2) : 0);
-    // brightness, picture style & noise
-    const b = clamp(Math.pow(2, r.delta * .75), .05, 4.5);
-    $("[data-frame] > svg").style.filter = `brightness(${b.toFixed(3)})` + (r.delta > 1.2 ? ` contrast(${clamp(1 - (r.delta-1.2)*.15, .6, 1).toFixed(2)})` : "") + (STYLES[SIM.style][1] ? " " + STYLES[SIM.style][1] : "");
-    const nz = clamp((Math.log2(r.iso / 100) - 3.3) / 6.5, 0, 1);
-    $("[data-noise]").style.opacity = (nz * .5).toFixed(2);
-    // white balance: a preset warmer than the light turns the photo orange, a cooler one blue
-    const wbK = WB[SIM.wb][1], cast = wbK ? Math.log2(wbK / sc.wk) : 0, bw = SIM.style === STYLES.length - 1;
+    // brightness as plain overlays (cheap for the phone to draw, unlike a CSS filter on the drawing)
+    const b = clamp(Math.pow(2, rr.delta * .75), .05, 4.5);
+    $("[data-dark]").style.opacity = b < 1 ? (1 - b).toFixed(3) : 0;
+    $("[data-light]").style.opacity = b > 1 ? Math.min(.92, 1 - 1 / b).toFixed(3) : 0;
+    const sty = STYLES[st.style] || STYLES[0], plain = sty[1] === 1 && sty[2] === 1;
+    const sg = $("[data-styleg]");
+    if(plain) sg.removeAttribute("filter");
+    else { $("[data-sat]").setAttribute("values", sty[1]); el.querySelectorAll("[data-con]").forEach(f => { f.setAttribute("slope", sty[2]); f.setAttribute("intercept", ((1 - sty[2]) / 2).toFixed(3)); }); sg.setAttribute("filter", "url(#fStyle)"); }
+    $("[data-noise]").style.opacity = (clamp((Math.log2(rr.iso / 100) - 3.3) / 6.5, 0, 1) * .5).toFixed(2);
+    const wbK = WB[st.wb][1], cast = wbK ? Math.log2(wbK / sc.wk) : 0, bw = sty[1] === 0;
     const wbEl = $("[data-wb]");
     wbEl.style.background = cast > 0 ? "#FF8A1E" : "#2F7BFF";
     wbEl.style.opacity = bw ? 0 : Math.min(.8, Math.abs(cast) * 1.5).toFixed(2);
-    // grid line
+    return {bg, z, mv, shakeRatio, shakeEff, steady, cast, bw};
+  }
+
+  function osd(){
+    const live = V.screen !== "play" && V.screen !== "menu";
+    const st = state();
+    $("[data-osdtop]").innerHTML = V.screen === "play"
+      ? `<span>▶ ${V.play + 1}/${SIM.shots.length}</span><span>${esc(SCENES.find(s => s.id === SIM.shots[V.play].st.scene).n)}</span>`
+      : `<span class="m">${SIM.mode === "P" && SIM.shift ? "P*" : esc(SIM.mode)}</span><span>${DRIVES[SIM.drive].startsWith("Auto") ? "⏱ " : DRIVES[SIM.drive].startsWith("Cont") ? "▤ " : ""}${999 - SIM.shots.length} · ▮▮▮</span>`;
+    $("[data-osdtop]").hidden = !live && V.screen !== "play" || (SIM.disp === 1 && V.screen === "live");
+    if(V.screen === "play"){
+      const sh = SIM.shots[V.play];
+      $("[data-osd]").innerHTML = `<span>${fmtT(sh.r.t)}</span><span>${fmtN(sh.r.N)}</span><span>${fmtEV(sh.st.ev)}</span><span>ISO ${sh.r.iso}</span><span>${sh.st.f} mm</span>`;
+    } else {
+      const bl = (k, s) => r.blink[k] ? `<span class="blink">${s}</span>` : `<span>${s}</span>`;
+      const mm = (r.delta >= 0 ? "+" : "−") + Math.abs(Math.round(r.delta * 3) / 3).toFixed(1);
+      $("[data-osd]").innerHTML = bl("t", fmtT(r.t)) + bl("N", fmtN(r.N)) + (st.mode === "M" && !st.isoAuto ? `<span>MM ${mm}</span>` : `<span>${fmtEV(SIM.ev)}</span>`) + bl("iso", "ISO " + (st.isoAuto ? "AUTO " : "") + r.iso)
+        + (SIM.disp === 2 ? histo() : "");
+    }
+    $("[data-osd]").hidden = !(V.screen === "play" || (live && SIM.disp !== 1));
+    $("[data-osd]").classList.toggle("with-h", SIM.disp === 2);
+  }
+  function histo(){
+    // a rough histogram: the hill of tones moves right when the photo is brighter
+    const c = clamp(50 + r.delta * 14, 6, 94), pts = [];
+    for(let x = 0; x <= 100; x += 4){ const h = Math.exp(-Math.pow((x - c) / 18, 2)) * 0.8 + Math.exp(-Math.pow((x - c + 22) / 12, 2)) * 0.35; pts.push(`${x},${(30 - h * 28).toFixed(1)}`); }
+    return `<svg class="histo" viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true"><polygon points="0,30 ${pts.join(" ")} 100,30"/></svg>`;
+  }
+
+  /* --- pop-ups the side buttons open on the screen (ISO, ±, drive, Fn) --- */
+  function popHTML(){
+    if(V.screen === "iso" || V.screen === "drive"){
+      const o = V.screen === "iso" ? ["AUTO", ...ISOS.map(String)] : DRIVES, i = V.list;
+      const first = clamp(i - 2, 0, Math.max(0, o.length - 5));
+      return `<div class="pop-side"><b>${V.screen === "iso" ? "ISO" : "Modo de avance"}</b>${o.slice(first, first + 5).map((v, j) => `<span class="${first + j === i ? "on" : ""}">${esc(v)}</span>`).join("")}<small>Gira la rueda · centro: aceptar</small></div>`;
+    }
+    if(V.screen === "ev"){
+      const v = EVS[V.list];
+      return `<div class="pop-ev"><b>Compensación exposición</b><div class="ev-scale">${[-3,-2,-1,0,1,2,3].map(x => `<span>${x > 0 ? "+" + x : x}</span>`).join("")}<i style="left:${((v + 3) / 6 * 100).toFixed(1)}%"></i></div><span class="ev-v">${fmtEV(v)}</span><small>Gira la rueda · centro: aceptar</small></div>`;
+    }
+    if(V.screen === "fn"){
+      const tiles = FN_ITEMS.map(([name, short], i) => { const loc = findItem(name); return `<span class="${i === V.fn ? "on" : ""}" data-fn="${i}"><small>${short}</small>${esc(shortVal(loc))}</span>`; }).join("");
+      const cur = findItem(FN_ITEMS[V.fn][0]);
+      if(V.fnSub !== null){
+        const o = optsAt(cur);
+        return `<div class="pop-side"><b>${esc(FN_ITEMS[V.fn][0])}</b>${o.slice(clamp(V.fnSub - 2, 0, Math.max(0, o.length - 5)), clamp(V.fnSub - 2, 0, Math.max(0, o.length - 5)) + 5).map((v, j) => `<span class="${clamp(V.fnSub - 2, 0, Math.max(0, o.length - 5)) + j === V.fnSub ? "on" : ""}">${esc(String(v))}</span>`).join("")}<small>Gira la rueda · centro: aceptar</small></div>`;
+      }
+      return `<div class="pop-fn"><div class="fn-title">${esc(FN_ITEMS[V.fn][0])}: <b>${esc(String(optsAt(cur)[valAt(cur)]))}</b></div><div class="fn-grid">${tiles}</div></div>`;
+    }
+    if(V.screen === "play" && !SIM.shots.length) return `<div class="pop-msg">No hay fotos. Pulsa el disparador para hacer una.</div>`;
+    return "";
+  }
+  // Fn items reuse the MENU's values, so both places always agree
+  function findItem(name){ for(let p = 0; p < MENU_PAGES.length; p++){ const j = MENU_PAGES[p].items.findIndex(it => it[0] === name); if(j >= 0) return {p, j, it: MENU_PAGES[p].items[j]}; } }
+  const optsAt = loc => optsOf(loc.it);
+  const valAt = loc => valFor(loc.p, loc.j);
+  function setAt(loc, i){ const it = loc.it; if(it[3]) FX[it[3]].set(i); else SIM.mv[loc.p + "." + loc.j] = i; }
+  function shortVal(loc){ const v = String(optsAt(loc)[valAt(loc)]); return v.replace("Disparo único", "Único").replace("Desactivado", "No").replace("Flash auto", "Auto").replace("Optimiz. gama D", "DRO").replace("Extra fino", "X.fino").replace("Punto flexible", "Punto").replace("Flash de relleno", "Relleno").replace("Flash desactivado", "No"); }
+
+  /* --- the camera MENU (data in CAM_MENU) --- */
+  const M = {page: 0, row: 0, sub: null, note: ""};
+  const itemAt = () => MENU_PAGES[M.page].items[M.row];
+  const FX = {
+    ev: {opts: () => EVS.map(fmtEV), get: () => EVS.findIndex(v => Math.abs(v - SIM.ev) < .01), set: i => { SIM.ev = EVS[i]; }},
+    iso: {opts: () => ["AUTO", ...ISOS.map(String)], get: () => SIM.isoAuto ? 0 : nearestIdx(ISOS, SIM.iso) + 1, set: i => { SIM.isoAuto = i === 0; if(i) SIM.iso = ISOS[i - 1]; }},
+    drive: {opts: () => DRIVES, get: () => SIM.drive, set: i => { SIM.drive = i; }}
+  };
+  ["minss","wb","style","ss","grid"].forEach(k => FX[k] = {get: () => SIM[k], set: i => { SIM[k] = i; }});
+  const optsOf = it => it[3] && FX[it[3]].opts ? FX[it[3]].opts() : it[1];
+  function valFor(page, row){ const it = MENU_PAGES[page].items[row]; return it[3] ? FX[it[3]].get() : (SIM.mv[page + "." + row] ?? it[2]); }
+  // drive mode lives on the wheel and in the menu: same value
+  MENU_PAGES.forEach(p => p.items.forEach(it => { if(it[0] === "Modo de avance"){ it[3] = "drive"; } }));
+  function menuHTML(){
+    const pg = MENU_PAGES[M.page], tab = CAM_MENU[pg.ti];
+    const note = M.note ? `<div class="cm-note" role="status">${M.note}</div>` : "";
+    if(M.sub){
+      const it = itemAt(), o = optsOf(it), cur = valFor(M.page, M.row);
+      const first = clamp(M.sub.i - 3, 0, Math.max(0, o.length - 6));
+      return `<div class="cm-title"><span style="color:${tab.c}">●</span> ${esc(it[0])}</div>
+       <div class="cm-list">${o.slice(first, first + 6).map((v, j) => { const i = first + j; return `<button type="button" class="cm-row${i === M.sub.i ? " on" : ""}" data-opt="${i}"><span class="nm">${esc(String(v))}</span><span class="v">${i === cur ? "✓" : ""}</span></button>`; }).join("")}</div>${note}`;
+    }
+    const pagesOfTab = MENU_PAGES.map((p, i) => [p, i]).filter(([p]) => p.ti === pg.ti);
+    return `<div class="cm-tabs">${CAM_MENU.map((t, ti) => `<button type="button" class="cm-tab${ti === pg.ti ? " on" : ""}" data-tab="${ti}" aria-label="${esc(t.n)}" style="color:${t.c}"><svg viewBox="0 0 24 24" aria-hidden="true">${MENU_ICON[t.ic](t.num)}</svg></button>`).join("")}</div>
+     <div class="cm-sub"><span>${esc(tab.n)}</span><span class="cm-pages">${pagesOfTab.map(([p, i]) => `<button type="button" data-page="${i}"${i === M.page ? ' class="on"' : ""}>${p.pi + 1}</button>`).join("")}</span></div>
+     <div class="cm-list">${pg.items.map((it, j) => { const o = optsOf(it); return `<button type="button" class="cm-row${j === M.row ? " on" : ""}" data-row="${j}"><span class="nm">${esc(it[0])}</span><span class="v">${o ? esc(String(o[valFor(M.page, j)])) : ""}</span></button>`; }).join("")}</div>${note}`;
+  }
+  function menuKey(k){
+    M.note = "";
+    const pg = MENU_PAGES[M.page];
+    if(M.sub){
+      const o = optsOf(itemAt());
+      if(k === "up") M.sub.i = Math.max(0, M.sub.i - 1);
+      else if(k === "down") M.sub.i = Math.min(o.length - 1, M.sub.i + 1);
+      else if(k === "ok"){ const it = itemAt(); if(it[3]) FX[it[3]].set(M.sub.i); else SIM.mv[M.page + "." + M.row] = M.sub.i; M.sub = null; }
+      else if(k === "menu" || k === "left") M.sub = null;
+    } else {
+      if(k === "up") M.row = (M.row - 1 + pg.items.length) % pg.items.length;
+      else if(k === "down") M.row = (M.row + 1) % pg.items.length;
+      else if(k === "left" || k === "right"){ M.page = (M.page + (k === "left" ? -1 : 1) + MENU_PAGES.length) % MENU_PAGES.length; M.row = Math.min(M.row, MENU_PAGES[M.page].items.length - 1); }
+      else if(k === "ok"){ const o = optsOf(itemAt()); if(o) M.sub = {i: valFor(M.page, M.row)}; else M.note = "En la cámara esto abre otra pantalla. En el simulador no hace nada."; }
+      else if(k === "menu") V.screen = "live";
+    }
+  }
+
+  /* --- what each control does, by screen --- */
+  function toast(t){ V.toast = t; clearTimeout(V.toastT); V.toastT = setTimeout(() => { V.toast = ""; schedule(); }, 2600); }
+  function say(t){ hint = t; }
+  function press(k){
+    const s = V.screen;
+    if(k === "shutter"){ if(s === "play" || s === "menu"){ V.screen = "live"; M.sub = null; } else shoot(); return schedule(); }
+    if(k === "menu"){ if(s === "menu") menuKey("menu"); else if(s === "live"){ V.screen = "menu"; M.sub = null; say("MENU: gira la rueda o pulsa arriba y abajo para moverte, los lados cambian de página, el centro acepta y MENU vuelve atrás."); } else { V.screen = "live"; V.fnSub = null; } return schedule(); }
+    if(s === "menu"){ menuKey(k === "c3" ? "" : k); return schedule(); }
+    if(k === "play"){ V.screen = s === "play" ? "live" : "play"; V.play = Math.max(0, SIM.shots.length - 1); if(V.screen === "play") say("Reproducción: gira la rueda o pulsa los lados para pasar fotos. C3 borra. Vuelve con ▶ o el disparador."); return schedule(); }
+    if(s === "play"){
+      if(k === "left" || k === "right"){ if(SIM.shots.length) V.play = (V.play + (k === "left" ? -1 : 1) + SIM.shots.length) % SIM.shots.length; }
+      else if(k === "c3" && SIM.shots.length){ SIM.shots.splice(V.play, 1); V.play = Math.max(0, Math.min(V.play, SIM.shots.length - 1)); toast("Foto borrada."); }
+      else if(k === "fn") toast("En reproducción, Fn envía la foto al móvil.");
+      return schedule();
+    }
+    if(s === "fn"){
+      const cur = findItem(FN_ITEMS[V.fn][0]);
+      if(V.fnSub !== null){
+        if(k === "up" || k === "down") V.fnSub = clamp(V.fnSub + (k === "up" ? -1 : 1), 0, optsAt(cur).length - 1);
+        else if(k === "ok"){ setAt(cur, V.fnSub); V.fnSub = null; }
+        else if(k === "fn"){ V.fnSub = null; }
+        return schedule();
+      }
+      if(k === "left") V.fn = (V.fn + 11) % 12; else if(k === "right") V.fn = (V.fn + 1) % 12;
+      else if(k === "up" || k === "down") V.fn = (V.fn + 6) % 12;
+      else if(k === "ok") V.fnSub = valAt(cur);
+      else if(k === "fn") V.screen = "live";
+      return schedule();
+    }
+    if(["iso","ev","drive"].includes(s)){
+      if(k === "ok"){ (s === "iso" ? FX.iso : s === "ev" ? FX.ev : FX.drive).set(V.list); V.screen = "live"; }
+      else if(k === "up" || k === "down") listStep(k === "up" ? -1 : 1);
+      else if(k === "fn") V.screen = "live";
+      return schedule();
+    }
+    // live view
+    if(k === "fn"){ V.screen = "fn"; V.fnSub = null; say("Fn: muévete con los lados de la rueda, gira el dial de control para cambiar el ajuste, o pulsa el centro para ver la lista."); }
+    else if(k === "right"){ V.screen = "iso"; V.list = FX.iso.get(); say("ISO: gira la rueda y pulsa el centro para aceptar."); }
+    else if(k === "down"){ V.screen = "ev"; V.list = FX.ev.get(); say("Compensación: gira la rueda. Más es una foto más clara. Centro para aceptar."); }
+    else if(k === "left"){ V.screen = "drive"; V.list = SIM.drive; say("Modo de avance: disparo único, ráfaga o temporizador."); }
+    else if(k === "up"){ SIM.disp = (SIM.disp + 1) % 3; toast(["Mostrar toda la info.", "Sin información.", "Histograma"][SIM.disp]); say("DISP cambia lo que ves en pantalla. El histograma muestra el brillo: si choca a la derecha, hay zonas quemadas."); }
+    else if(k === "ok"){ V.eye = true; clearTimeout(V.eyeT); V.eyeT = setTimeout(() => { V.eye = false; schedule(); }, 1800); say("Botón central: de fábrica es Eye AF. Mantenlo pulsado y la cámara enfoca el ojo."); }
+    else if(k === "c1" || k === "c2" || k === "c3" || k === "aef") toast(k === "aef" ? "AF/MF · AEL: bloquea la exposición o cambia a enfoque manual." : `${k.toUpperCase()}: botón personalizable. Lo eliges en la lección «Hazla tuya».`);
+    schedule();
+  }
+  function listStep(d){
+    const n = V.screen === "iso" ? ISOS.length + 1 : V.screen === "ev" ? EVS.length : DRIVES.length;
+    V.list = clamp(V.list + d, 0, n - 1);
+    // like the camera, ISO and ± change the picture while you turn
+    if(V.screen === "iso") FX.iso.set(V.list); else if(V.screen === "ev") FX.ev.set(V.list);
+  }
+  function turn(which, d){
+    const s = V.screen, mode = SIM.mode;
+    if(which === "mode"){ return; }
+    if(which === "zoom"){ SIM.f = FLS[clamp(nearestIdx(FLS, SIM.f) + d, 0, FLS.length - 1)]; say(`Zoom: ${SIM.f} mm. Con más zoom el fondo se desenfoca más, pero lo más abierto que llega es F${minAp(SIM.f)}.`); return schedule(); }
+    if(s === "menu"){ if(which === "wheel") menuKey(d > 0 ? "down" : "up"); return schedule(); }
+    if(s === "play"){ if(SIM.shots.length) V.play = (V.play + d + SIM.shots.length) % SIM.shots.length; return schedule(); }
+    if(["iso","ev","drive"].includes(s)){ listStep(which === "wheel" ? d : d); return schedule(); }
+    if(s === "fn"){
+      const cur = findItem(FN_ITEMS[V.fn][0]);
+      if(V.fnSub !== null){ V.fnSub = clamp(V.fnSub + d, 0, optsAt(cur).length - 1); return schedule(); }
+      if(which === "dial"){ setAt(cur, clamp(valAt(cur) + d, 0, optsAt(cur).length - 1)); }
+      else V.fn = (V.fn + d + 12) % 12;
+      return schedule();
+    }
+    // live view: the dials do what the mode says
+    if(which === "dial"){
+      if(mode === "A" || mode === "M"){ const i = clamp(AP.indexOf(snap(AP, r.N)) + d, AP.indexOf(r.mA), AP.length - 1); SIM.N = AP[i]; say(`Apertura ${fmtN(SIM.N)}. ${SIM.N >= 11 ? "Número alto: todo nítido, entra menos luz." : SIM.N <= 5.6 ? "Número bajo: fondo desenfocado, entra más luz." : ""}`); }
+      else if(mode === "S"){ SIM.t = SS[clamp(nearestIdx(SS, r.t) + d, 0, SS.length - 1)]; say(`Velocidad ${fmtT(SIM.t)}. ${SIM.t <= 1/500 ? "Congela el movimiento." : SIM.t >= 1/30 ? "Lenta: el ciclista sale movido y necesitas pulso firme." : ""}`); }
+      else if(mode === "P"){ SIM.shift = clamp(SIM.shift + d, -8, 12); say("Cambio de programa (P*): la cámara mantiene la exposición y cambia la pareja apertura-velocidad."); }
+      else say(MODE_HINT[mode === "AUTO" ? "AUTO" : "other"]);
+    } else if(which === "wheel"){
+      if(mode === "M"){ SIM.t = SS[clamp(nearestIdx(SS, r.t) + d, 0, SS.length - 1)]; say(`Velocidad ${fmtT(SIM.t)}. En M la rueda cambia la velocidad.`); }
+      else say(mode === "A" ? "En A la apertura se cambia con el dial de control (arriba)." : mode === "S" ? "En S la velocidad se cambia con el dial de control (arriba)." : MODE_HINT[["AUTO","P"].includes(mode) ? mode : "other"]);
+    }
+    schedule();
+  }
+  function setMode(i){
+    const m = MODE_DIAL[i]; if(m === SIM.mode) return;
+    SIM.mode = m; SIM.shift = 0;
+    say(MODE_HINT[["AUTO","P","A","S","M"].includes(m) ? m : "other"]);
+    schedule();
+  }
+  function shoot(){
+    const st = state(), rr = solve(st);
+    SIM.shots.push({st: {...st}, r: rr});
+    if(SIM.shots.length > 30) SIM.shots.shift();
+    const blk = $("[data-black]");
+    if(!calmNow()) blk.animate([{opacity: 1}, {opacity: 0}], {duration: 140, easing: "ease-in"});
+    const rev = (SIM.mv[reviewKey] ?? 0);
+    if(rev){ V.screen = "play"; V.play = SIM.shots.length - 1; clearTimeout(V.revT); V.revT = setTimeout(() => { if(V.screen === "play"){ V.screen = "live"; schedule(); } }, [0, 2000, 5000, 10000][rev]); }
+    say(`Foto hecha: ${fmtT(rr.t)} · ${fmtN(rr.N)} · ISO ${rr.iso}. Pulsa ▶ para verla.`);
+  }
+  const reviewKey = (() => { const loc = findItem("Revisión auto"); return loc.p + "." + loc.j; })();
+
+  /* --- draw everything for the current screen --- */
+  let last = {};
+  function draw(){
+    const st = state();
+    r = solve(st);
+    if(SIM.mode === "A" || SIM.mode === "M") SIM.N = r.N;
+    if(SIM.mode === "S" || SIM.mode === "M") SIM.t = r.t;
+    if(V.screen === "play" && SIM.shots.length){ const sh = SIM.shots[V.play]; photo(sh.st, sh.r); }
+    else photo(st, r);
+    const live = V.screen !== "menu";
+    // grid
     const g = SIM.grid, L = (x1, y1, x2, y2) => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`;
     let gl = "";
-    if(g === 0) gl = L(100,0,100,200) + L(200,0,200,200) + L(0,66.7,300,66.7) + L(0,133.3,300,133.3);
-    if(g === 1 || g === 2) for(let i = 1; i < 6; i++) gl += L(i*50,0,i*50,200) + (i < 4 ? L(0,i*50,300,i*50) : "");
-    if(g === 2) gl += L(0,0,300,200) + L(300,0,0,200);
-    $("[data-grid]").innerHTML = gl;
-    // OSD (tap a value to pick it for the dial)
-    const bl = (k, sel, s) => `<button type="button" class="osd-b${r.blink[k] ? " blink" : ""}${SIM.sel === sel ? " on" : ""}" data-sel="${sel}">${s}</button>`;
-    $("[data-osdmode]").textContent = SIM.mode;
-    const mm = (r.delta >= 0 ? "+" : "−") + Math.abs(Math.round(r.delta * 3) / 3).toFixed(1);
-    $("[data-osd]").innerHTML = bl("t", "t", fmtT(r.t)) + bl("N", "N", fmtN(r.N)) + (SIM.mode === "M" && !SIM.isoAuto ? `<span class="osd-b">MM ${mm}</span>` : bl("ev", "ev", fmtEV(SIM.ev))) + bl("iso", "iso", "ISO " + (SIM.isoAuto ? "AUTO " : "") + r.iso);
-    // meter
+    if(V.screen !== "play"){
+      if(g === 0) gl = L(100,0,100,200) + L(200,0,200,200) + L(0,66.7,300,66.7) + L(0,133.3,300,133.3);
+      if(g === 1 || g === 2) for(let i = 1; i < 6; i++) gl += L(i*50,0,i*50,200) + (i < 4 ? L(0,i*50,300,i*50) : "");
+      if(g === 2) gl += L(0,0,300,200) + L(300,0,0,200);
+    }
+    if(gl !== last.gl){ $("[data-grid]").innerHTML = gl; last.gl = gl; }
+    const fc = $("[data-focus]");
+    fc.hidden = V.screen === "play" || V.screen === "menu";
+    fc.classList.toggle("eye", !!V.eye);
+    fc.style.left = (V.eye ? 40 : V.focus[0] - 6.5) + "%"; fc.style.top = (V.eye ? 54 : V.focus[1] - 6.5) + "%";
+    osd();
+    const pop = popHTML() + (V.toast ? `<div class="pop-toast">${esc(V.toast)}</div>` : "");
+    const pe = $("[data-pop]"); pe.hidden = !pop; if(pop !== last.pop){ pe.innerHTML = pop; last.pop = pop; }
+    const mn = $("[data-menu]"); mn.hidden = V.screen !== "menu"; if(V.screen === "menu") mn.innerHTML = menuHTML();
+    frame.classList.toggle("menu-open", V.screen === "menu");
+    // top plate & lens
+    placeMode();
+    $("[data-zoomv]").textContent = SIM.f + " mm";
+    // meter, hint, scenes, verdict
     const mpos = clamp(r.delta, -3.3, 3.3);
     $("[data-mark]").style.left = `${((mpos + 3) / 6 * 100).toFixed(1)}%`;
     $("[data-metertxt]").textContent = Math.abs(r.delta) < .2 ? "Exposición correcta" : (r.delta > 0 ? `+${r.delta.toFixed(1)} pasos` : `${r.delta.toFixed(1)} pasos`);
-    // controls
-    el.querySelectorAll(".seg button").forEach(x => x.setAttribute("aria-pressed", x.dataset.mode === SIM.mode));
+    $("[data-hint]").textContent = hint || MODE_HINT[["AUTO","P","A","S","M"].includes(SIM.mode) ? SIM.mode : "other"];
     el.querySelectorAll("[data-scene]").forEach(x => x.setAttribute("aria-pressed", x.dataset.scene === SIM.scene));
-    const user = {N: SIM.mode === "A" || SIM.mode === "M", t: SIM.mode === "S" || SIM.mode === "M"};
-    const pv = {N: fmtN(r.N), t: fmtT(r.t), iso: SIM.isoAuto ? "AUTO" : String(r.iso), ev: fmtEV(SIM.ev), f: SIM.f + " mm"};
-    el.querySelectorAll(".params button").forEach(x => { const k = x.dataset.sel; x.setAttribute("aria-pressed", k === SIM.sel); x.classList.toggle("auto", (k === "N" || k === "t") && !user[k]); x.querySelector("b").textContent = pv[k]; });
-    const camWord = SIM.mode;
-    const hint = {
-      N: user.N ? "Tú la eliges. En tu cámara: gira el dial de control (arriba)." + ` Con este zoom, lo más abierto es F${r.mA}.` : `En modo ${camWord} la apertura la elige la cámara. Cambia a A o M para elegirla tú.`,
-      t: user.t ? (SIM.mode === "M" ? "Tú la eliges. En tu cámara: gira la rueda de control (atrás)." : "Tú la eliges. En tu cámara: gira el dial de control (arriba).") : `En modo ${camWord} la velocidad la elige la cámara. Cambia a S o M para elegirla tú.`,
-      iso: (SIM.isoAuto ? "En AUTO la cámara lo ajusta (100–6400). " : "") + "En tu cámara: pulsa ISO (derecha de la rueda) y gira la rueda.",
-      ev: SIM.mode === "M" && !SIM.isoAuto ? "En M con ISO fijo la compensación no cambia nada: la exposición la decides tú. Pon ISO en AUTO para usarla." : "Aclara u oscurece lo que la cámara cree correcto. En tu cámara: pulsa ± (abajo en la rueda) y gira la rueda.",
-      f: "En tu cámara: gira el anillo del objetivo o mueve su palanca de zoom."
-    };
-    $("[data-dhint]").textContent = hint[SIM.sel];
-    drawDial();
-    // verdict
+    $("[data-scenetxt]").textContent = SCENE_LIGHT[SIM.scene];
+    const p = V.screen === "play" && SIM.shots.length ? photoFacts(SIM.shots[V.play].st, SIM.shots[V.play].r) : photoFacts(st, r);
     const v = [];
-    const expTxt = Math.abs(r.delta) < .4 ? "Correcta." : r.delta > 0 ? (r.delta > 1.5 ? "Muy clara: zonas quemadas." : "Algo clara.") : (r.delta < -1.5 ? "Muy oscura." : "Algo oscura.");
-    v.push(["Brillo", expTxt, Math.abs(r.delta) >= .4]);
-    v.push(["Fondo", bg * z > 4.5 ? "Muy desenfocado." : bg * z > 2 ? "Desenfocado." : bg * z > 1 ? "Algo suave." : "Nítido.", false]);
-    v.push(["Ciclista", mv < 1.2 ? "Congelado." : mv < 5 ? "Ligeramente movido." : "Estela de movimiento.", false]);
-    v.push(["Ruido", r.iso <= 800 ? "Imperceptible." : r.iso <= 3200 ? "Muy bajo." : r.iso <= 6400 ? "Algo de grano." : "Mucho grano.", r.iso > 6400]);
-    v.push(["Pulso", shakeRatio <= 1 ? "Sin riesgo de foto movida." : shakeEff <= 1 ? "El SteadyShot te salva; sujétala firme." : steady ? "Foto movida: apoya la cámara o usa trípode." : "Foto movida: el SteadyShot está desactivado en el menú.", shakeEff > 1]);
-    v.push(["Color", bw ? "Blanco y negro (estilo creativo B/N)." : Math.abs(cast) < .25 ? "Natural." : cast > 0 ? "Anaranjada: el balance de blancos no es el de esta luz." : "Azulada: el balance de blancos no es el de esta luz.", !bw && Math.abs(cast) >= .25]);
-    const bk = Object.keys(r.blink);
-    if(bk.length) v.push(["Aviso", "Un valor parpadea: la cámara no llega a la exposición correcta con estos ajustes.", true]);
-    $("[data-verdict]").innerHTML = v.map(([a,b,w]) => `<li class="${w?"w":""}"><b>${a}</b>${b}</li>`).join("");
-    if(M.open) drawMenu();
+    v.push(["Brillo", Math.abs(p.r.delta) < .4 ? "Correcta." : p.r.delta > 0 ? (p.r.delta > 1.5 ? "Muy clara: zonas quemadas." : "Algo clara.") : (p.r.delta < -1.5 ? "Muy oscura." : "Algo oscura."), Math.abs(p.r.delta) >= .4]);
+    v.push(["Fondo", p.bg * p.z > 4.5 ? "Muy desenfocado." : p.bg * p.z > 2 ? "Desenfocado." : p.bg * p.z > 1 ? "Algo suave." : "Nítido.", false]);
+    v.push(["Ciclista", p.mv < 1.2 ? "Congelado." : p.mv < 5 ? "Ligeramente movido." : "Estela de movimiento.", false]);
+    v.push(["Ruido", p.r.iso <= 800 ? "Imperceptible." : p.r.iso <= 3200 ? "Muy bajo." : p.r.iso <= 6400 ? "Algo de grano." : "Mucho grano.", p.r.iso > 6400]);
+    v.push(["Pulso", p.shakeRatio <= 1 ? "Sin riesgo de foto movida." : p.shakeEff <= 1 ? "El SteadyShot te salva; sujétala firme." : p.steady ? "Foto movida: apoya la cámara o usa trípode." : "Foto movida: el SteadyShot está desactivado en el menú.", p.shakeEff > 1]);
+    v.push(["Color", p.bw ? "Blanco y negro (estilo creativo B/N)." : Math.abs(p.cast) < .25 ? "Natural." : p.cast > 0 ? "Anaranjada: el balance de blancos no es el de esta luz." : "Azulada: el balance de blancos no es el de esta luz.", !p.bw && Math.abs(p.cast) >= .25]);
+    if(Object.keys(p.r.blink).length) v.push(["Aviso", "Un valor parpadea: la cámara no llega a la exposición correcta con estos ajustes.", true]);
+    const vh = v.map(([a,b,w]) => `<li class="${w?"w":""}"><b>${a}</b>${b}</li>`).join("");
+    if(vh !== last.vh){ $("[data-verdict]").innerHTML = vh; last.vh = vh; }
   }
+  // the same numbers photo() uses, without touching the drawing
+  function photoFacts(st, rr){
+    const z = 1 + (st.f - 16) / 34 * 0.6, bg = 0.15 + 3.4 * Math.pow(st.f / 50, 1.6) * (3.5 / rr.N), mv = Math.min(30, 420 * rr.t);
+    const shakeRatio = rr.t / rr.handSS, steady = st.ss === 0, shakeEff = steady ? shakeRatio / 4 : shakeRatio;
+    const wbK = WB[st.wb][1], cast = wbK ? Math.log2(wbK / rr.sc.wk) : 0, bw = (STYLES[st.style] || STYLES[0])[1] === 0;
+    return {r: rr, z, bg, mv, shakeRatio, shakeEff, steady, cast, bw};
+  }
+
+  /* --- top-plate dials and the lens ring: drag sideways, one click every few millimetres --- */
+  const modeStrip = $("[data-modestrip]"), MSTEP = 38;
+  let modeDrag = 0;
+  function placeMode(anim){
+    const i = MODE_DIAL.indexOf(SIM.mode);
+    modeStrip.style.transition = anim && !calmNow() ? "transform .15s ease-out" : "none";
+    modeStrip.style.transform = `translate3d(${(-(i + .5) * MSTEP + modeDrag).toFixed(1)}px,0,0)`;
+    modeStrip.querySelectorAll("span").forEach((s, k) => s.classList.toggle("on", k === i));
+    const kn = $("[data-knob=mode]"); kn.setAttribute("aria-valuetext", SIM.mode); kn.setAttribute("aria-valuenow", i); kn.setAttribute("aria-valuemin", 0); kn.setAttribute("aria-valuemax", MODE_DIAL.length - 1);
+  }
+  function knob(kn, step, onStep, onMove, tapFlip){
+    let dr = null;
+    kn.addEventListener("pointerdown", e => { dr = {x: e.clientX, acc: 0, moved: false, id: e.pointerId, px: step * (kn.getBoundingClientRect().width / kn.offsetWidth || 1)}; kn.setPointerCapture(e.pointerId); kn.classList.add("held"); });
+    kn.addEventListener("pointermove", e => {
+      if(!dr || e.pointerId !== dr.id) return;
+      const dx = e.clientX - dr.x; dr.x = e.clientX; dr.acc += dx;
+      if(Math.abs(dr.acc) > 3) dr.moved = true;
+      onMove && onMove(dx, dr);
+      while(Math.abs(dr.acc) >= dr.px){ const sgn = Math.sign(dr.acc); dr.acc -= sgn * dr.px; onStep(sgn); }
+    });
+    const end = e => {
+      if(!dr || e.pointerId !== dr.id) return;
+      const d = dr; dr = null; kn.classList.remove("held");
+      if(!d.moved){ const b = kn.getBoundingClientRect(); onStep((e.clientX < b.left + b.width / 2 ? -1 : 1) * (tapFlip ? -1 : 1)); } // a tap turns it one click that way
+      onMove && onMove(null, d);
+    };
+    kn.addEventListener("pointerup", end); kn.addEventListener("pointercancel", end);
+    kn.addEventListener("keydown", e => { const k = {ArrowLeft: -1, ArrowDown: -1, ArrowRight: 1, ArrowUp: 1}[e.key]; if(k){ e.preventDefault(); onStep(k); } });
+  }
+  const knurl = (kn) => { let off = 0; return (dx) => { if(dx === null) return; off += dx; kn.style.backgroundPosition = `${off.toFixed(1)}px 0`; }; };
+  const dialKn = $("[data-knob=dial]"), zoomKn = $("[data-knob=zoom]"), modeKn = $("[data-knob=mode]");
+  knob(dialKn, 18, d => turn("dial", d), knurl(dialKn));
+  knob(zoomKn, 22, d => turn("zoom", d), knurl(zoomKn));
+  knob(modeKn, MSTEP, d => { const i = clamp(MODE_DIAL.indexOf(SIM.mode) - d, 0, MODE_DIAL.length - 1); modeDrag = 0; setMode(i); },
+    (dx, dr) => { modeDrag = dx === null ? 0 : clamp(dr.acc, -MSTEP, MSTEP); placeMode(dx === null); }, true);
+
+  // The control wheel: every ~30° of a finger going round it is one click (clockwise = down / next).
+  const wheel = $("[data-wheel]"), ring = $("[data-ring]");
+  let spin = null, spun = false, ringA = 0;
+  const angle = e => { const b = wheel.getBoundingClientRect(); return Math.atan2(e.clientY - (b.top + b.height / 2), e.clientX - (b.left + b.width / 2)) * 180 / Math.PI; };
+  wheel.addEventListener("pointerdown", e => { spin = {a: angle(e), acc: 0, id: e.pointerId}; spun = false; });
+  wheel.addEventListener("pointermove", e => {
+    if(!spin || e.pointerId !== spin.id) return;
+    let a = angle(e), d = a - spin.a; if(d > 180) d -= 360; if(d < -180) d += 360;
+    spin.a = a; spin.acc += d;
+    if(!spun && Math.abs(spin.acc) > 12){ spun = true; wheel.setPointerCapture(e.pointerId); }
+    if(spun){ ringA += d; ring.style.transform = `rotate(${ringA.toFixed(1)}deg)`; }
+    while(spun && Math.abs(spin.acc) >= 30){ const sgn = Math.sign(spin.acc); spin.acc -= 30 * sgn; turn("wheel", sgn); }
+  });
+  const endSpin = () => { spin = null; };
+  wheel.addEventListener("pointerup", endSpin); wheel.addEventListener("pointercancel", endSpin);
+  wheel.addEventListener("click", e => { if(spun){ e.stopPropagation(); e.preventDefault(); spun = false; } }, true);
+
   el.addEventListener("click", e => {
-    const k = e.target.closest("[data-k]"); if(k){ menuKey(k.dataset.k); return; }
-    const tb = e.target.closest("[data-tab]"); if(tb){ M.page = MENU_PAGES.findIndex(p => p.ti === +tb.dataset.tab); M.row = 0; M.note = ""; drawMenu(); return; }
-    const pgb = e.target.closest("[data-page]"); if(pgb){ M.page = +pgb.dataset.page; M.row = Math.min(M.row, MENU_PAGES[M.page].items.length - 1); M.note = ""; drawMenu(); return; }
-    const row = e.target.closest("[data-row]"); if(row){ const j = +row.dataset.row; if(j === M.row) menuKey("ok"); else { M.row = j; M.note = ""; drawMenu(); } return; }
-    const op = e.target.closest("[data-opt]"); if(op){ const i = +op.dataset.opt; if(i === M.sub.i) menuKey("ok"); else { M.sub.i = i; drawMenu(); } return; }
-    const se = e.target.closest("[data-sel]"); if(se){ SIM.sel = se.dataset.sel; render(); return; }
-    const st = e.target.closest("[data-step]"); if(st){ stepTo(D.i + +st.dataset.step); return; }
-    const m = e.target.closest("[data-mode]"); if(m){ SIM.mode = m.dataset.mode; render(); return; }
-    const s = e.target.closest("[data-scene]"); if(s){ SIM.scene = s.dataset.scene; render(); return; }
+    const k = e.target.closest("[data-k]"); if(k){ press(k.dataset.k); return; }
+    if(V.screen === "menu"){
+      const tb = e.target.closest("[data-tab]"); if(tb){ M.page = MENU_PAGES.findIndex(p => p.ti === +tb.dataset.tab); M.row = 0; M.note = ""; return schedule(); }
+      const pgb = e.target.closest("[data-page]"); if(pgb){ M.page = +pgb.dataset.page; M.row = Math.min(M.row, MENU_PAGES[M.page].items.length - 1); M.note = ""; return schedule(); }
+      const row = e.target.closest("[data-row]"); if(row){ const j = +row.dataset.row; if(j === M.row) menuKey("ok"); else { M.row = j; M.note = ""; } return schedule(); }
+      const op = e.target.closest("[data-opt]"); if(op){ const i = +op.dataset.opt; if(i === M.sub.i) menuKey("ok"); else M.sub.i = i; return schedule(); }
+    }
+    const fnT = e.target.closest("[data-fn]"); if(fnT){ V.fn = +fnT.dataset.fn; return schedule(); }
+    // touch focus: tap the live picture to move the focus frame
+    if(V.screen === "live" && e.target.closest("[data-frame]")){ const b = frame.getBoundingClientRect(); V.focus = [clamp((e.clientX - b.left) / b.width * 100, 8, 92), clamp((e.clientY - b.top) / b.height * 100, 10, 88)]; say("Enfoque táctil: tocas la pantalla y la cámara enfoca ahí, como en tu α6500."); return schedule(); }
+    const s = e.target.closest("[data-scene]"); if(s){ SIM.scene = s.dataset.scene; return schedule(); }
   });
   el.addEventListener("keydown", e => {
-    if(!M.open || e.target === dial) return;
+    if(e.target.closest("[data-knob]") || e.target.matches("input,textarea")) return;
     const k = {ArrowUp: "up", ArrowDown: "down", ArrowLeft: "left", ArrowRight: "right", Escape: "menu"}[e.key];
-    if(k){ e.preventDefault(); menuKey(k); }
+    if(k && V.screen !== "live"){ e.preventDefault(); press(k); }
   });
-  render();
+  draw();
 }
 
 /* ---------- text size ---------- */
@@ -2565,7 +2758,7 @@ function viewLesson(l){
     if(e.target.closest("[data-practice]")){ openPractice(l, () => { const done = new Set(S.steps[l.id] || []); app.querySelectorAll(".steps input").forEach(c => c.checked = done.has(+c.dataset.k)); }); return; }
     if(e.target.closest("[data-complete]")){ S.done[l.id] = true; save(); updateRing(); foot(true); celebrate(l, next); }
     else if(e.target.closest("[data-undo]")){ delete S.done[l.id]; save(); updateRing(); foot(); }
-    const o = e.target.closest("[data-opensim]"); if(o){ SIM.mode = o.dataset.opensim; SIM.sel = SIM.mode === "S" ? "t" : SIM.mode === "P" ? "ev" : "N"; if(l.id === "iso"){ SIM.scene = "interior"; SIM.sel = "iso"; } location.hash = "simulador"; }
+    const o = e.target.closest("[data-opensim]"); if(o){ SIM.mode = o.dataset.opensim; if(l.id === "iso") SIM.scene = "interior"; location.hash = "simulador"; }
   };
   function showPage(k){
     lessonPage[l.id] = k;
@@ -2612,7 +2805,7 @@ function viewCamera(){
   mountCamera(app.querySelector("[data-cam]"));
 }
 function viewSim(){
-  app.innerHTML = `<div class="stack-l"><div class="stack"><h1>Juega con la luz</h1><p class="muted">Elige un ajuste y gira la rueda. Con MENU practicas el menú de tu α6500.</p></div><div data-sim></div></div>`;
+  app.innerHTML = `<div class="stack-l"><div class="stack"><h1>Juega con la luz</h1><p class="muted">Tu α6500, con sus diales y botones. Desliza los diales, pulsa los botones y haz fotos.</p></div><div data-sim></div></div>`;
   mountSim(app.querySelector("[data-sim]"));
 }
 function viewRecipes(){
