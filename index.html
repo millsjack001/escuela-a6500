@@ -76,7 +76,7 @@ button{font:inherit;color:inherit}
    buttons and labels, no double-tap or pinch zoom, no rubber-band of the whole page.
    Reading text and the fields she types in stay selectable. */
 html{-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;touch-action:pan-x pan-y;overscroll-behavior:none}
-body{overscroll-behavior:none}
+body{overscroll-behavior:none;overflow-x:clip}
 .prose,.goal,.think p,.callout,.mission,.table-wrap,.gloss,.recipe dl,.recipe p,.cam-info p,.review p{-webkit-user-select:text;user-select:text}
 :is(.prose,.callout,.mission,.recipe,.review) :is(a,button,label,summary){-webkit-user-select:none;user-select:none}
 input,textarea,[contenteditable]{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
@@ -2232,6 +2232,9 @@ function mountSim(el, opts){
     return {r: rr, z, bg, mv, shakeRatio, shakeEff, steady, cast, bw};
   }
 
+  // iPhone can start moving the page before it honours touch-action, so a finger on a dial or the
+  // wheel keeps the page still explicitly.
+  function holdStill(node){ node.addEventListener("touchmove", e => e.preventDefault(), {passive: false}); }
   /* --- top-plate dials and the lens ring: drag sideways, one click every few millimetres --- */
   const modeStrip = $("[data-modestrip]"), MSTEP = 38;
   let modeDrag = 0;
@@ -2244,6 +2247,7 @@ function mountSim(el, opts){
   }
   function knob(kn, step, onStep, onMove, tapFlip){
     let dr = null;
+    holdStill(kn);
     kn.addEventListener("pointerdown", e => { dr = {x: e.clientX, acc: 0, moved: false, id: e.pointerId, px: step * (kn.getBoundingClientRect().width / kn.offsetWidth || 1)}; kn.setPointerCapture(e.pointerId); kn.classList.add("held"); });
     kn.addEventListener("pointermove", e => {
       if(!dr || e.pointerId !== dr.id) return;
@@ -2270,6 +2274,7 @@ function mountSim(el, opts){
 
   // The control wheel: every ~30° of a finger going round it is one click (clockwise = down / next).
   const wheel = $("[data-wheel]"), ring = $("[data-ring]");
+  holdStill(wheel);
   let spin = null, spun = false, ringA = 0;
   const angle = e => { const b = wheel.getBoundingClientRect(); return Math.atan2(e.clientY - (b.top + b.height / 2), e.clientX - (b.left + b.width / 2)) * 180 / Math.PI; };
   wheel.addEventListener("pointerdown", e => { spin = {a: angle(e), acc: 0, id: e.pointerId}; spun = false; });
