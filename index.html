@@ -370,7 +370,7 @@ td:first-child{font-weight:600;white-space:nowrap}
 .cm-row.on .v{color:#fff}
 .cm-note{position:absolute;left:2cqw;right:2cqw;bottom:2cqh;background:#2C2C2E;border-radius:6px;font-size:4.8cqh;padding:2cqh 3cqw;box-shadow:0 2px 10px rgba(0,0,0,.6)}
 /* the camera body: top plate, back with screen and controls, lens */
-.cam{background:linear-gradient(#27282B,#1A1B1D);border-radius:20px;padding:6px 6px 8px;color:#E6E6E8;box-shadow:0 10px 24px -10px rgba(0,0,0,.55),inset 0 1px 0 #3A3B3F;-webkit-user-select:none;user-select:none}
+.cam{touch-action:none;background:linear-gradient(#27282B,#1A1B1D);border-radius:20px;padding:6px 6px 8px;color:#E6E6E8;box-shadow:0 10px 24px -10px rgba(0,0,0,.55),inset 0 1px 0 #3A3B3F;-webkit-user-select:none;user-select:none}
 @media (max-width:700px) and (min-height:740px){.cam{position:sticky;top:calc(env(safe-area-inset-top,0px) + 58px);z-index:5}}
 .cam .sim-frame{position:relative;top:auto;z-index:auto;box-shadow:0 0 0 2px #0B0B0C;border-radius:4px}
 .cam-top{display:flex;align-items:center;gap:8px;height:50px;padding:0 2px 6px;border-bottom:1px solid #303134;margin-bottom:8px}
@@ -528,7 +528,7 @@ body.signin-on .wrap, body.signin-on .nav{display:none}
 </nav>
 
 <script>
-const APP_BUILD = "19 oct · diales táctiles";
+const APP_BUILD = "19 oct · cámara fija";
 (function(){
 "use strict";
 
@@ -2234,9 +2234,10 @@ function mountSim(el, opts){
     return {r: rr, z, bg, mv, shakeRatio, shakeEff, steady, cast, bw};
   }
 
-  // iPhone can start moving the page before it honours touch-action, so a finger on the wheel
-  // keeps the page still explicitly.
+  // A finger anywhere on the camera body works the camera, like holding the real one, so it never
+  // scrolls the page. iPhone can ignore touch-action, so the moves are cancelled explicitly too.
   function holdStill(node){ node.addEventListener("touchmove", e => e.preventDefault(), {passive: false}); }
+  holdStill($("[data-cam]"));
   /* --- top-plate dials and the lens ring: drag sideways, one click every few millimetres --- */
   const modeStrip = $("[data-modestrip]"), MSTEP = 38;
   let modeDrag = 0;
@@ -2283,7 +2284,6 @@ function mountSim(el, opts){
 
   // The control wheel: every ~30° of a finger going round it is one click (clockwise = down / next).
   const wheel = $("[data-wheel]"), ring = $("[data-ring]");
-  holdStill(wheel);
   let spin = null, spun = false, ringA = 0;
   const angle = e => { const b = wheel.getBoundingClientRect(); return Math.atan2(e.clientY - (b.top + b.height / 2), e.clientX - (b.left + b.width / 2)) * 180 / Math.PI; };
   wheel.addEventListener("pointerdown", e => { spin = {a: angle(e), acc: 0, id: e.pointerId}; spun = false; });
