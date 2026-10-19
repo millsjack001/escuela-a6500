@@ -1,7 +1,7 @@
 // Offline support. The page is fetched from the network first so updates show up
 // the next time she opens the app; the cached copy is used only when offline.
-const CACHE = "escuela-a6500-v2";
-const SHELL = ["./", "index.html", "manifest.webmanifest", "icons/icon-192.png", "icons/apple-touch-icon.png"];
+const CACHE = "escuela-a6500-v3";
+const SHELL = ["./", "index.html", "en.js", "manifest.webmanifest", "icons/icon-192.png", "icons/apple-touch-icon.png"];
 
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));

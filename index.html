@@ -6,6 +6,12 @@
 <meta name="format-detection" content="telephone=no,date=no,email=no,address=no">
 <title>Escuela α6500</title>
 <meta name="description" content="Curso interactivo en español para aprender a usar la Sony α6500.">
+<script>
+// Language: Spanish unless English was chosen with the ES/EN button. The English text is in en.js and
+// loads before the app script so every list and lesson is built in that language.
+var ESCUELA_LANG = (function(){ try{ return localStorage.getItem("escuela-a6500-lang") === "en" ? "en" : "es"; }catch(e){ return "es"; } })();
+if(ESCUELA_LANG === "en"){ document.documentElement.lang = "en"; document.write('<script src="en.js"><\/script>'); }
+</script>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icons/icon-192.png" type="image/png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -219,6 +225,9 @@ td:first-child{font-weight:600;white-space:nowrap}
 .wrap{zoom:var(--zoom,1)}
 .tsize{border:0;background:var(--fill);border-radius:999px;min-width:44px;height:32px;font-weight:600;font-size:13px;cursor:pointer;padding:0 10px;color:var(--accent)}
 .tsize span{font-size:18px;margin-left:1px}
+.lang{color:var(--muted);font-size:12px;min-width:0;padding:0 8px}.lang b{color:var(--accent)}.lang span{font-size:12px;margin:0 2px;opacity:.5}
+.top .lang{margin-right:-4px}
+.signin-lang{position:absolute;top:calc(env(safe-area-inset-top,0px) + 10px);right:16px;z-index:2}
 .outline{display:flex;gap:6px;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;margin-inline:calc(-1 * var(--gut-l)) calc(-1 * var(--gut-r));padding-inline:var(--gut-l) var(--gut-r);scroll-padding-inline:var(--gut-l) var(--gut-r)}
 .outline::-webkit-scrollbar{display:none}
 .lesson-seg{position:sticky;top:calc(env(safe-area-inset-top,0px) + 60px);z-index:6;background:var(--bg);margin:-20px calc(-1 * var(--gut-r)) -16px calc(-1 * var(--gut-l));padding:6px var(--gut-r) 6px var(--gut-l)}
@@ -422,6 +431,7 @@ td:first-child{font-weight:600;white-space:nowrap}
 .pop-side b{padding:2px 8px 4px;font-size:11px;color:#C7C7CC;font-weight:600}
 .pop-side span{padding:2px 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pop-side span.on{background:#E2640F}
+.pop-side.wide{width:66%}
 .pop-side small,.pop-ev small{padding:4px 8px 0;font-size:9.5px;color:#A8A8AE}
 .pop-ev{position:absolute;left:0;right:0;bottom:0;background:rgba(10,10,11,.85);padding:6px 10px;display:flex;flex-direction:column;gap:3px;font-size:11px}
 .pop-ev small{padding:0}
@@ -510,34 +520,44 @@ body.signin-on .wrap, body.signin-on .nav{display:none}
 <div class="wrap">
   <header class="top">
     <a class="brand" href="#programa" style="text-decoration:none;color:inherit"><span class="brand-mark" aria-hidden="true"></span>Escuela α6500</a>
-    <a class="back top-back" href="#programa"><span aria-hidden="true">‹</span>Programa</a>
+    <a class="back top-back" href="#programa" data-en="Course"><span aria-hidden="true">‹</span>Programa</a>
     <a class="ring" id="ring" href="#programa"></a>
+    <button type="button" class="tsize lang" id="lang"></button>
     <button type="button" class="tsize" id="tsize" aria-label="Tamaño del texto">A<span>A</span></button>
   </header>
   <main id="app" aria-live="polite"></main>
 </div>
 <div id="signin"></div>
 
-<nav class="nav" aria-label="Secciones">
+<nav class="nav" aria-label="Secciones" data-en-label="Sections">
   <ul>
-    <li><a href="#programa" data-tab="programa"><svg viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h10"/></svg>Programa</a></li>
-    <li><a href="#camara" data-tab="camara"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><circle cx="12" cy="13.5" r="3.5"/><path d="M8 7l1.5-3h5L16 7"/></svg>Cámara</a></li>
-    <li><a href="#simulador" data-tab="simulador"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v4M12 17v4M3 12h4M17 12h4"/><circle cx="12" cy="12" r="2.5"/></svg>Simulador</a></li>
-    <li><a href="#recetas" data-tab="recetas"><svg viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z"/><path d="M9 10h6M9 14h6M9 18h4"/></svg>Recetas</a></li>
+    <li><a href="#programa" data-tab="programa" data-en="Course"><svg viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h10"/></svg>Programa</a></li>
+    <li><a href="#camara" data-tab="camara" data-en="Camera"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><circle cx="12" cy="13.5" r="3.5"/><path d="M8 7l1.5-3h5L16 7"/></svg>Cámara</a></li>
+    <li><a href="#simulador" data-tab="simulador" data-en="Simulator"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v4M12 17v4M3 12h4M17 12h4"/><circle cx="12" cy="12" r="2.5"/></svg>Simulador</a></li>
+    <li><a href="#recetas" data-tab="recetas" data-en="Recipes"><svg viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z"/><path d="M9 10h6M9 14h6M9 18h4"/></svg>Recetas</a></li>
   </ul>
 </nav>
 
 <script>
-const APP_BUILD = "19 oct · cámara fija";
+const APP_BUILD = "19 oct · ES · EN";
 (function(){
 "use strict";
+
+/* ---------- language ---------- */
+// Spanish is the app's own language. In English the lessons and lists come from en.js, and every
+// menu, button and setting name is the one the α6500 shows when the camera is set to English.
+const EN = window.ESCUELA_LANG === "en" && !!window.ESCUELA_EN;
+const LANG = EN ? "en" : "es";
+const L = (es, en) => EN ? en : es;
+// Camera labels: Spanish name -> the camera's English name (en.js). Unknown names pass through.
+const W = x => EN && ESCUELA_EN.words && Object.prototype.hasOwnProperty.call(ESCUELA_EN.words, x) ? ESCUELA_EN.words[x] : x;
 
 /* ---------- storage (on the device, synced to Supabase when signed in) ---------- */
 const KEY = "escuela-a6500-v1";
 // Supabase project. Both values are public by design; row-level security keeps each account's row private.
 const SB_URL = "https://otvfeelczdudtsytxbpl.supabase.co";
 const SB_KEY = "sb_publishable_1Dvje4lqtDSEwvcqfmRlAw_geSndvrC";
-function load(){ try{ const v = JSON.parse(localStorage.getItem(KEY)); if(v && typeof v === "object") return {done:v.done||{}, steps:v.steps||{}, last:v.last||null, notes:v.notes||{}, zoom:v.zoom||1, rev:v.rev||0}; }catch(e){} return {done:{}, steps:{}, last:null, notes:{}, zoom:1, rev:0}; }
+function load(){ try{ const v = JSON.parse(localStorage.getItem(KEY)); if(v && typeof v === "object") return {done:v.done||{}, steps:v.steps||{}, last:v.last||null, notes:v.notes||{}, zoom:v.zoom||1, rev:v.rev||0, lang:v.lang||null}; }catch(e){} return {done:{}, steps:{}, last:null, notes:{}, zoom:1, rev:0, lang:null}; }
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} Sync.changed(); }
 let S = load();
 
@@ -573,7 +593,7 @@ const Sync = (() => {
     return auth.access;
   }
 
-  const DATA = o => ({done: o.done || {}, steps: o.steps || {}, last: o.last || null, notes: o.notes || {}, rev: o.rev || 0});
+  const DATA = o => ({done: o.done || {}, steps: o.steps || {}, last: o.last || null, notes: o.notes || {}, rev: o.rev || 0, lang: o.lang || null});
   function merge(a, b){
     // a = this device, b = cloud. Lessons and steps done anywhere stay done; notes keep both texts when they differ.
     const m = DATA(b);
@@ -585,7 +605,7 @@ const Sync = (() => {
       else if(x.includes(y)) m.notes[k] = a.notes[k];
       else m.notes[k] = a.notes[k] + "\n\n" + m.notes[k];
     });
-    m.last = a.last || m.last; m.rev = Math.max(a.rev || 0, m.rev);
+    m.last = a.last || m.last; m.rev = Math.max(a.rev || 0, m.rev); m.lang = a.lang || m.lang;
     return m;
   }
 
@@ -650,7 +670,7 @@ const Sync = (() => {
     if(t && !expired) fetch(SB_URL + "/auth/v1/logout", {method: "POST", headers: {apikey: SB_KEY, Authorization: "Bearer " + t}}).catch(() => {});
     if(expired){ setState("expired"); return; } // keep unsynced changes; they merge in when she signs in again
     // A deliberate sign-out clears this device so the next account starts from its own cloud copy.
-    S = {done: {}, steps: {}, last: null, notes: {}, zoom: S.zoom, rev: 0};
+    S = {done: {}, steps: {}, last: null, notes: {}, zoom: S.zoom, rev: 0, lang: null};
     try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){}
     setMeta({dirty: false});
     setState("idle");
@@ -665,6 +685,7 @@ function fmt(s){
     .replace(/\[\[(.+?)\]\]/g, '<span class="k">$1</span>')
     .replace(/\{\{(.+?)\}\}/g, (m, inner) => {
       const [es, en] = inner.split("|");
+      if(EN) return '<span class="path">' + (en || es) + '</span>';
       return '<span class="path">' + es + (en ? ' <span class="en">[' + en + ']</span>' : '') + '</span>';
     });
 }
@@ -1371,13 +1392,17 @@ const THINK = {
  "pocaluz":[
   ["Un retrato de noche con las luces de la ciudad detrás.","Dos caminos: <b>flash con sincronización lenta</b> (cara iluminada, fondo con luces) o sin flash, F3.5 e ISO 3200–6400, con la persona junto a una fuente de luz como un escaparate."]]
 };
+if(EN){
+  UNITS.forEach(u => { Object.assign(u, ESCUELA_EN.units[u.id]); u.lessons.forEach(l => Object.assign(l, ESCUELA_EN.lessons[l.id])); });
+  Object.keys(THINK).forEach(k => { if(ESCUELA_EN.think[k]) THINK[k] = ESCUELA_EN.think[k]; });
+}
 const LESSONS = [];
 UNITS.forEach(u => u.lessons.forEach(l => { l.unit = u; l.n = LESSONS.length + 1; LESSONS.push(l); }));
 const byId = id => LESSONS.find(l => l.id === id);
 LESSONS.forEach(l => { if(THINK[l.id]) l.think = THINK[l.id]; });
 
 /* ---------- recipes ---------- */
-const GLOSS = [
+const GLOSS = EN ? ESCUELA_EN.gloss : [
  ["Apertura (F)","Tamaño del agujero del objetivo. Número F bajo = más luz y fondo más desenfocado."],
  ["Velocidad de obturación","Tiempo que entra la luz. Rápida (1/1000) congela; lenta (1/15) deja estelas."],
  ["ISO","Cuánto amplifica la cámara la luz. Más alto = más claro, pero con más grano."],
@@ -1409,7 +1434,7 @@ const GLOSS = [
  ["Luz dura / suave","Dura: sombras marcadas (sol directo). Suave: sombras difusas (nublado, ventana)."],
  ["Hora dorada","La primera y última hora de sol: luz cálida y lateral."]
 ];
-const RECIPES = [
+const RECIPES = EN ? ESCUELA_EN.recipes : [
  {t:"Retrato con fondo desenfocado", evf:["A","F5.6","50 mm","ISO AUTO"], d:[["Modo","A, F lo más bajo posible (F5.6 a 50 mm)"],["Enfoque","AF-C + Eye AF (botón central)"],["Distancia","Persona a 1,5–2 m; fondo varios metros detrás"],["Estilo","Retrato"]], tip:"Busca sombra abierta o luz de ventana lateral. Evita el sol directo en la cara.", l:"eyeaf"},
  {t:"Paisaje", evf:["A","F8","16 mm","ISO 100"], d:[["Modo","A, F8"],["ISO","100"],["Enfoque","AF-S, punto flexible a un tercio de la escena"],["Extra","Nivel con DISP, DRO Auto, estilo Paisaje"]], tip:"El horizonte sobre una línea de la cuadrícula, no en el centro.", l:"apertura"},
  {t:"Comida y objetos en la mesa", evf:["A","F5.6","35–50 mm","ISO AUTO"], d:[["Modo","A, F5.6"],["Zoom","35–50 mm, a unos 30–40 cm"],["Enfoque","AF-S, punto flexible S en lo más importante"],["Luz","Ventana de lado; sin flash"]], tip:"El objetivo no enfoca a menos de 25–30 cm. Si no enfoca, aléjate un poco.", l:"areas"},
@@ -1423,7 +1448,7 @@ const RECIPES = [
 ];
 
 /* ---------- camera map ---------- */
-const PARTS = {
+const PARTS = EN ? ESCUELA_EN.parts : {
  back:[
   {id:"visor", n:"Visor electrónico", en:"Viewfinder", d:"Una pantalla pequeña de mucha calidad. Al acercar el ojo, el sensor de ojo apaga la pantalla trasera y lo enciende. Ves exactamente cómo saldrá la foto, también con sol fuerte.", tip:"Pon el ocular de goma que viene en la caja: tapa la luz y es más cómodo."},
   {id:"dioptria", n:"Ajuste de dioptrías", en:"Diopter-adjustment dial", d:"Ruedita junto al visor para adaptarlo a tu vista. Gírala hasta ver nítidos los números del visor.", tip:"Si usas gafas, ajústalo con ellas puestas o sin ellas, pero siempre igual."},
@@ -1459,41 +1484,41 @@ const PARTS = {
 function cameraSVG(view){
   const hs = (id, inner, n) => `<g class="hs" data-id="${id}" tabindex="0" role="button" aria-label="${esc(findPart(id).n)}">${inner}</g>`;
   if(view === "back") return `
-<svg viewBox="0 0 400 236" role="img" aria-label="Parte trasera de la cámara">
+<svg viewBox="0 0 400 236" role="img" aria-label="${L("Parte trasera de la cámara","Back of the camera")}">
  <rect x="6" y="12" width="388" height="212" rx="18" fill="var(--cam)"/>
  <rect x="300" y="12" width="94" height="212" rx="18" fill="var(--cam-2)" opacity=".35"/>
  ${hs("visor",`<rect class="hl" x="14" y="18" width="94" height="62" rx="10"/><rect x="20" y="24" width="82" height="50" rx="9" fill="var(--cam-2)"/><rect x="33" y="34" width="56" height="30" rx="4" fill="#07090A"/>`)}
  ${hs("dioptria",`<rect class="hl" x="108" y="22" width="20" height="36" rx="5"/><rect x="113" y="27" width="10" height="26" rx="3" fill="var(--cam-3)"/><path d="M115 31h6M115 35h6M115 39h6M115 43h6M115 47h6" stroke="var(--cam)" stroke-width="1"/>`)}
  ${hs("flashbtn",`<circle class="hl" cx="150" cy="40" r="15"/><circle cx="150" cy="40" r="10" fill="var(--cam-3)"/><path d="M152 33l-5 8h4l-2 7 6-9h-4z" fill="var(--cam-ink)"/>`)}
- ${hs("pantalla",`<rect class="hl" x="16" y="86" width="244" height="130" rx="8"/><rect x="22" y="92" width="232" height="118" rx="5" fill="#07090A"/><text x="138" y="155" text-anchor="middle" class="cam-label" opacity=".6">PANTALLA TÁCTIL</text>`)}
+ ${hs("pantalla",`<rect class="hl" x="16" y="86" width="244" height="130" rx="8"/><rect x="22" y="92" width="232" height="118" rx="5" fill="#07090A"/><text x="138" y="155" text-anchor="middle" class="cam-label" opacity=".6">${L("PANTALLA TÁCTIL","TOUCH SCREEN")}</text>`)}
  ${hs("menu",`<rect class="hl" x="234" y="26" width="58" height="30" rx="14"/><rect x="240" y="31" width="46" height="20" rx="10" fill="var(--cam-3)"/><text x="263" y="45" text-anchor="middle" class="cam-label">MENU</text>`)}
  ${hs("afmf",`<circle class="hl" cx="344" cy="44" r="26"/><path d="M322 30a26 26 0 0 1 20-12" stroke="var(--cam-3)" stroke-width="8" fill="none" stroke-linecap="round"/><circle cx="344" cy="46" r="13" fill="var(--cam-3)"/><text x="344" y="43" text-anchor="middle" class="cam-label" style="font-size:8px">AF/MF</text><text x="344" y="52" text-anchor="middle" class="cam-label" style="font-size:8px">AEL</text>`)}
  ${hs("movie",`<circle class="hl" cx="381" cy="88" r="12"/><circle cx="381" cy="88" r="7" fill="var(--cam-3)"/><circle cx="381" cy="88" r="3.5" fill="#E0352B"/>`)}
  ${hs("fn",`<circle class="hl" cx="334" cy="96" r="16"/><circle cx="334" cy="96" r="11" fill="var(--cam-3)"/><text x="334" y="99.5" text-anchor="middle" class="cam-label">Fn</text>`)}
  ${hs("rueda",`<circle class="hl" cx="322" cy="160" r="44"/><circle cx="322" cy="160" r="38" fill="var(--cam-2)"/><circle cx="322" cy="160" r="38" fill="none" stroke="var(--cam-3)" stroke-width="3" stroke-dasharray="2 3"/><text x="322" y="133" text-anchor="middle" class="cam-label">DISP</text><text x="349" y="163" text-anchor="middle" class="cam-label">ISO</text><text x="322" y="192" text-anchor="middle" class="cam-label" style="font-size:11px">±</text><text x="295" y="163.5" text-anchor="middle" class="cam-label" style="font-size:10px">◷</text>`)}
  ${hs("centro",`<circle class="hl" cx="322" cy="160" r="15"/><circle cx="322" cy="160" r="11" fill="var(--cam-3)"/>`)}
- ${hs("c3",`<circle class="hl" cx="278" cy="208" r="12"/><circle cx="278" cy="208" r="8" fill="var(--cam-3)"/><text x="278" y="211" text-anchor="middle" class="cam-label" style="font-size:9px">C3</text>`)}
- ${hs("play",`<circle class="hl" cx="368" cy="208" r="12"/><circle cx="368" cy="208" r="8" fill="var(--cam-3)"/><path d="M366 204.5v7l5.5-3.5z" fill="var(--cam-ink)"/>`)}
+ ${hs("c3",`<circle class="hl" cx="368" cy="208" r="12"/><circle cx="368" cy="208" r="8" fill="var(--cam-3)"/><text x="368" y="211" text-anchor="middle" class="cam-label" style="font-size:9px">C3</text>`)}
+ ${hs("play",`<circle class="hl" cx="278" cy="208" r="12"/><circle cx="278" cy="208" r="8" fill="var(--cam-3)"/><path d="M276 204.5v7l5.5-3.5z" fill="var(--cam-ink)"/>`)}
 </svg>`;
   if(view === "top") return `
-<svg viewBox="0 0 400 190" role="img" aria-label="Parte superior de la cámara">
+<svg viewBox="0 0 400 190" role="img" aria-label="${L("Parte superior de la cámara","Top of the camera")}">
  <rect x="6" y="40" width="388" height="78" rx="16" fill="var(--cam)"/>
  <rect x="300" y="40" width="94" height="96" rx="16" fill="var(--cam)"/>
  <rect x="60" y="118" width="150" height="62" rx="6" fill="var(--cam-2)"/>
  <path d="M84 118v62M96 118v62M108 118v62M120 118v62M132 118v62" stroke="var(--cam)" stroke-width="3"/>
  <text x="170" y="155" text-anchor="middle" class="cam-label">16-50</text>
- <text x="200" y="24" text-anchor="middle" class="cam-label" opacity=".7">← ATRÁS (VISOR) · DELANTE (OBJETIVO) ↓</text>
+ <text x="200" y="24" text-anchor="middle" class="cam-label" opacity=".7">${L("← ATRÁS (VISOR) · DELANTE (OBJETIVO) ↓","← BACK (VIEWFINDER) · FRONT (LENS) ↓")}</text>
  ${hs("zapata",`<rect class="hl" x="44" y="48" width="84" height="38" rx="5"/><rect x="50" y="54" width="72" height="26" rx="3" fill="var(--cam-2)"/><path d="M54 60h64M54 74h64" stroke="var(--cam-3)" stroke-width="2"/>`)}
  ${hs("flash",`<rect class="hl" x="134" y="48" width="88" height="34" rx="8"/><rect x="140" y="54" width="76" height="22" rx="6" fill="var(--cam-2)"/><text x="178" y="69" text-anchor="middle" class="cam-label">FLASH</text>`)}
  ${hs("dial",`<circle class="hl" cx="290" cy="74" r="28"/><circle cx="290" cy="74" r="23" fill="var(--cam-2)"/><circle cx="290" cy="74" r="23" fill="none" stroke="var(--cam-3)" stroke-width="4" stroke-dasharray="1.5 2.5"/><text x="290" y="70" text-anchor="middle" class="cam-label" style="font-size:8.5px">P A S M</text><text x="290" y="81" text-anchor="middle" class="cam-label" style="font-size:7px">AUTO</text>`)}
  ${hs("dialcontrol",`<rect class="hl" x="328" y="36" width="56" height="26" rx="8"/><rect x="334" y="42" width="44" height="14" rx="6" fill="var(--cam-3)"/><path d="M340 42v14M346 42v14M352 42v14M358 42v14M364 42v14M370 42v14" stroke="var(--cam-2)" stroke-width="1.5"/>`)}
  ${hs("onoff",`<rect class="hl" x="312" y="106" width="24" height="22" rx="6"/><rect x="316" y="111" width="16" height="10" rx="3" fill="var(--cam-3)"/>`)}
  ${hs("disparador",`<circle class="hl" cx="352" cy="108" r="20"/><circle cx="352" cy="108" r="16" fill="var(--cam-2)"/><circle cx="352" cy="108" r="10" fill="var(--cam-3)"/>`)}
- ${hs("c1",`<circle class="hl" cx="352" cy="78" r="12"/><circle cx="352" cy="78" r="8" fill="var(--cam-3)"/><text x="352" y="81" text-anchor="middle" class="cam-label" style="font-size:9px">C1</text>`)}
- ${hs("c2",`<circle class="hl" cx="252" cy="100" r="12"/><circle cx="252" cy="100" r="8" fill="var(--cam-3)"/><text x="252" y="103" text-anchor="middle" class="cam-label" style="font-size:9px">C2</text>`)}
+ ${hs("c1",`<circle class="hl" cx="360" cy="80" r="12"/><circle cx="360" cy="80" r="8" fill="var(--cam-3)"/><text x="360" y="83" text-anchor="middle" class="cam-label" style="font-size:9px">C1</text>`)}
+ ${hs("c2",`<circle class="hl" cx="330" cy="86" r="12"/><circle cx="330" cy="86" r="8" fill="var(--cam-3)"/><text x="330" y="89" text-anchor="middle" class="cam-label" style="font-size:9px">C2</text>`)}
 </svg>`;
   return `
-<svg viewBox="0 0 400 180" role="img" aria-label="Objetivo 16-50 mm visto de lado">
+<svg viewBox="0 0 400 180" role="img" aria-label="${L("Objetivo 16-50 mm visto de lado","16-50 mm lens seen from the side")}">
  <rect x="6" y="14" width="120" height="156" rx="14" fill="var(--cam)"/>
  <rect x="126" y="44" width="16" height="96" fill="var(--cam-3)"/>
  <rect x="142" y="40" width="200" height="104" rx="8" fill="var(--cam-2)"/>
@@ -1510,15 +1535,15 @@ function mountCamera(el){
   let view = "back", sel = null;
   el.innerHTML = `
   <div class="stack">
-   <div class="cam-tabs" role="group" aria-label="Vista">
-    <button type="button" data-v="back" aria-pressed="true">Atrás</button>
-    <button type="button" data-v="top" aria-pressed="false">Arriba</button>
-    <button type="button" data-v="lens" aria-pressed="false">Objetivo</button>
+   <div class="cam-tabs" role="group" aria-label="${L("Vista","View")}">
+    <button type="button" data-v="back" aria-pressed="true">${L("Atrás","Back")}</button>
+    <button type="button" data-v="top" aria-pressed="false">${L("Arriba","Top")}</button>
+    <button type="button" data-v="lens" aria-pressed="false">${L("Objetivo","Lens")}</button>
    </div>
    <div class="cam-stage" data-stage></div>
    <div class="card cam-info" data-info aria-live="polite"></div>
-   <div class="chips" data-chips aria-label="Partes"></div>
-   <p class="muted" style="font-size:14px">Esquema simplificado, no a escala. La posición exacta de cada botón puede variar ligeramente.</p>
+   <div class="chips" data-chips aria-label="${L("Partes","Parts")}"></div>
+   <p class="muted" style="font-size:14px">${L("Esquema simplificado, no a escala. La posición exacta de cada botón puede variar ligeramente.","Simplified drawing, not to scale. The exact position of each button may differ slightly.")}</p>
   </div>`;
   const stage = el.querySelector("[data-stage]"), info = el.querySelector("[data-info]"), chips = el.querySelector("[data-chips]");
   function pick(id){
@@ -1526,7 +1551,7 @@ function mountCamera(el){
     stage.querySelectorAll(".hs").forEach(g => g.classList.toggle("on", g.dataset.id === id));
     chips.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", c.dataset.id === id));
     const p = findPart(id);
-    info.innerHTML = `<div class="stack" style="gap:8px"><h3>${esc(p.n)} <span class="en">${esc(p.en)}</span></h3><p>${esc(p.d)}</p><p class="muted"><b>Consejo:</b> ${esc(p.tip)}</p></div>`;
+    info.innerHTML = `<div class="stack" style="gap:8px"><h3>${esc(p.n)}${p.en && p.en !== p.n ? ` <span class="en">${esc(p.en)}</span>` : ""}</h3><p>${esc(p.d)}</p><p class="muted"><b>${L("Consejo:","Tip:")}</b> ${esc(p.tip)}</p></div>`;
   }
   function draw(){
     el.querySelectorAll(".cam-tabs button").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === view));
@@ -1560,8 +1585,9 @@ function mountCamera(el){
 
 /* ---------- white balance demo ---------- */
 function mountWB(el){
-  const LIGHTS = [["Sol",5500],["Sombra",7500],["Nublado",6500],["Bombilla",3000],["Fluorescente",4000]];
-  const SETS = [["Auto",0],["Luz diurna",5500],["Sombra",7000],["Nublado",6000],["Incandescente",3200],["Fluorescente",4000]];
+  const LIGHTS = EN ? [["Sun",5500],["Shade",7500],["Cloudy",6500],["Light bulb",3000],["Fluorescent",4000]] : [["Sol",5500],["Sombra",7500],["Nublado",6500],["Bombilla",3000],["Fluorescente",4000]];
+  // the camera's own White Balance names
+  const SETS = EN ? [["Auto",0],["Daylight",5500],["Shade",7000],["Cloudy",6000],["Incandescent",3200],["Fluor.: Cool White",4000]] : [["Auto",0],["Luz diurna",5500],["Sombra",7000],["Nublado",6000],["Incandescente",3200],["Fluorescente",4000]];
   let light = 3000, set = 5500;
   el.innerHTML = `
   <div class="stack" style="gap:12px">
@@ -1577,12 +1603,12 @@ function mountWB(el){
      <ellipse cx="143" cy="80" rx="23" ry="4" fill="#5A3A22"/>
      <rect x="40" y="96" width="44" height="34" rx="4" fill="#5E8C5A"/>
      <circle cx="52" cy="90" r="12" fill="#6FA368"/><circle cx="70" cy="86" r="14" fill="#7AB273"/>
-     <text x="143" y="160" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#5A4632">taza blanca</text>
+     <text x="143" y="160" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#5A4632">${L("taza blanca","white mug")}</text>
     </svg>
     <div class="wb-cast" data-cast></div>
    </div>
-   <div><div class="eyebrow" style="margin-bottom:6px">Luz real de la escena</div><div class="chips" data-l>${LIGHTS.map(([n,k]) => `<button type="button" class="chip" data-k="${k}" aria-pressed="${k===light}">${n} · ${k} K</button>`).join("")}</div></div>
-   <div><div class="eyebrow" style="margin-bottom:6px">Ajuste en la cámara</div><div class="chips" data-s>${SETS.map(([n,k]) => `<button type="button" class="chip" data-k="${k}" aria-pressed="${k===set}">${n}${k?` · ${k} K`:""}</button>`).join("")}</div></div>
+   <div><div class="eyebrow" style="margin-bottom:6px">${L("Luz real de la escena","The scene's real light")}</div><div class="chips" data-l>${LIGHTS.map(([n,k]) => `<button type="button" class="chip" data-k="${k}" aria-pressed="${k===light}">${n} · ${k} K</button>`).join("")}</div></div>
+   <div><div class="eyebrow" style="margin-bottom:6px">${L("Ajuste en la cámara","Setting on the camera")}</div><div class="chips" data-s>${SETS.map(([n,k]) => `<button type="button" class="chip" data-k="${k}" aria-pressed="${k===set}">${n}${k?` · ${k} K`:""}</button>`).join("")}</div></div>
    <p data-msg class="card" style="padding:12px 14px"></p>
   </div>`;
   const cast = el.querySelector("[data-cast]"), msg = el.querySelector("[data-msg]");
@@ -1594,10 +1620,10 @@ function mountWB(el){
     cast.style.background = c > 0 ? "#FF8A2A" : "#3B7BFF";
     cast.style.opacity = a < .04 ? 0 : a;
     let t;
-    if(a < .06) t = "Colores naturales: la taza se ve blanca.";
-    else if(c > 0) t = `Sale <b>anaranjada</b>: le dijiste a la cámara que la luz era más fría (más azul) de lo que es, y la cámara añadió calidez de más.`;
-    else t = `Sale <b>azulada</b>: le dijiste a la cámara que la luz era más cálida (más naranja) de lo que es, y la cámara la enfrió de más.`;
-    if(set === 0 && light < 3600) t += " En Auto, la cámara deja un toque cálido con luz de bombilla para que se sienta el ambiente.";
+    if(a < .06) t = L("Colores naturales: la taza se ve blanca.", "Natural colors: the mug looks white.");
+    else if(c > 0) t = L(`Sale <b>anaranjada</b>: le dijiste a la cámara que la luz era más fría (más azul) de lo que es, y la cámara añadió calidez de más.`, `It comes out <b>orange</b>: you told the camera the light was cooler (bluer) than it is, so the camera added too much warmth.`);
+    else t = L(`Sale <b>azulada</b>: le dijiste a la cámara que la luz era más cálida (más naranja) de lo que es, y la cámara la enfrió de más.`, `It comes out <b>blue</b>: you told the camera the light was warmer (more orange) than it is, so the camera cooled it too much.`);
+    if(set === 0 && light < 3600) t += L(" En Auto, la cámara deja un toque cálido con luz de bombilla para que se sienta el ambiente.", " In Auto, the camera keeps a little warmth under light bulbs so the mood comes through.");
     msg.innerHTML = t;
     el.querySelectorAll("[data-l] .chip").forEach(b => b.setAttribute("aria-pressed", +b.dataset.k === light));
     el.querySelectorAll("[data-s] .chip").forEach(b => b.setAttribute("aria-pressed", +b.dataset.k === set));
@@ -1613,7 +1639,12 @@ function mountWB(el){
 
 /* ---------- intent planner ---------- */
 function mountPlanner(el){
-  const Q = [
+  const Q = EN ? [
+   ["subj","What are you photographing?",[["persona","A person"],["grupo","A group"],["paisaje","Landscape or place"],["objeto","Object or food"]]],
+   ["move","Is it moving?",[["no","It's still"],["poco","A little (walking, gesturing)"],["rapido","Fast (running, jumping)"]]],
+   ["want","What do you want to get?",[["blur","Blurry background"],["sharp","Everything sharp"],["freeze","Freeze the motion"],["trail","Show the motion"]]],
+   ["light","How much light is there?",[["sol","Sun"],["sombra","Shade or cloudy"],["interior","Indoors"],["noche","Night"]]]
+  ] : [
    ["subj","¿Qué fotografías?",[["persona","Una persona"],["grupo","Un grupo"],["paisaje","Paisaje o lugar"],["objeto","Objeto o comida"]]],
    ["move","¿Se mueve?",[["no","Está quieto"],["poco","Algo (camina, gesticula)"],["rapido","Rápido (corre, salta)"]]],
    ["want","¿Qué quieres conseguir?",[["blur","Fondo borroso"],["sharp","Todo nítido"],["freeze","Congelar el movimiento"],["trail","Mostrar el movimiento"]]],
@@ -1625,51 +1656,56 @@ function mountPlanner(el){
     const {subj, move, want, light} = st, dark = light === "interior" || light === "noche";
     const fast = {no:"1/125", poco:"1/250", rapido:"1/1000"}[move];
     const why = [], warn = [];
-    let mode, N = "La elige la cámara", t = "La elige la cámara", iso = "AUTO", zoom = "El que encuadre mejor";
+    const CAM = L("La elige la cámara", "The camera picks it"), LOW = L("La más baja (F5.6 a 50 mm)", "The lowest (F5.6 at 50 mm)");
+    let mode, N = CAM, t = CAM, iso = "AUTO", zoom = L("El que encuadre mejor", "Whatever frames it best");
     if(want === "trail"){
-      mode = "S"; iso = "100 (el más bajo)";
-      if(move === "no"){ t = "1/8 a 1 segundo"; why.push("Una velocidad lenta convierte lo que se mueve en el encuadre (agua, gente, coches, nubes) en estelas; lo quieto queda nítido."); }
-      else { t = "1/30, siguiendo al sujeto"; why.push("Barrido: si sigues al sujeto con la cámara mientras disparas, él queda nítido y el fondo sale en rayas."); }
-      if(light === "sol") warn.push("Con sol puede sobrar luz y el número F parpadear. Busca sombra o espera a que baje el sol.");
+      mode = "S"; iso = L("100 (el más bajo)", "100 (the lowest)");
+      if(move === "no"){ t = L("1/8 a 1 segundo", "1/8 to 1 second"); why.push(L("Una velocidad lenta convierte lo que se mueve en el encuadre (agua, gente, coches, nubes) en estelas; lo quieto queda nítido.", "A slow shutter speed turns whatever moves in the frame (water, people, cars, clouds) into streaks; what stays still stays sharp.")); }
+      else { t = L("1/30, siguiendo al sujeto", "1/30, following the subject"); why.push(L("Barrido: si sigues al sujeto con la cámara mientras disparas, él queda nítido y el fondo sale en rayas.", "Panning: if you follow the subject with the camera while you shoot, it stays sharp and the background turns into streaks.")); }
+      if(light === "sol") warn.push(L("Con sol puede sobrar luz y el número F parpadear. Busca sombra o espera a que baje el sol.", "In sun there can be too much light and the F-number will blink. Find shade or wait for the sun to go down."));
     } else if(want === "freeze"){
       mode = "S"; t = move === "no" ? "1/250" : fast;
-      why.push(`A ${t} el movimiento queda congelado. La cámara elige la apertura y el ISO sube si falta luz.`);
-      if(move === "no") warn.push("Si nada se mueve no hace falta congelar. Quizá te interesa más elegir el fondo (modo A).");
+      why.push(L(`A ${t} el movimiento queda congelado. La cámara elige la apertura y el ISO sube si falta luz.`, `At ${t} motion is frozen. The camera picks the aperture, and ISO goes up if there isn't enough light.`));
+      if(move === "no") warn.push(L("Si nada se mueve no hace falta congelar. Quizá te interesa más elegir el fondo (modo A).", "If nothing moves there's nothing to freeze. Choosing the background (A mode) may suit you better."));
     } else if(move === "rapido"){
-      mode = "M con ISO AUTO"; t = fast;
-      N = want === "blur" ? "La más baja (F5.6 a 50 mm)" : "F8";
+      mode = L("M con ISO AUTO", "M with ISO AUTO"); t = fast;
+      N = want === "blur" ? LOW : "F8";
       if(want === "blur") zoom = "50 mm";
-      why.push("Mandan a la vez el movimiento y lo nítido: fijas tú la velocidad y la apertura, y la cámara ajusta el ISO.");
+      why.push(L("Mandan a la vez el movimiento y lo nítido: fijas tú la velocidad y la apertura, y la cámara ajusta el ISO.", "Motion and sharpness both matter here: you set the shutter speed and the aperture, and the camera adjusts the ISO."));
     } else {
       mode = "A";
-      if(want === "blur"){ N = "La más baja (F5.6 a 50 mm)"; zoom = "50 mm"; why.push("Apertura abierta, zoom largo y poca distancia al sujeto: así el fondo se desenfoca al máximo con este objetivo. Aleja al sujeto del fondo."); }
-      else { N = subj === "paisaje" ? "F8 a F11" : "F8"; zoom = subj === "paisaje" ? "16 mm" : (subj === "grupo" ? "16–24 mm" : zoom); why.push("Con F8 la zona nítida es amplia y el objetivo da su mejor detalle."); }
-      if(move === "poco") warn.push("Vigila que la velocidad no baje de 1/250. Si baja, sube el ISO o pasa a M con ISO AUTO.");
+      if(want === "blur"){ N = LOW; zoom = "50 mm"; why.push(L("Apertura abierta, zoom largo y poca distancia al sujeto: así el fondo se desenfoca al máximo con este objetivo. Aleja al sujeto del fondo.", "Wide aperture, long zoom and a short distance to the subject: that's the blurriest background this lens can give. Move the subject away from the background.")); }
+      else { N = subj === "paisaje" ? L("F8 a F11", "F8 to F11") : "F8"; zoom = subj === "paisaje" ? "16 mm" : (subj === "grupo" ? "16–24 mm" : zoom); why.push(L("Con F8 la zona nítida es amplia y el objetivo da su mejor detalle.", "At F8 the sharp zone is deep and the lens gives its best detail.")); }
+      if(move === "poco") warn.push(L("Vigila que la velocidad no baje de 1/250. Si baja, sube el ISO o pasa a M con ISO AUTO.", "Make sure the shutter speed doesn't drop below 1/250. If it does, raise the ISO or switch to M with ISO AUTO."));
     }
-    if(want === "blur" && subj === "grupo") warn.push("Con fondo borroso, quien esté a otra distancia saldrá desenfocado. Ponlos en una línea o usa F8.");
-    if(want === "blur" && subj === "paisaje") warn.push("En un paisaje casi todo está lejos: el fondo apenas se desenfocará. Busca algo cercano que destacar.");
-    if(dark && iso === "AUTO") why.push("Hay poca luz: el ISO AUTO subirá hasta 6400. Mejor algo de grano que una foto movida.");
-    if(light === "noche" && move === "no" && (subj === "paisaje" || subj === "objeto")){ iso = "100–400"; why.push("De noche, con un sujeto quieto, apoya la cámara: puedes usar velocidades lentas con ISO bajo y la máxima calidad."); }
+    if(want === "blur" && subj === "grupo") warn.push(L("Con fondo borroso, quien esté a otra distancia saldrá desenfocado. Ponlos en una línea o usa F8.", "With a blurry background, anyone at a different distance will be out of focus. Line them up or use F8."));
+    if(want === "blur" && subj === "paisaje") warn.push(L("En un paisaje casi todo está lejos: el fondo apenas se desenfocará. Busca algo cercano que destacar.", "In a landscape almost everything is far away, so the background will barely blur. Find something close to feature."));
+    if(dark && iso === "AUTO") why.push(L("Hay poca luz: el ISO AUTO subirá hasta 6400. Mejor algo de grano que una foto movida.", "There's little light: ISO AUTO will go up to 6400. Some grain is better than a blurry photo."));
+    if(light === "noche" && move === "no" && (subj === "paisaje" || subj === "objeto")){ iso = "100–400"; why.push(L("De noche, con un sujeto quieto, apoya la cámara: puedes usar velocidades lentas con ISO bajo y la máxima calidad.", "At night, with a still subject, rest the camera on something: you can use slow shutter speeds with low ISO and top quality.")); }
     const focus = move === "no" ? "AF-S" : "AF-C";
-    const area = subj === "persona" ? (move === "rapido" ? "Zona o Lock-on AF + Eye AF" : "Eye AF (botón central)") : subj === "grupo" ? "Punto flexible en una cara de la fila central" : subj === "paisaje" ? "Punto flexible a un tercio de la escena" : (move === "rapido" ? "Zona o Lock-on AF" : "Punto flexible pequeño en lo importante");
-    const drive = move === "rapido" ? "Continuo Hi" : subj === "grupo" ? "Autodisparador continuo (3 fotos)" : (want === "trail" && move === "no") || (light === "noche" && move === "no") ? "Autodisparador 2 s, cámara apoyada" : "Disparo único";
-    if(light === "sol" && (subj === "persona" || subj === "grupo")) warn.push("Sol directo en la cara: busca sombra abierta, o pon el sol detrás y usa flash de relleno.");
-    if(light === "noche" && (subj === "persona" || subj === "grupo")) warn.push("Para iluminar caras de noche: flash con sincronización lenta, o acércalas a una fuente de luz.");
-    if(light === "interior") why.push("Antes de subir el ISO, acerca el sujeto a una ventana o lámpara: la luz manda.");
-    return {mode, N, t, iso, zoom, focus, area, drive, why, warn};
+    const area = EN
+      ? (subj === "persona" ? (move === "rapido" ? "Zone or Lock-on AF + Eye AF" : "Eye AF (center button)") : subj === "grupo" ? "Flexible Spot on a face in the middle row" : subj === "paisaje" ? "Flexible Spot a third of the way into the scene" : (move === "rapido" ? "Zone or Lock-on AF" : "Small Flexible Spot on what matters"))
+      : (subj === "persona" ? (move === "rapido" ? "Zona o Lock-on AF + Eye AF" : "Eye AF (botón central)") : subj === "grupo" ? "Punto flexible en una cara de la fila central" : subj === "paisaje" ? "Punto flexible a un tercio de la escena" : (move === "rapido" ? "Zona o Lock-on AF" : "Punto flexible pequeño en lo importante"));
+    const drive = EN
+      ? (move === "rapido" ? "Continuous Shooting: Hi" : subj === "grupo" ? "Self-timer(Cont): 10 Sec. 3 Img." : (want === "trail" && move === "no") || (light === "noche" && move === "no") ? "Self-timer: 2 Sec, camera resting on something" : "Single Shooting")
+      : (move === "rapido" ? "Continuo Hi" : subj === "grupo" ? "Autodisparador continuo (3 fotos)" : (want === "trail" && move === "no") || (light === "noche" && move === "no") ? "Autodisparador 2 s, cámara apoyada" : "Disparo único");
+    if(light === "sol" && (subj === "persona" || subj === "grupo")) warn.push(L("Sol directo en la cara: busca sombra abierta, o pon el sol detrás y usa flash de relleno.", "Direct sun on the face: find open shade, or put the sun behind them and use Fill-flash."));
+    if(light === "noche" && (subj === "persona" || subj === "grupo")) warn.push(L("Para iluminar caras de noche: flash con sincronización lenta, o acércalas a una fuente de luz.", "To light faces at night: flash with Slow Sync., or move them close to a light source."));
+    if(light === "interior") why.push(L("Antes de subir el ISO, acerca el sujeto a una ventana o lámpara: la luz manda.", "Before raising the ISO, move the subject near a window or lamp: light comes first."));
+    return {mode, N, t, iso, zoom, focus, area, drive, why, warn, cam: CAM, low: LOW};
   }
   function render(){
     el.querySelectorAll("[data-q]").forEach(g => g.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", c.dataset.v === st[g.dataset.q])));
     const r = plan();
     el.querySelector("[data-out]").innerHTML = `<div class="stack" style="gap:10px">
-      <h3>Tu punto de partida</h3>
-      ${evfHTML([r.mode, r.t.startsWith("La") ? "VEL. AUTO" : r.t, r.N.startsWith("La e") ? "F AUTO" : r.N.replace(/ \(.*\)/,"").replace("La más baja","F MÍN."), "ISO " + r.iso])}
+      <h3>${L("Tu punto de partida", "Your starting point")}</h3>
+      ${evfHTML([r.mode, r.t === r.cam ? L("VEL. AUTO", "SS AUTO") : r.t, r.N === r.cam ? "F AUTO" : r.N === r.low ? L("F MÍN.", "F MIN.") : r.N, "ISO " + r.iso])}
       <div class="recipe"><dl>
-       <dt>Modo</dt><dd>${esc(r.mode)}</dd><dt>Apertura</dt><dd>${esc(r.N)}</dd><dt>Velocidad</dt><dd>${esc(r.t)}</dd><dt>ISO</dt><dd>${esc(r.iso)}</dd>
-       <dt>Zoom</dt><dd>${esc(r.zoom)}</dd><dt>Enfoque</dt><dd>${r.focus} · ${esc(r.area)}</dd><dt>Avance</dt><dd>${esc(r.drive)}</dd>
+       <dt>${L("Modo", "Mode")}</dt><dd>${esc(r.mode)}</dd><dt>${L("Apertura", "Aperture")}</dt><dd>${esc(r.N)}</dd><dt>${L("Velocidad", "Shutter speed")}</dt><dd>${esc(r.t)}</dd><dt>ISO</dt><dd>${esc(r.iso)}</dd>
+       <dt>Zoom</dt><dd>${esc(r.zoom)}</dd><dt>${L("Enfoque", "Focus")}</dt><dd>${r.focus} · ${esc(r.area)}</dd><dt>${L("Avance", "Drive Mode")}</dt><dd>${esc(r.drive)}</dd>
       </dl></div>
-      <div><b>Por qué</b><ul style="margin:6px 0 0;padding-left:22px;display:flex;flex-direction:column;gap:4px">${r.why.map(w => `<li>${esc(w)}</li>`).join("")}</ul></div>
-      ${r.warn.length ? `<div class="callout c-warn"><span class="eyebrow">Ojo</span>${r.warn.map(w => `<p>${esc(w)}</p>`).join("")}</div>` : ""}
+      <div><b>${L("Por qué", "Why")}</b><ul style="margin:6px 0 0;padding-left:22px;display:flex;flex-direction:column;gap:4px">${r.why.map(w => `<li>${esc(w)}</li>`).join("")}</ul></div>
+      ${r.warn.length ? `<div class="callout c-warn"><span class="eyebrow">${L("Ojo", "Watch out")}</span>${r.warn.map(w => `<p>${esc(w)}</p>`).join("")}</div>` : ""}
     </div>`;
   }
   el.addEventListener("click", e => { const c = e.target.closest(".chip"); if(!c) return; st[c.closest("[data-q]").dataset.q] = c.dataset.v; render(); });
@@ -1794,6 +1830,8 @@ const WB = [["Auto",0],["Luz día",5500],["Sombra",7500],["Nublado",6500],["Inca
 const STYLES = [["Estándar",1,1],["Intenso",1.35,1.06],["Neutro",.72,.96],["Retrato",.88,.97],["Paisaje",1.22,1.1],["B/N",0,1.05]];
 const MINSS = [["Más lento",4],["Lento",2],["Estándar",1],["Rápido",.5],["Más rápido",.25]];
 const GRIDS = ["Cuadríc. regla 3 tercios","Cuadrícula cuadrada","Cuadríc. diag.+cuad.","Desactivado"];
+// In English every name below becomes the α6500's own English label (en.js words).
+if(EN){ SCENES.forEach(x => x.n = W(x.n)); [ONOFF, OFFON, GRIDS].forEach(a => a.forEach((x, i) => a[i] = W(x))); [WB, STYLES, MINSS].forEach(a => a.forEach(x => x[0] = W(x[0]))); }
 const CAM_MENU = [
  {n:"Ajustes de cámara 1", ic:"cam", num:"1", c:"#F0524F", pages:[
   [["Calidad",["Extra fino","Fino","Estándar","RAW","RAW y JPEG"],0],["Tamaño imagen",["L: 24M","M: 12M","S: 6.0M"],0],["Relación aspecto",["3:2","16:9","4:3","1:1"],0],["RR exposición larga",ONOFF,0],["RR ISO alta",["Normal","Bajo","Desactivado"],0],["Espacio color",["sRGB","AdobeRGB"],0]],
@@ -1818,7 +1856,7 @@ const CAM_MENU = [
   [["Lista de aplicaciones",null],["Introducción",null]]
  ]},
  {n:"Reproducción", ic:"play", c:"#4C9BFF", pages:[
-  [["Borrar",null],["Modo visualización",["Vista de fecha","Vista carpeta (fija)","Vista carpeta (MP4)","Vista XAVC S 4K","Vista XAVC S HD"],0],["Índice de imágenes",["9 imágenes","25 imágenes"],0],["Rotación pantalla",["Auto","Manual","Desactivado"],1],["Presentación diapo.",null],["Girar",null]],
+  [["Borrar",null],["Modo visualización",["Vista de fecha","Vista carpeta (fija)","Vista carpeta (MP4)","Vista XAVC S 4K","Vista XAVC S HD"],0],["Índice de imágenes",["12 imágenes","30 imágenes"],0],["Rotación pantalla",["Auto","Manual","Desactivado"],1],["Presentación diapo.",null],["Girar",null]],
   [["Ampliar imagen",null],["Proteger",null],["Clasificación",null],["Especificar impresión",null],["Captura de foto",null]]
  ]},
  {n:"Configuración", ic:"setup", c:"#F2B33D", pages:[
@@ -1830,6 +1868,7 @@ const CAM_MENU = [
   [["Añadir elemento",null],["Ordenar elemento",null],["Eliminar elemento",null],["Eliminar página",null],["Eliminar todo",null]]
  ]}
 ];
+if(EN) CAM_MENU.forEach(t => { t.n = W(t.n); t.pages.forEach(p => p.forEach(it => { it[0] = W(it[0]); if(it[1] && !it[3]) it[1] = it[1].map(W); if(it[0] === "Language") it[2] = 1; })); });
 const MENU_PAGES = CAM_MENU.flatMap((t, ti) => t.pages.map((items, pi) => ({ti, pi, items})));
 const MENU_ICON = {
   cam: n => `<rect x="2.5" y="7" width="15" height="11" rx="1.5"/><circle cx="10" cy="12.5" r="3.2"/><path d="M6.5 7l1.2-2.5h4.6L13.5 7"/><text x="21.5" y="19" font-size="9" font-weight="700" stroke="none" fill="currentColor" text-anchor="middle">${n}</text>`,
@@ -1844,12 +1883,22 @@ const MENU_ICON = {
 // The back of the camera with its real controls: mode dial, control dial, shutter and C1 on top;
 // MENU, Fn, the control wheel, playback and C3 on the right of the screen; zoom on the lens.
 // The controls do what they do on the camera, so practice here carries over.
-const MODE_DIAL = ["AUTO","P","A","S","M","1","2","Vídeo","S&Q","SCN","Pano"];
-const DRIVES = ["Disparo único","Continuo Hi","Continuo Mid","Continuo Lo","Autodisparador 10 s","Autodisparador 2 s"];
+// In the dial's own order. Movie and S&Q share one position on the a6500.
+const MODE_DIAL = ["AUTO","P","A","S","M","1","2",L("Vídeo","Movie"),"Pano","SCN"];
+const DRIVES = EN ? ["Single Shooting","Continuous Shooting: Hi","Continuous Shooting: Mid","Continuous Shooting: Lo","Self-timer: 10 Sec","Self-timer: 2 Sec"]
+  : ["Disparo único","Continuo Hi","Continuo Mid","Continuo Lo","Autodisparador 10 s","Autodisparador 2 s"];
 const FN_ITEMS = [["Modo de avance","Avance"],["Modo flash","Flash"],["Modo de enfoque","Enfoque"],["Área de enfoque","Área"],["Compensación exposición","±"],["ISO","ISO"],
   ["Modo medición","Medición"],["Balance blancos","WB"],["DRO/HDR auto","DRO"],["Estilo creativo","Estilo"],["Efecto de foto","Efecto"],["Calidad","Calidad"]];
-const SCENE_LIGHT = {sol: "Mucha luz: sol directo de mediodía.", sombra: "Luz media: a la sombra en un día despejado.", atardecer: "Poca luz, cálida: el sol está bajo.", interior: "Poca luz: dentro de casa con lámparas.", noche: "Muy poca luz: una calle de noche."};
-const MODE_HINT = {
+if(EN) FN_ITEMS.forEach((x, i) => { x[0] = W(x[0]); x[1] = ["Drive","Flash","Focus","Area","±","ISO","Meter","WB","DRO","Style","Effect","Quality"][i]; });
+const SCENE_LIGHT = EN ? {sol: "Lots of light: direct midday sun.", sombra: "Medium light: in the shade on a clear day.", atardecer: "Low, warm light: the sun is low.", interior: "Low light: indoors with lamps.", noche: "Very little light: a street at night."} : {sol: "Mucha luz: sol directo de mediodía.", sombra: "Luz media: a la sombra en un día despejado.", atardecer: "Poca luz, cálida: el sol está bajo.", interior: "Poca luz: dentro de casa con lámparas.", noche: "Muy poca luz: una calle de noche."};
+const MODE_HINT = EN ? {
+  AUTO: "AUTO: the camera decides everything. Frame and press the shutter button.",
+  P: "P: the camera picks aperture and shutter speed. Turn the control dial to change the pair (Program Shift, you'll see P*).",
+  A: "A: turn the control dial to change the aperture. The camera sets the shutter speed.",
+  S: "S: turn the control dial to change the shutter speed. The camera sets the aperture.",
+  M: "M: the control dial changes the aperture and the wheel the shutter speed. Watch the MM indicator.",
+  other: "This mode exists on your camera, but the simulator treats it like P. To practice, use AUTO, P, A, S or M."
+} : {
   AUTO: "AUTO: la cámara lo decide todo. Encuadra y pulsa el disparador.",
   P: "P: la cámara elige apertura y velocidad. Si giras el dial de control, cambias la pareja (cambio de programa, verás P*).",
   A: "A: gira el dial de control para cambiar la apertura. La velocidad la pone la cámara.",
@@ -1867,10 +1916,10 @@ function mountSim(el, opts){
    <div class="cam" data-cam>
     <div class="cam-top">
      <span class="cam-shoe" aria-hidden="true"></span>
-     <div class="knob mode" data-knob="mode" role="slider" tabindex="0" aria-label="Dial de modos"><div class="mode-strip" data-modestrip>${MODE_DIAL.map((m, i) => `<span style="left:${i * 38}px">${m}</span>`).join("")}</div><i class="knob-idx" aria-hidden="true"></i></div>
-     <div class="knob knurl" data-knob="dial" role="slider" tabindex="0" aria-label="Dial de control"></div>
-     <button type="button" class="cbtn round" data-k="c1" aria-label="Botón C1">C1</button>
-     <button type="button" class="shutter" data-k="shutter" aria-label="Disparador"><i></i></button>
+     <div class="knob mode" data-knob="mode" role="slider" tabindex="0" aria-label="${L("Dial de modos","Mode dial")}"><div class="mode-strip" data-modestrip>${MODE_DIAL.map((m, i) => `<span style="left:${i * 38}px">${m}</span>`).join("")}</div><i class="knob-idx" aria-hidden="true"></i></div>
+     <div class="knob knurl" data-knob="dial" role="slider" tabindex="0" aria-label="${L("Dial de control","Control dial")}"></div>
+     <button type="button" class="cbtn round" data-k="c1" aria-label="${L("Botón C1","C1 button")}">C1</button>
+     <button type="button" class="shutter" data-k="shutter" aria-label="${L("Disparador","Shutter button")}"><i></i></button>
     </div>
     <div class="cam-back">
      <div class="sim-frame" data-frame>
@@ -1888,47 +1937,54 @@ function mountSim(el, opts){
       <div class="sim-black" data-black></div>
      </div>
      <div class="cam-right">
-      <div class="cam-row"><button type="button" class="cbtn" data-k="menu">MENU</button><button type="button" class="cbtn round sm" data-k="aef" aria-label="Botón AF/MF · AEL">AEL</button></div>
-      <button type="button" class="cbtn round" data-k="fn" aria-label="Botón Fn">Fn</button>
-      <div class="wheel" data-wheel role="group" aria-label="Rueda de control: gírala o pulsa sus lados">
+      <div class="cam-row"><button type="button" class="cbtn" data-k="menu">MENU</button><button type="button" class="cbtn round sm" data-k="aef" aria-label="${L("Botón AF/MF · AEL","AF/MF · AEL button")}">AEL</button></div>
+      <button type="button" class="cbtn round" data-k="fn" aria-label="${L("Botón Fn","Fn button")}">Fn</button>
+      <div class="wheel" data-wheel role="group" aria-label="${L("Rueda de control: gírala o pulsa sus lados","Control wheel: turn it or press its sides")}">
        <i class="wheel-ring" data-ring aria-hidden="true"></i>
-       <button type="button" class="wk up" data-k="up" aria-label="Arriba: DISP">DISP</button>
-       <button type="button" class="wk right" data-k="right" aria-label="Derecha: ISO">ISO</button>
-       <button type="button" class="wk down" data-k="down" aria-label="Abajo: compensación de exposición">±</button>
-       <button type="button" class="wk left" data-k="left" aria-label="Izquierda: modo de avance"><svg viewBox="0 0 20 16" aria-hidden="true"><rect x="1" y="5" width="11" height="9" rx="1"/><path d="M4 3h11v9M7 1h11v9"/></svg></button>
-       <button type="button" class="wk ok" data-k="ok" aria-label="Botón central"></button>
+       <button type="button" class="wk up" data-k="up" aria-label="${L("Arriba: DISP","Top: DISP")}">DISP</button>
+       <button type="button" class="wk right" data-k="right" aria-label="${L("Derecha: ISO","Right: ISO")}">ISO</button>
+       <button type="button" class="wk down" data-k="down" aria-label="${L("Abajo: compensación de exposición","Bottom: exposure compensation")}">±</button>
+       <button type="button" class="wk left" data-k="left" aria-label="${L("Izquierda: modo de avance","Left: drive mode")}"><svg viewBox="0 0 20 16" aria-hidden="true"><rect x="1" y="5" width="11" height="9" rx="1"/><path d="M4 3h11v9M7 1h11v9"/></svg></button>
+       <button type="button" class="wk ok" data-k="ok" aria-label="${L("Botón central","Center button")}"></button>
       </div>
-      <div class="cam-row"><button type="button" class="cbtn round sm" data-k="c3" aria-label="Botón C3 / borrar">C3</button><button type="button" class="cbtn round sm" data-k="play" aria-label="Botón de reproducción">▶</button></div>
+      <div class="cam-row"><button type="button" class="cbtn round sm" data-k="play" aria-label="${L("Botón de reproducción","Playback button")}">▶</button><button type="button" class="cbtn round sm" data-k="c3" aria-label="${L("Botón C3 / borrar","C3 / Delete button")}">C3</button></div>
      </div>
     </div>
     <div class="cam-lens">
      <span class="cam-lens-l">Zoom</span>
-     <div class="knob knurl lens" data-knob="zoom" role="slider" tabindex="0" aria-label="Anillo de zoom del objetivo"></div>
+     <div class="knob knurl lens" data-knob="zoom" role="slider" tabindex="0" aria-label="${L("Anillo de zoom del objetivo","Lens zoom ring")}"></div>
      <b data-zoomv></b>
     </div>
    </div>
    <p class="sim-hint" data-hint aria-live="polite"></p>
    <div class="meter" data-meterwrap>
-    <div class="meter-txt"><span>Más oscura</span><b data-metertxt></b><span>Más clara</span></div>
+    <div class="meter-txt"><span>${L("Más oscura","Darker")}</span><b data-metertxt></b><span>${L("Más clara","Brighter")}</span></div>
     <div class="meter-bar"><div class="meter-ticks">${[-3,-2,-1,0,1,2,3].map((v,i,a) => `<span class="big"><b>${v>0?"+"+v:v}</b></span>` + (i < a.length-1 ? "<span></span><span></span>" : "")).join("")}</div><div class="meter-mark" data-mark></div></div>
    </div>
    <section class="stack sim-light" style="gap:8px">
-    <h3>¿Con qué luz haces la foto?</h3>
-    <p class="muted" style="font-size:14px">Cambia la luz y mira cómo responde la cámara. No son ajustes recomendados: para eso está el <a href="#recetas">planificador de Recetas</a>.</p>
-    <div class="chips chips-row" role="group" aria-label="Luz de la escena">${SCENES.map(s => `<button type="button" class="chip" data-scene="${s.id}" aria-pressed="false">${s.n}</button>`).join("")}</div>
+    <h3>${L("¿Con qué luz haces la foto?","What light are you shooting in?")}</h3>
+    <p class="muted" style="font-size:14px">${L(`Cambia la luz y mira cómo responde la cámara. No son ajustes recomendados: para eso está el <a href="#recetas">planificador de Recetas</a>.`, `Change the light and watch how the camera responds. These aren't recommended settings: for that, use the <a href="#recetas">planner in Recipes</a>.`)}</p>
+    <div class="chips chips-row" role="group" aria-label="${L("Luz de la escena","Scene light")}">${SCENES.map(s => `<button type="button" class="chip" data-scene="${s.id}" aria-pressed="false">${s.n}</button>`).join("")}</div>
     <p style="font-size:15px" data-scenetxt></p>
    </section>
    <ul class="verdict" data-verdict></ul>
-   <details class="howto-d stack sim-help" style="gap:10px"><summary>Cómo se usa</summary>
-    <ul>
+   <details class="howto-d stack sim-help" style="gap:10px"><summary>${L("Cómo se usa","How to use it")}</summary>
+    ${EN ? `<ul>
+     <li><b>Mode dial</b> (top): slide it to choose AUTO, P, A, S or M.</li>
+     <li><b>Control dial</b> (the ridged wheel on top): slide it or tap one side. In A it changes the aperture, in S the shutter speed, in M the aperture.</li>
+     <li><b>Control wheel</b>: turn it with your finger or press its sides. ISO on the right, ± at the bottom, drive mode on the left, DISP at the top. The center confirms.</li>
+     <li><b>MENU</b> and <b>Fn</b> open the menus. <b>▶</b> shows your photos and <b>C3</b> deletes them.</li>
+     <li>The <b>shutter button</b> takes the photo. You can tap the screen to move the focus, like on the camera.</li>
+    </ul>
+    <p class="muted" style="font-size:14px">A rough simulation to understand how the settings relate. The menu is a shortened version of the α6500's, with the same tabs in the same order and the names the camera shows in English.</p>` : `<ul>
      <li><b>Dial de modos</b> (arriba): desliza para elegir AUTO, P, A, S o M.</li>
      <li><b>Dial de control</b> (la rueda estriada de arriba): desliza o toca a un lado. En A cambia la apertura, en S la velocidad, en M la apertura.</li>
      <li><b>Rueda de control</b>: gírala con el dedo o pulsa sus lados. ISO a la derecha, ± abajo, avance a la izquierda, DISP arriba. El centro acepta.</li>
      <li><b>MENU</b> y <b>Fn</b> abren los menús. <b>▶</b> muestra tus fotos y <b>C3</b> las borra.</li>
      <li>El <b>disparador</b> hace la foto. Puedes tocar la pantalla para mover el enfoque, como en la cámara.</li>
     </ul>
-    <p class="muted" style="font-size:14px">Simulación aproximada para entender la relación entre ajustes. El menú es una versión resumida del de la α6500, con las mismas pestañas y en el mismo orden.</p>
-    <p class="muted" style="font-size:13px">Versión ${APP_BUILD}</p>
+    <p class="muted" style="font-size:14px">Simulación aproximada para entender la relación entre ajustes. El menú es una versión resumida del de la α6500, con las mismas pestañas y en el mismo orden.</p>`}
+    <p class="muted" style="font-size:13px">${L("Versión","Version")} ${APP_BUILD}</p>
    </details>
   </div>`;
   const $ = s => el.querySelector(s);
@@ -1985,7 +2041,7 @@ function mountSim(el, opts){
     const st = state();
     $("[data-osdtop]").innerHTML = V.screen === "play"
       ? `<span>▶ ${V.play + 1}/${SIM.shots.length}</span><span>${esc(SCENES.find(s => s.id === SIM.shots[V.play].st.scene).n)}</span>`
-      : `<span class="m">${SIM.mode === "P" && SIM.shift ? "P*" : esc(SIM.mode)}</span><span>${DRIVES[SIM.drive].startsWith("Auto") ? "⏱ " : DRIVES[SIM.drive].startsWith("Cont") ? "▤ " : ""}${999 - SIM.shots.length} · ▮▮▮</span>`;
+      : `<span class="m">${SIM.mode === "P" && SIM.shift ? "P*" : esc(SIM.mode)}</span><span>${SIM.drive >= 4 ? "⏱ " : SIM.drive >= 1 ? "▤ " : ""}${999 - SIM.shots.length} · ▮▮▮</span>`;
     $("[data-osdtop]").hidden = !live && V.screen !== "play" || (SIM.disp === 1 && V.screen === "live");
     if(V.screen === "play"){
       const sh = SIM.shots[V.play];
@@ -2011,22 +2067,22 @@ function mountSim(el, opts){
     if(V.screen === "iso" || V.screen === "drive"){
       const o = V.screen === "iso" ? ["AUTO", ...ISOS.map(String)] : DRIVES, i = V.list;
       const first = clamp(i - 2, 0, Math.max(0, o.length - 5));
-      return `<div class="pop-side"><b>${V.screen === "iso" ? "ISO" : "Modo de avance"}</b>${o.slice(first, first + 5).map((v, j) => `<span class="${first + j === i ? "on" : ""}">${esc(v)}</span>`).join("")}<small>Gira la rueda · centro: aceptar</small></div>`;
+      return `<div class="pop-side${V.screen === "drive" ? " wide" : ""}"><b>${V.screen === "iso" ? "ISO" : W("Modo de avance")}</b>${o.slice(first, first + 5).map((v, j) => `<span class="${first + j === i ? "on" : ""}">${esc(v)}</span>`).join("")}<small>${L("Gira la rueda · centro: aceptar","Turn the wheel · center: OK")}</small></div>`;
     }
     if(V.screen === "ev"){
       const v = EVS[V.list];
-      return `<div class="pop-ev"><b>Compensación exposición</b><div class="ev-scale">${[-3,-2,-1,0,1,2,3].map(x => `<span>${x > 0 ? "+" + x : x}</span>`).join("")}<i style="left:${((v + 3) / 6 * 100).toFixed(1)}%"></i></div><span class="ev-v">${fmtEV(v)}</span><small>Gira la rueda · centro: aceptar</small></div>`;
+      return `<div class="pop-ev"><b>${W("Compensación exposición")}</b><div class="ev-scale">${[-3,-2,-1,0,1,2,3].map(x => `<span>${x > 0 ? "+" + x : x}</span>`).join("")}<i style="left:${((v + 3) / 6 * 100).toFixed(1)}%"></i></div><span class="ev-v">${fmtEV(v)}</span><small>${L("Gira la rueda · centro: aceptar","Turn the wheel · center: OK")}</small></div>`;
     }
     if(V.screen === "fn"){
       const tiles = FN_ITEMS.map(([name, short], i) => { const loc = findItem(name); return `<span class="${i === V.fn ? "on" : ""}" data-fn="${i}"><small>${short}</small>${esc(shortVal(loc))}</span>`; }).join("");
       const cur = findItem(FN_ITEMS[V.fn][0]);
       if(V.fnSub !== null){
         const o = optsAt(cur);
-        return `<div class="pop-side"><b>${esc(FN_ITEMS[V.fn][0])}</b>${o.slice(clamp(V.fnSub - 2, 0, Math.max(0, o.length - 5)), clamp(V.fnSub - 2, 0, Math.max(0, o.length - 5)) + 5).map((v, j) => `<span class="${clamp(V.fnSub - 2, 0, Math.max(0, o.length - 5)) + j === V.fnSub ? "on" : ""}">${esc(String(v))}</span>`).join("")}<small>Gira la rueda · centro: aceptar</small></div>`;
+        return `<div class="pop-side wide"><b>${esc(FN_ITEMS[V.fn][0])}</b>${o.slice(clamp(V.fnSub - 2, 0, Math.max(0, o.length - 5)), clamp(V.fnSub - 2, 0, Math.max(0, o.length - 5)) + 5).map((v, j) => `<span class="${clamp(V.fnSub - 2, 0, Math.max(0, o.length - 5)) + j === V.fnSub ? "on" : ""}">${esc(String(v))}</span>`).join("")}<small>${L("Gira la rueda · centro: aceptar","Turn the wheel · center: OK")}</small></div>`;
       }
       return `<div class="pop-fn"><div class="fn-title">${esc(FN_ITEMS[V.fn][0])}: <b>${esc(String(optsAt(cur)[valAt(cur)]))}</b></div><div class="fn-grid">${tiles}</div></div>`;
     }
-    if(V.screen === "play" && !SIM.shots.length) return `<div class="pop-msg">No hay fotos. Pulsa el disparador para hacer una.</div>`;
+    if(V.screen === "play" && !SIM.shots.length) return `<div class="pop-msg">${L("No hay fotos. Pulsa el disparador para hacer una.","No photos. Press the shutter button to take one.")}</div>`;
     return "";
   }
   // Fn items reuse the MENU's values, so both places always agree
@@ -2034,7 +2090,7 @@ function mountSim(el, opts){
   const optsAt = loc => optsOf(loc.it);
   const valAt = loc => valFor(loc.p, loc.j);
   function setAt(loc, i){ const it = loc.it; if(it[3]) FX[it[3]].set(i); else SIM.mv[loc.p + "." + loc.j] = i; }
-  function shortVal(loc){ const v = String(optsAt(loc)[valAt(loc)]); return v.replace("Disparo único", "Único").replace("Desactivado", "No").replace("Flash auto", "Auto").replace("Optimiz. gama D", "DRO").replace("Extra fino", "X.fino").replace("Punto flexible", "Punto").replace("Flash de relleno", "Relleno").replace("Flash desactivado", "No"); }
+  function shortVal(loc){ const v = String(optsAt(loc)[valAt(loc)]); if(EN) return v.replace("Single Shooting", "Single").replace("Continuous Shooting: ", "Cont. ").replace("Self-timer: ", "⏱ ").replace("Flash Off", "Off").replace("Autoflash", "Auto").replace("D-Range Opt.", "DRO").replace("Extra fine", "X.fine").replace("Flexible Spot", "Spot").replace("Fill-flash", "Fill").replace("Black & White", "B/W").replace("Standard", "Std.").replace("Toy Camera", "Toy"); return v.replace("Disparo único", "Único").replace("Desactivado", "No").replace("Flash auto", "Auto").replace("Optimiz. gama D", "DRO").replace("Extra fino", "X.fino").replace("Punto flexible", "Punto").replace("Flash de relleno", "Relleno").replace("Flash desactivado", "No"); }
 
   /* --- the camera MENU (data in CAM_MENU) --- */
   const M = {page: 0, row: 0, sub: null, note: ""};
@@ -2048,7 +2104,7 @@ function mountSim(el, opts){
   const optsOf = it => it[3] && FX[it[3]].opts ? FX[it[3]].opts() : it[1];
   function valFor(page, row){ const it = MENU_PAGES[page].items[row]; return it[3] ? FX[it[3]].get() : (SIM.mv[page + "." + row] ?? it[2]); }
   // drive mode lives on the wheel and in the menu: same value
-  MENU_PAGES.forEach(p => p.items.forEach(it => { if(it[0] === "Modo de avance"){ it[3] = "drive"; } }));
+  MENU_PAGES.forEach(p => p.items.forEach(it => { if(it[0] === W("Modo de avance")){ it[3] = "drive"; } }));
   function menuHTML(){
     const pg = MENU_PAGES[M.page], tab = CAM_MENU[pg.ti];
     const note = M.note ? `<div class="cm-note" role="status">${M.note}</div>` : "";
@@ -2076,7 +2132,7 @@ function mountSim(el, opts){
       if(k === "up") M.row = (M.row - 1 + pg.items.length) % pg.items.length;
       else if(k === "down") M.row = (M.row + 1) % pg.items.length;
       else if(k === "left" || k === "right"){ M.page = (M.page + (k === "left" ? -1 : 1) + MENU_PAGES.length) % MENU_PAGES.length; M.row = Math.min(M.row, MENU_PAGES[M.page].items.length - 1); }
-      else if(k === "ok"){ const o = optsOf(itemAt()); if(o) M.sub = {i: valFor(M.page, M.row)}; else M.note = "En la cámara esto abre otra pantalla. En el simulador no hace nada."; }
+      else if(k === "ok"){ const o = optsOf(itemAt()); if(o) M.sub = {i: valFor(M.page, M.row)}; else M.note = L("En la cámara esto abre otra pantalla. En el simulador no hace nada.", "On the camera this opens another screen. In the simulator it does nothing."); }
       else if(k === "menu") V.screen = "live";
     }
   }
@@ -2087,13 +2143,13 @@ function mountSim(el, opts){
   function press(k){
     const s = V.screen;
     if(k === "shutter"){ if(s === "play" || s === "menu"){ V.screen = "live"; M.sub = null; } else shoot(); return schedule(); }
-    if(k === "menu"){ if(s === "menu") menuKey("menu"); else if(s === "live"){ V.screen = "menu"; M.sub = null; say("MENU: gira la rueda o pulsa arriba y abajo para moverte, los lados cambian de página, el centro acepta y MENU vuelve atrás."); } else { V.screen = "live"; V.fnSub = null; } return schedule(); }
+    if(k === "menu"){ if(s === "menu") menuKey("menu"); else if(s === "live"){ V.screen = "menu"; M.sub = null; say(L("MENU: gira la rueda o pulsa arriba y abajo para moverte, los lados cambian de página, el centro acepta y MENU vuelve atrás.", "MENU: turn the wheel or press up and down to move, the sides change page, the center confirms and MENU goes back.")); } else { V.screen = "live"; V.fnSub = null; } return schedule(); }
     if(s === "menu"){ menuKey(k === "c3" ? "" : k); return schedule(); }
-    if(k === "play"){ V.screen = s === "play" ? "live" : "play"; V.play = Math.max(0, SIM.shots.length - 1); if(V.screen === "play") say("Reproducción: gira la rueda o pulsa los lados para pasar fotos. C3 borra. Vuelve con ▶ o el disparador."); return schedule(); }
+    if(k === "play"){ V.screen = s === "play" ? "live" : "play"; V.play = Math.max(0, SIM.shots.length - 1); if(V.screen === "play") say(L("Reproducción: gira la rueda o pulsa los lados para pasar fotos. C3 borra. Vuelve con ▶ o el disparador.", "Playback: turn the wheel or press the sides to go through photos. C3 deletes. Go back with ▶ or the shutter button.")); return schedule(); }
     if(s === "play"){
       if(k === "left" || k === "right"){ if(SIM.shots.length) V.play = (V.play + (k === "left" ? -1 : 1) + SIM.shots.length) % SIM.shots.length; }
-      else if(k === "c3" && SIM.shots.length){ SIM.shots.splice(V.play, 1); V.play = Math.max(0, Math.min(V.play, SIM.shots.length - 1)); toast("Foto borrada."); }
-      else if(k === "fn") toast("En reproducción, Fn envía la foto al móvil.");
+      else if(k === "c3" && SIM.shots.length){ SIM.shots.splice(V.play, 1); V.play = Math.max(0, Math.min(V.play, SIM.shots.length - 1)); toast(L("Foto borrada.", "Photo deleted.")); }
+      else if(k === "fn") toast(L("En reproducción, Fn envía la foto al móvil.", "In playback, Fn sends the photo to your phone (Send to Smartphone)."));
       return schedule();
     }
     if(s === "fn"){
@@ -2117,13 +2173,13 @@ function mountSim(el, opts){
       return schedule();
     }
     // live view
-    if(k === "fn"){ V.screen = "fn"; V.fnSub = null; say("Fn: muévete con los lados de la rueda, gira el dial de control para cambiar el ajuste, o pulsa el centro para ver la lista."); }
-    else if(k === "right"){ V.screen = "iso"; V.list = FX.iso.get(); say("ISO: gira la rueda y pulsa el centro para aceptar."); }
-    else if(k === "down"){ V.screen = "ev"; V.list = FX.ev.get(); say("Compensación: gira la rueda. Más es una foto más clara. Centro para aceptar."); }
-    else if(k === "left"){ V.screen = "drive"; V.list = SIM.drive; say("Modo de avance: disparo único, ráfaga o temporizador."); }
-    else if(k === "up"){ SIM.disp = (SIM.disp + 1) % 3; toast(["Mostrar toda la info.", "Sin información.", "Histograma"][SIM.disp]); say("DISP cambia lo que ves en pantalla. El histograma muestra el brillo: si choca a la derecha, hay zonas quemadas."); }
-    else if(k === "ok"){ V.eye = true; clearTimeout(V.eyeT); V.eyeT = setTimeout(() => { V.eye = false; schedule(); }, 1800); say("Botón central: de fábrica es Eye AF. Mantenlo pulsado y la cámara enfoca el ojo."); }
-    else if(k === "c1" || k === "c2" || k === "c3" || k === "aef") toast(k === "aef" ? "AF/MF · AEL: bloquea la exposición o cambia a enfoque manual." : `${k.toUpperCase()}: botón personalizable. Lo eliges en la lección «Hazla tuya».`);
+    if(k === "fn"){ V.screen = "fn"; V.fnSub = null; say(L("Fn: muévete con los lados de la rueda, gira el dial de control para cambiar el ajuste, o pulsa el centro para ver la lista.", "Fn: move with the sides of the wheel, turn the control dial to change the setting, or press the center to see the list.")); }
+    else if(k === "right"){ V.screen = "iso"; V.list = FX.iso.get(); say(L("ISO: gira la rueda y pulsa el centro para aceptar.", "ISO: turn the wheel and press the center to confirm.")); }
+    else if(k === "down"){ V.screen = "ev"; V.list = FX.ev.get(); say(L("Compensación: gira la rueda. Más es una foto más clara. Centro para aceptar.", "Exposure Comp.: turn the wheel. Plus makes a brighter photo. Center to confirm.")); }
+    else if(k === "left"){ V.screen = "drive"; V.list = SIM.drive; say(L("Modo de avance: disparo único, ráfaga o temporizador.", "Drive Mode: single shot, burst or self-timer.")); }
+    else if(k === "up"){ SIM.disp = (SIM.disp + 1) % 3; toast(EN ? ["Display All Info.", "No Disp. Info.", "Histogram"][SIM.disp] : ["Mostrar toda la info.", "Sin información.", "Histograma"][SIM.disp]); say(L("DISP cambia lo que ves en pantalla. El histograma muestra el brillo: si choca a la derecha, hay zonas quemadas.", "DISP changes what you see on screen. The histogram shows brightness: if it hits the right edge, there are blown-out areas.")); }
+    else if(k === "ok"){ V.eye = true; clearTimeout(V.eyeT); V.eyeT = setTimeout(() => { V.eye = false; schedule(); }, 1800); say(L("Botón central: de fábrica es Eye AF. Mantenlo pulsado y la cámara enfoca el ojo.", "Center button: Eye AF out of the box. Hold it down and the camera focuses on the eye.")); }
+    else if(k === "c1" || k === "c2" || k === "c3" || k === "aef") toast(k === "aef" ? L("AF/MF · AEL: bloquea la exposición o cambia a enfoque manual.", "AF/MF · AEL: locks the exposure or switches to manual focus.") : L(`${k.toUpperCase()}: botón personalizable. Lo eliges en la lección «Hazla tuya».`, `${k.toUpperCase()}: custom button. You choose what it does in the lesson “Make it yours”.`));
     schedule();
   }
   function listStep(d){
@@ -2135,7 +2191,7 @@ function mountSim(el, opts){
   function turn(which, d){
     const s = V.screen, mode = SIM.mode;
     if(which === "mode"){ return; }
-    if(which === "zoom"){ SIM.f = FLS[clamp(nearestIdx(FLS, SIM.f) + d, 0, FLS.length - 1)]; say(`Zoom: ${SIM.f} mm. Con más zoom el fondo se desenfoca más, pero lo más abierto que llega es F${minAp(SIM.f)}.`); return schedule(); }
+    if(which === "zoom"){ SIM.f = FLS[clamp(nearestIdx(FLS, SIM.f) + d, 0, FLS.length - 1)]; say(L(`Zoom: ${SIM.f} mm. Con más zoom el fondo se desenfoca más, pero lo más abierto que llega es F${minAp(SIM.f)}.`, `Zoom: ${SIM.f} mm. More zoom blurs the background more, but the widest aperture it reaches is F${minAp(SIM.f)}.`)); return schedule(); }
     if(s === "menu"){ if(which === "wheel") menuKey(d > 0 ? "down" : "up"); return schedule(); }
     if(s === "play"){ if(SIM.shots.length) V.play = (V.play + d + SIM.shots.length) % SIM.shots.length; return schedule(); }
     if(["iso","ev","drive"].includes(s)){ listStep(which === "wheel" ? d : d); return schedule(); }
@@ -2148,13 +2204,13 @@ function mountSim(el, opts){
     }
     // live view: the dials do what the mode says
     if(which === "dial"){
-      if(mode === "A" || mode === "M"){ const i = clamp(AP.indexOf(snap(AP, r.N)) + d, AP.indexOf(r.mA), AP.length - 1); SIM.N = AP[i]; say(`Apertura ${fmtN(SIM.N)}. ${SIM.N >= 11 ? "Número alto: todo nítido, entra menos luz." : SIM.N <= 5.6 ? "Número bajo: fondo desenfocado, entra más luz." : ""}`); }
-      else if(mode === "S"){ SIM.t = SS[clamp(nearestIdx(SS, r.t) + d, 0, SS.length - 1)]; say(`Velocidad ${fmtT(SIM.t)}. ${SIM.t <= 1/500 ? "Congela el movimiento." : SIM.t >= 1/30 ? "Lenta: el ciclista sale movido y necesitas pulso firme." : ""}`); }
-      else if(mode === "P"){ SIM.shift = clamp(SIM.shift + d, -8, 12); say("Cambio de programa (P*): la cámara mantiene la exposición y cambia la pareja apertura-velocidad."); }
+      if(mode === "A" || mode === "M"){ const i = clamp(AP.indexOf(snap(AP, r.N)) + d, AP.indexOf(r.mA), AP.length - 1); SIM.N = AP[i]; say(`${L("Apertura","Aperture")} ${fmtN(SIM.N)}. ${SIM.N >= 11 ? L("Número alto: todo nítido, entra menos luz.", "High number: everything sharp, less light gets in.") : SIM.N <= 5.6 ? L("Número bajo: fondo desenfocado, entra más luz.", "Low number: blurry background, more light gets in.") : ""}`); }
+      else if(mode === "S"){ SIM.t = SS[clamp(nearestIdx(SS, r.t) + d, 0, SS.length - 1)]; say(`${L("Velocidad","Shutter speed")} ${fmtT(SIM.t)}. ${SIM.t <= 1/500 ? L("Congela el movimiento.", "Freezes motion.") : SIM.t >= 1/30 ? L("Lenta: el ciclista sale movido y necesitas pulso firme.", "Slow: the cyclist blurs and you need a steady hand.") : ""}`); }
+      else if(mode === "P"){ SIM.shift = clamp(SIM.shift + d, -8, 12); say(L("Cambio de programa (P*): la cámara mantiene la exposición y cambia la pareja apertura-velocidad.", "Program Shift (P*): the camera keeps the exposure and changes the aperture and shutter speed pair.")); }
       else say(MODE_HINT[mode === "AUTO" ? "AUTO" : "other"]);
     } else if(which === "wheel"){
-      if(mode === "M"){ SIM.t = SS[clamp(nearestIdx(SS, r.t) + d, 0, SS.length - 1)]; say(`Velocidad ${fmtT(SIM.t)}. En M la rueda cambia la velocidad.`); }
-      else say(mode === "A" ? "En A la apertura se cambia con el dial de control (arriba)." : mode === "S" ? "En S la velocidad se cambia con el dial de control (arriba)." : MODE_HINT[["AUTO","P"].includes(mode) ? mode : "other"]);
+      if(mode === "M"){ SIM.t = SS[clamp(nearestIdx(SS, r.t) + d, 0, SS.length - 1)]; say(L(`Velocidad ${fmtT(SIM.t)}. En M la rueda cambia la velocidad.`, `Shutter speed ${fmtT(SIM.t)}. In M the wheel changes the shutter speed.`)); }
+      else say(mode === "A" ? L("En A la apertura se cambia con el dial de control (arriba).", "In A you change the aperture with the control dial (on top).") : mode === "S" ? L("En S la velocidad se cambia con el dial de control (arriba).", "In S you change the shutter speed with the control dial (on top).") : MODE_HINT[["AUTO","P"].includes(mode) ? mode : "other"]);
     }
     schedule();
   }
@@ -2172,9 +2228,9 @@ function mountSim(el, opts){
     if(!calmNow()) blk.animate([{opacity: 1}, {opacity: 0}], {duration: 140, easing: "ease-in"});
     const rev = (SIM.mv[reviewKey] ?? 0);
     if(rev){ V.screen = "play"; V.play = SIM.shots.length - 1; clearTimeout(V.revT); V.revT = setTimeout(() => { if(V.screen === "play"){ V.screen = "live"; schedule(); } }, [0, 2000, 5000, 10000][rev]); }
-    say(`Foto hecha: ${fmtT(rr.t)} · ${fmtN(rr.N)} · ISO ${rr.iso}. Pulsa ▶ para verla.`);
+    say(L(`Foto hecha: ${fmtT(rr.t)} · ${fmtN(rr.N)} · ISO ${rr.iso}. Pulsa ▶ para verla.`, `Photo taken: ${fmtT(rr.t)} · ${fmtN(rr.N)} · ISO ${rr.iso}. Press ▶ to see it.`));
   }
-  const reviewKey = (() => { const loc = findItem("Revisión auto"); return loc.p + "." + loc.j; })();
+  const reviewKey = (() => { const loc = findItem(W("Revisión auto")); return loc.p + "." + loc.j; })();
 
   /* --- draw everything for the current screen --- */
   let last = {};
@@ -2187,12 +2243,12 @@ function mountSim(el, opts){
     else photo(st, r);
     const live = V.screen !== "menu";
     // grid
-    const g = SIM.grid, L = (x1, y1, x2, y2) => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`;
+    const g = SIM.grid, GL = (x1, y1, x2, y2) => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`;
     let gl = "";
     if(V.screen !== "play"){
-      if(g === 0) gl = L(100,0,100,200) + L(200,0,200,200) + L(0,66.7,300,66.7) + L(0,133.3,300,133.3);
-      if(g === 1 || g === 2) for(let i = 1; i < 6; i++) gl += L(i*50,0,i*50,200) + (i < 4 ? L(0,i*50,300,i*50) : "");
-      if(g === 2) gl += L(0,0,300,200) + L(300,0,0,200);
+      if(g === 0) gl = GL(100,0,100,200) + GL(200,0,200,200) + GL(0,66.7,300,66.7) + GL(0,133.3,300,133.3);
+      if(g === 1 || g === 2) for(let i = 1; i < 6; i++) gl += GL(i*50,0,i*50,200) + (i < 4 ? GL(0,i*50,300,i*50) : "");
+      if(g === 2) gl += GL(0,0,300,200) + GL(300,0,0,200);
     }
     if(gl !== last.gl){ $("[data-grid]").innerHTML = gl; last.gl = gl; }
     const fc = $("[data-focus]");
@@ -2210,19 +2266,19 @@ function mountSim(el, opts){
     // meter, hint, scenes, verdict
     const mpos = clamp(r.delta, -3.3, 3.3);
     $("[data-mark]").style.left = `${((mpos + 3) / 6 * 100).toFixed(1)}%`;
-    $("[data-metertxt]").textContent = Math.abs(r.delta) < .2 ? "Exposición correcta" : (r.delta > 0 ? `+${r.delta.toFixed(1)} pasos` : `${r.delta.toFixed(1)} pasos`);
+    $("[data-metertxt]").textContent = Math.abs(r.delta) < .2 ? L("Exposición correcta", "Correct exposure") : (r.delta > 0 ? `+${r.delta.toFixed(1)} ${L("pasos","stops")}` : `${r.delta.toFixed(1)} ${L("pasos","stops")}`);
     $("[data-hint]").textContent = hint || MODE_HINT[["AUTO","P","A","S","M"].includes(SIM.mode) ? SIM.mode : "other"];
     el.querySelectorAll("[data-scene]").forEach(x => x.setAttribute("aria-pressed", x.dataset.scene === SIM.scene));
     $("[data-scenetxt]").textContent = SCENE_LIGHT[SIM.scene];
     const p = V.screen === "play" && SIM.shots.length ? photoFacts(SIM.shots[V.play].st, SIM.shots[V.play].r) : photoFacts(st, r);
     const v = [];
-    v.push(["Brillo", Math.abs(p.r.delta) < .4 ? "Correcta." : p.r.delta > 0 ? (p.r.delta > 1.5 ? "Muy clara: zonas quemadas." : "Algo clara.") : (p.r.delta < -1.5 ? "Muy oscura." : "Algo oscura."), Math.abs(p.r.delta) >= .4]);
-    v.push(["Fondo", p.bg * p.z > 4.5 ? "Muy desenfocado." : p.bg * p.z > 2 ? "Desenfocado." : p.bg * p.z > 1 ? "Algo suave." : "Nítido.", false]);
-    v.push(["Ciclista", p.mv < 1.2 ? "Congelado." : p.mv < 5 ? "Ligeramente movido." : "Estela de movimiento.", false]);
-    v.push(["Ruido", p.r.iso <= 800 ? "Imperceptible." : p.r.iso <= 3200 ? "Muy bajo." : p.r.iso <= 6400 ? "Algo de grano." : "Mucho grano.", p.r.iso > 6400]);
-    v.push(["Pulso", p.shakeRatio <= 1 ? "Sin riesgo de foto movida." : p.shakeEff <= 1 ? "El SteadyShot te salva; sujétala firme." : p.steady ? "Foto movida: apoya la cámara o usa trípode." : "Foto movida: el SteadyShot está desactivado en el menú.", p.shakeEff > 1]);
-    v.push(["Color", p.bw ? "Blanco y negro (estilo creativo B/N)." : Math.abs(p.cast) < .25 ? "Natural." : p.cast > 0 ? "Anaranjada: el balance de blancos no es el de esta luz." : "Azulada: el balance de blancos no es el de esta luz.", !p.bw && Math.abs(p.cast) >= .25]);
-    if(Object.keys(p.r.blink).length) v.push(["Aviso", "Un valor parpadea: la cámara no llega a la exposición correcta con estos ajustes.", true]);
+    v.push([L("Brillo","Brightness"), Math.abs(p.r.delta) < .4 ? L("Correcta.","Correct.") : p.r.delta > 0 ? (p.r.delta > 1.5 ? L("Muy clara: zonas quemadas.","Very bright: blown-out areas.") : L("Algo clara.","A bit bright.")) : (p.r.delta < -1.5 ? L("Muy oscura.","Very dark.") : L("Algo oscura.","A bit dark.")), Math.abs(p.r.delta) >= .4]);
+    v.push([L("Fondo","Background"), p.bg * p.z > 4.5 ? L("Muy desenfocado.","Very blurry.") : p.bg * p.z > 2 ? L("Desenfocado.","Blurry.") : p.bg * p.z > 1 ? L("Algo suave.","Slightly soft.") : L("Nítido.","Sharp."), false]);
+    v.push([L("Ciclista","Cyclist"), p.mv < 1.2 ? L("Congelado.","Frozen.") : p.mv < 5 ? L("Ligeramente movido.","Slightly blurred.") : L("Estela de movimiento.","Motion streak."), false]);
+    v.push([L("Ruido","Noise"), p.r.iso <= 800 ? L("Imperceptible.","None visible.") : p.r.iso <= 3200 ? L("Muy bajo.","Very low.") : p.r.iso <= 6400 ? L("Algo de grano.","Some grain.") : L("Mucho grano.","Lots of grain."), p.r.iso > 6400]);
+    v.push([L("Pulso","Camera shake"), p.shakeRatio <= 1 ? L("Sin riesgo de foto movida.","No risk of a shaky photo.") : p.shakeEff <= 1 ? L("El SteadyShot te salva; sujétala firme.","SteadyShot saves you; hold it firmly.") : p.steady ? L("Foto movida: apoya la cámara o usa trípode.","Shaky photo: rest the camera on something or use a tripod.") : L("Foto movida: el SteadyShot está desactivado en el menú.","Shaky photo: SteadyShot is turned Off in the menu."), p.shakeEff > 1]);
+    v.push(["Color", p.bw ? L("Blanco y negro (estilo creativo B/N).","Black and white (Creative Style Black & White).") : Math.abs(p.cast) < .25 ? "Natural." : p.cast > 0 ? L("Anaranjada: el balance de blancos no es el de esta luz.","Orange: the white balance doesn't match this light.") : L("Azulada: el balance de blancos no es el de esta luz.","Blue: the white balance doesn't match this light."), !p.bw && Math.abs(p.cast) >= .25]);
+    if(Object.keys(p.r.blink).length) v.push([L("Aviso","Warning"), L("Un valor parpadea: la cámara no llega a la exposición correcta con estos ajustes.","A value is blinking: the camera can't reach the correct exposure with these settings."), true]);
     const vh = v.map(([a,b,w]) => `<li class="${w?"w":""}"><b>${a}</b>${b}</li>`).join("");
     if(vh !== last.vh){ $("[data-verdict]").innerHTML = vh; last.vh = vh; }
   }
@@ -2309,7 +2365,7 @@ function mountSim(el, opts){
     }
     const fnT = e.target.closest("[data-fn]"); if(fnT){ V.fn = +fnT.dataset.fn; return schedule(); }
     // touch focus: tap the live picture to move the focus frame
-    if(V.screen === "live" && e.target.closest("[data-frame]")){ const b = frame.getBoundingClientRect(); V.focus = [clamp((e.clientX - b.left) / b.width * 100, 8, 92), clamp((e.clientY - b.top) / b.height * 100, 10, 88)]; say("Enfoque táctil: tocas la pantalla y la cámara enfoca ahí, como en tu α6500."); return schedule(); }
+    if(V.screen === "live" && e.target.closest("[data-frame]")){ const b = frame.getBoundingClientRect(); V.focus = [clamp((e.clientX - b.left) / b.width * 100, 8, 92), clamp((e.clientY - b.top) / b.height * 100, 10, 88)]; say(L("Enfoque táctil: tocas la pantalla y la cámara enfoca ahí, como en tu α6500.", "Touch Focus: tap the screen and the camera focuses there, like on your α6500.")); return schedule(); }
     const s = e.target.closest("[data-scene]"); if(s){ SIM.scene = s.dataset.scene; return schedule(); }
   });
   el.addEventListener("keydown", e => {
@@ -2322,9 +2378,34 @@ function mountSim(el, opts){
 
 /* ---------- text size ---------- */
 const ZOOMS = [1, 1.12, 1.25];
-function applyZoom(){ document.documentElement.style.setProperty("--zoom", S.zoom); const b = document.getElementById("tsize"); if(b) b.setAttribute("aria-label", `Tamaño del texto: ${["normal","grande","muy grande"][ZOOMS.indexOf(S.zoom)] || "normal"}`); }
+function applyZoom(){ document.documentElement.style.setProperty("--zoom", S.zoom); const b = document.getElementById("tsize"); if(b) b.setAttribute("aria-label", EN ? `Text size: ${["normal","large","extra large"][ZOOMS.indexOf(S.zoom)] || "normal"}` : `Tamaño del texto: ${["normal","grande","muy grande"][ZOOMS.indexOf(S.zoom)] || "normal"}`); }
 document.getElementById("tsize").addEventListener("click", () => { S.zoom = ZOOMS[(ZOOMS.indexOf(S.zoom) + 1) % ZOOMS.length]; save(); applyZoom(); });
 applyZoom();
+
+/* ---------- language switch ---------- */
+// The ES · EN button in the bar (and on the sign-in screens). The choice is kept on the device and in
+// her account, and the app reloads so every lesson, list and menu is rebuilt in that language.
+const LANG_KEY = "escuela-a6500-lang";
+const langBtn = () => `<b>${L("ES","EN")}</b><span>·</span>${L("EN","ES")}`;
+function setLang(lang){
+  try{ localStorage.setItem(LANG_KEY, lang); }catch(e){}
+  if(S.lang !== lang){ S.lang = lang; save(); }
+  location.reload();
+}
+// After a sync brings in a language chosen on another device. Returns true when the page is reloading.
+function followLang(){
+  if(!S.lang || S.lang === window.ESCUELA_LANG) return false;
+  try{ localStorage.setItem(LANG_KEY, S.lang); }catch(e){}
+  location.reload(); return true;
+}
+const lb = document.getElementById("lang");
+lb.innerHTML = langBtn();
+lb.setAttribute("aria-label", L("Idioma: español. Cambiar a inglés", "Language: English. Switch to Spanish"));
+lb.addEventListener("click", () => setLang(EN ? "es" : "en"));
+if(EN){
+  document.querySelectorAll("[data-en]").forEach(e => { const t = [...e.childNodes].reverse().find(n => n.nodeType === 3 && n.textContent.trim()); if(t) t.textContent = e.dataset.en; });
+  document.querySelectorAll("[data-en-label]").forEach(e => e.setAttribute("aria-label", e.dataset.enLabel));
+}
 
 /* ---------- app feel ---------- */
 // iPhone ignores user-scalable=no; this stops pinch zoom in the home-screen app (she has the text-size button instead).
@@ -2350,7 +2431,7 @@ function openPractice(l, onChange){
   const n = l.steps.length;
   let k = Math.max(0, l.steps.findIndex((_, i) => !(S.steps[l.id] || []).includes(i)));
   const ov = document.createElement("div");
-  ov.className = "practice"; ov.setAttribute("role","dialog"); ov.setAttribute("aria-modal","true"); ov.setAttribute("aria-label","Modo práctica");
+  ov.className = "practice"; ov.setAttribute("role","dialog"); ov.setAttribute("aria-modal","true"); ov.setAttribute("aria-label",L("Modo práctica","Practice mode"));
   document.body.appendChild(ov); lockScroll(true);
   keepAwake(true);
   const mark = i => { const set = new Set(S.steps[l.id] || []); set.add(i); S.steps[l.id] = [...set]; save(); onChange(); };
@@ -2358,20 +2439,20 @@ function openPractice(l, onChange){
   function draw(){
     const end = k >= n;
     ov.innerHTML = `
-     <div class="pr-top"><span class="eyebrow">${esc(l.title)}</span><button type="button" class="pr-x" data-x aria-label="Cerrar modo práctica">✕</button></div>
+     <div class="pr-top"><span class="eyebrow">${esc(l.title)}</span><button type="button" class="pr-x" data-x aria-label="${L("Cerrar modo práctica","Close practice mode")}">✕</button></div>
      <div class="progress" aria-hidden="true"><i style="width:${(Math.min(k,n)/n*100).toFixed(1)}%"></i></div>
      <div class="pr-body">
-      ${end ? `<span class="eyebrow">¡Pasos completados!</span><p class="pr-step">Ahora, tu misión:</p><p class="pr-mission">${fmt(l.mission)}</p>`
-            : `<span class="eyebrow">Paso ${k+1} de ${n}</span><p class="pr-step">${fmt(l.steps[k])}</p>`}
+      ${end ? `<span class="eyebrow">${L("¡Pasos completados!","Steps done!")}</span><p class="pr-step">${L("Ahora, tu misión:","Now, your mission:")}</p><p class="pr-mission">${fmt(l.mission)}</p>`
+            : `<span class="eyebrow">${L(`Paso ${k+1} de ${n}`, `Step ${k+1} of ${n}`)}</span><p class="pr-step">${fmt(l.steps[k])}</p>`}
      </div>
      <div class="pr-nav">
-      ${end ? `<button type="button" class="btn btn-ghost" data-prev>Anterior</button><button type="button" class="btn btn-primary" data-x>Volver a la lección</button>`
-            : `<button type="button" class="btn btn-ghost" data-prev ${k===0?"disabled":""}>Anterior</button><button type="button" class="btn btn-primary" data-next>${k===n-1?"Hecho, terminar":"Hecho, siguiente"}</button>`}
+      ${end ? `<button type="button" class="btn btn-ghost" data-prev>${L("Anterior","Back")}</button><button type="button" class="btn btn-primary" data-x>${L("Volver a la lección","Back to the lesson")}</button>`
+            : `<button type="button" class="btn btn-ghost" data-prev ${k===0?"disabled":""}>${L("Anterior","Back")}</button><button type="button" class="btn btn-primary" data-next>${k===n-1?L("Hecho, terminar","Done, finish"):L("Hecho, siguiente","Done, next")}</button>`}
      </div>
      <p class="pr-hint">${hint()}</p>`;
     ov.querySelector("[data-next],[data-x]:not(.pr-x)")?.focus();
   }
-  function hint(){ return wake ? "La pantalla se mantendrá encendida mientras practicas." : "Consejo: deja el móvil apoyado a la vista mientras usas la cámara."; }
+  function hint(){ return wake ? L("La pantalla se mantendrá encendida mientras practicas.", "The screen will stay on while you practice.") : L("Consejo: deja el móvil apoyado a la vista mientras usas la cámara.", "Tip: prop your phone up where you can see it while you use the camera."); }
   function onKey(e){ if(e.key === "Escape") close(); }
   document.addEventListener("keydown", onKey);
   ov.addEventListener("click", e => {
@@ -2389,16 +2470,16 @@ const nextLesson = () => LESSONS.find(l => !S.done[l.id]) || null;
 function updateRing(){
   const r = document.getElementById("ring"), n = doneCount(), c = 2 * Math.PI * 9;
   r.innerHTML = `<svg viewBox="0 0 22 22" aria-hidden="true"><circle class="rt" cx="11" cy="11" r="9"/><circle class="rf" cx="11" cy="11" r="9" stroke-dasharray="${(n / LESSONS.length * c).toFixed(1)} ${c.toFixed(1)}"/></svg>${n}/${LESSONS.length}`;
-  r.setAttribute("aria-label", `${n} de ${LESSONS.length} lecciones completadas`);
+  r.setAttribute("aria-label", L(`${n} de ${LESSONS.length} lecciones completadas`, `${n} of ${LESSONS.length} lessons completed`));
 }
 
-function evfHTML(items){ return `<div class="evf" aria-label="Ajustes de esta lección">${items.map((x,i) => `<span class="${i===0?"g":""}">${esc(x)}</span>`).join("")}</div>`; }
+function evfHTML(items){ return `<div class="evf" aria-label="${L("Ajustes de esta lección","Settings for this lesson")}">${items.map((x,i) => `<span class="${i===0?"g":""}">${esc(x)}</span>`).join("")}</div>`; }
 
 /* ---------- photo review in her own Claude app ---------- */
 // She picks a photo; the app reads its camera settings and hands the photo plus a ready-written
 // message (lesson goal, her notebook, the settings) to the Claude app through the iPhone share sheet.
 // The review runs on her own Claude account; this app uploads nothing.
-const plain = s => String(s || "").replace(/<[^>]+>/g, "").replace(/\[\[(.+?)\]\]/g, "$1").replace(/\{\{(.+?)\}\}/g, (m, i) => i.split("|")[0]).replace(/\s+/g, " ").trim();
+const plain = s => String(s || "").replace(/<[^>]+>/g, "").replace(/\[\[(.+?)\]\]/g, "$1").replace(/\{\{(.+?)\}\}/g, (m, i) => EN ? i.split("|").pop() : i.split("|")[0]).replace(/\s+/g, " ").trim();
 
 // Minimal EXIF reader for camera JPEGs: just the fields that explain how a photo looks.
 function readExif(buf){
@@ -2437,19 +2518,19 @@ function readExif(buf){
     const make = a[0x010F] || "", model = a[0x0110] || "";
     if(model) r.camera = model.toLowerCase().startsWith(make.toLowerCase()) ? model : (make + " " + model).trim();
     if(x[0xA434]) r.lens = x[0xA434];
-    const prog = {1:["M","manual (M)"], 2:["P","programa (P)"], 3:["A","prioridad a la apertura (A)"], 4:["S","prioridad a la velocidad (S)"]}[x[0x8822]];
+    const prog = (EN ? {1:["M","Manual Exposure (M)"], 2:["P","Program Auto (P)"], 3:["A","Aperture Priority (A)"], 4:["S","Shutter Priority (S)"]} : {1:["M","manual (M)"], 2:["P","programa (P)"], 3:["A","prioridad a la apertura (A)"], 4:["S","prioridad a la velocidad (S)"]})[x[0x8822]];
     if(prog){ r.modeShort = prog[0]; r.mode = prog[1]; }
     const et = x[0x829A];
-    if(et) r.shutter = et >= 0.3 ? (Math.round(et * 10) / 10).toString().replace(".", ",") + "″" : "1/" + Math.round(1 / et);
+    if(et) r.shutter = et >= 0.3 ? (Math.round(et * 10) / 10).toString().replace(".", L(",", ".")) + "″" : "1/" + Math.round(1 / et);
     if(x[0x829D]) r.aperture = "F" + (Math.round(x[0x829D] * 10) / 10);
     if(x[0x8827]) r.iso = x[0x8827];
     if(x[0x920A]) r.focal = Math.round(x[0x920A]) + " mm";
     if(x[0xA405] && r.focal && x[0xA405] !== Math.round(x[0x920A])) r.focal35 = x[0xA405] + " mm";
     const b = x[0x9204];
-    if(b) r.bias = (b > 0 ? "+" : "−") + (Math.round(Math.abs(b) * 10) / 10).toString().replace(".", ",") + " EV";
-    const met = {1:"promedio", 2:"ponderada al centro", 3:"puntual", 5:"multi"}[x[0x9207]]; if(met) r.metering = met;
-    if(x[0xA403] !== undefined) r.wb = x[0xA403] ? "manual" : "automático";
-    if(x[0x9209] !== undefined) r.flash = x[0x9209] & 1 ? "disparó" : "no disparó";
+    if(b) r.bias = (b > 0 ? "+" : "−") + (Math.round(Math.abs(b) * 10) / 10).toString().replace(".", L(",", ".")) + " EV";
+    const met = (EN ? {1:"average", 2:"center-weighted", 3:"spot", 5:"multi"} : {1:"promedio", 2:"ponderada al centro", 3:"puntual", 5:"multi"})[x[0x9207]]; if(met) r.metering = met;
+    if(x[0xA403] !== undefined) r.wb = x[0xA403] ? "manual" : L("automático", "auto");
+    if(x[0x9209] !== undefined) r.flash = x[0x9209] & 1 ? L("disparó", "fired") : L("no disparó", "did not fire");
     if(x[0x9003]) r.date = x[0x9003];
     return Object.keys(r).length ? r : null;
   }catch(e){ return null; }
@@ -2469,6 +2550,7 @@ async function shrinkPhoto(file, max = 2048){
 }
 
 function reviewPrompt(l, x, intent, typed){
+  if(EN) return reviewPromptEN(l, x, intent, typed);
   const notes = (S.notes[l.id] || "").trim();
   const set = [];
   if(x){
@@ -2508,47 +2590,87 @@ Responde en español, con frases cortas y sin tecnicismos sin explicar, con este
 8. Para mi cuaderno: un resumen de tres líneas que pueda copiar.`;
 }
 
+function reviewPromptEN(l, x, intent, typed){
+  const notes = (S.notes[l.id] || "").trim();
+  const set = [];
+  if(x){
+    [["Camera", x.camera], ["Lens", x.lens], ["Mode", x.mode], ["Shutter speed", x.shutter], ["Aperture", x.aperture], ["ISO", x.iso],
+     ["Focal length", x.focal && (x.focal + (x.focal35 ? ` (${x.focal35} equivalent)` : ""))], ["Exposure compensation", x.bias || "0"], ["Metering", x.metering],
+     ["White balance", x.wb], ["Flash", x.flash]].forEach(([k, v]) => { if(v) set.push(`${k}: ${v}`); });
+  }
+  if(typed.trim()) set.push(`Settings I remember: ${typed.trim()}`);
+  return `Hi Claude. I'm learning to use my first real camera, a Sony α6500 with the 16-50 mm lens (F3.5–5.6). I know composition from using my iPhone; the technical side is what I'm learning now, one lesson at a time. I've attached a photo I took for this lesson. Review it like a good teacher: kind and honest.
+
+LESSON: ${l.title}
+Lesson goal: ${plain(l.goal)}
+Practice mission: ${plain(l.mission)}
+Settings the lesson suggests: ${l.evf.join(" · ")}
+
+WHAT I WANTED TO GET WITH THIS PHOTO
+${intent.trim() || "I didn't write it down: work it out from the lesson and my notebook."}
+
+MY NOTEBOOK FOR THIS LESSON
+${notes || "Empty."}
+
+PHOTO SETTINGS (read from the file)
+${set.length ? set.join("\n") : "Not found in the file. If you can, work them out from the image and tell me it's a guess."}
+
+Grade it against what the lesson asked and what I wanted to get, not against a professional's level. A 10 means I reached the lesson goal and what I was after, even if the photo has a small flaw. A pretty photo that doesn't practice the lesson shouldn't get a 10.
+
+Be specific about what you see in the photo: where the focus landed, blown highlights or blocked shadows, motion, how much the background blurs, the color. Use the settings to explain why the photo came out this way. If the photo doesn't seem taken for this lesson, or looks like it was taken with a phone, tell me gently. Only praise what really works.
+
+Reply in English, with short sentences and no unexplained jargon, in this format:
+1. Grade: X/10, and one sentence with your verdict.
+2. Lesson goal: achieved, almost, or not yet.
+3. Scores from 1 to 5, with a short comment each: what the lesson asked, what I wanted, exposure, focus and sharpness, composition.
+4. My settings: what they did in this photo and whether they were the right ones.
+5. What worked: up to three things.
+6. Next time: up to three changes, most important first, saying exactly how to do it on the α6500 (mode, number, and which wheel or button), using the camera's English menu names.
+7. Try this: a short exercise for the next time I go out.
+8. For my notebook: a three-line summary I can copy.`;
+}
+
 function mountPhoto(el, l){
   let photo = null, exif = null, url = null;
   const fileInput = `<input type="file" accept="image/*" class="vh" id="foto-${l.id}" data-file>`;
   const pickBtn = (label, cls) => `<label class="btn ${cls}" for="foto-${l.id}">${label}</label>${fileInput}`;
   function idle(){
     el.innerHTML = `
-     <p class="muted" style="font-size:15px">Cuando hayas hecho la misión, elige tu mejor foto del carrete. Se la enviamos a tu app de Claude junto con el objetivo de la lección, tu cuaderno y los ajustes de la cámara, y Claude te pone nota y te dice qué mejorar.</p>
-     <div class="btn-row">${pickBtn("Elegir una foto", "btn-ghost photo-btn")}</div>`;
+     <p class="muted" style="font-size:15px">${L("Cuando hayas hecho la misión, elige tu mejor foto del carrete. Se la enviamos a tu app de Claude junto con el objetivo de la lección, tu cuaderno y los ajustes de la cámara, y Claude te pone nota y te dice qué mejorar.", "Once you've done the mission, pick your best photo from your library. We send it to your Claude app along with the lesson goal, your notebook and the camera settings, and Claude grades it and tells you what to improve.")}</p>
+     <div class="btn-row">${pickBtn(L("Elegir una foto", "Choose a photo"), "btn-ghost photo-btn")}</div>`;
   }
   function chosen(){
     const chips = exif ? [exif.modeShort, exif.shutter, exif.aperture, exif.iso && "ISO " + exif.iso, exif.focal, exif.bias].filter(Boolean) : [];
     const other = exif && exif.camera && !/ILCE-6500/i.test(exif.camera);
     el.innerHTML = `
-     <img class="photo-prev" src="${url}" alt="La foto que elegiste">
-     ${chips.length ? `<div class="stack" style="gap:6px"><span class="eyebrow">Ajustes de la foto</span><div class="evf">${chips.map(c => `<span>${esc(c)}</span>`).join("")}</div></div>` : ""}
-     ${other ? `<p class="muted" style="font-size:15px">Esta foto parece hecha con: ${esc(exif.camera)}. Para esta lección te sirve más una foto de la α6500.</p>` : ""}
-     ${!chips.length ? `<label for="aj-${l.id}" class="stack" style="gap:6px"><b>No encontré los ajustes en la foto</b><span class="muted" style="font-size:15px">Si los recuerdas, escríbelos. Si no, déjalo vacío.</span></label><input id="aj-${l.id}" class="notes" data-typed placeholder="Por ejemplo: A · F5.6 · 1/250 · ISO 400" autocomplete="off">` : ""}
-     <label for="int-${l.id}" class="stack" style="gap:6px"><b>¿Qué querías conseguir con esta foto?</b><span class="muted" style="font-size:15px">Opcional. Claude también lee tu cuaderno.</span></label>
-     <textarea id="int-${l.id}" class="notes" rows="2" data-intent placeholder="Por ejemplo: la cara nítida y el fondo muy desenfocado"></textarea>
-     <button type="button" class="btn btn-primary" data-send>Enviar a Claude</button>
-     <div class="btn-row">${pickBtn("Elegir otra foto", "linkbtn")}</div>`;
+     <img class="photo-prev" src="${url}" alt="${L("La foto que elegiste","The photo you chose")}">
+     ${chips.length ? `<div class="stack" style="gap:6px"><span class="eyebrow">${L("Ajustes de la foto","Photo settings")}</span><div class="evf">${chips.map(c => `<span>${esc(c)}</span>`).join("")}</div></div>` : ""}
+     ${other ? `<p class="muted" style="font-size:15px">${L("Esta foto parece hecha con:", "This photo seems to be taken with:")} ${esc(exif.camera)}. ${L("Para esta lección te sirve más una foto de la α6500.", "For this lesson a photo from the α6500 is more useful.")}</p>` : ""}
+     ${!chips.length ? `<label for="aj-${l.id}" class="stack" style="gap:6px"><b>${L("No encontré los ajustes en la foto","I couldn't find the settings in the photo")}</b><span class="muted" style="font-size:15px">${L("Si los recuerdas, escríbelos. Si no, déjalo vacío.","If you remember them, type them in. If not, leave it empty.")}</span></label><input id="aj-${l.id}" class="notes" data-typed placeholder="${L("Por ejemplo","For example")}: A · F5.6 · 1/250 · ISO 400" autocomplete="off">` : ""}
+     <label for="int-${l.id}" class="stack" style="gap:6px"><b>${L("¿Qué querías conseguir con esta foto?","What did you want to get with this photo?")}</b><span class="muted" style="font-size:15px">${L("Opcional. Claude también lee tu cuaderno.","Optional. Claude also reads your notebook.")}</span></label>
+     <textarea id="int-${l.id}" class="notes" rows="2" data-intent placeholder="${L("Por ejemplo: la cara nítida y el fondo muy desenfocado","For example: a sharp face and a very blurry background")}"></textarea>
+     <button type="button" class="btn btn-primary" data-send>${L("Enviar a Claude","Send to Claude")}</button>
+     <div class="btn-row">${pickBtn(L("Elegir otra foto","Choose another photo"), "linkbtn")}</div>`;
   }
   function sent(how){
     el.innerHTML = `
      <div class="card stack" style="gap:8px">
-      <span class="eyebrow">${how === "shared" ? "Enviado" : "Mensaje copiado"}</span>
+      <span class="eyebrow">${how === "shared" ? L("Enviado","Sent") : L("Mensaje copiado","Message copied")}</span>
       ${how === "shared"
-        ? `<p>Elige <b>Claude</b> en la lista y envía. Si el mensaje no aparece junto a la foto, mantén pulsado el cuadro de texto y toca Pegar: ya está copiado.</p>`
-        : `<p>Abre la app de Claude, adjunta esta foto desde Fotos y pega el mensaje.</p><div class="btn-row"><a class="btn btn-ghost" href="https://claude.ai/new" target="_blank" rel="noopener">Abrir Claude</a></div>`}
+        ? L(`<p>Elige <b>Claude</b> en la lista y envía. Si el mensaje no aparece junto a la foto, mantén pulsado el cuadro de texto y toca Pegar: ya está copiado.</p>`, `<p>Choose <b>Claude</b> in the list and send. If the message doesn't show up with the photo, press and hold the text box and tap Paste: it's already copied.</p>`)
+        : `<p>${L("Abre la app de Claude, adjunta esta foto desde Fotos y pega el mensaje.","Open the Claude app, attach this photo from Photos and paste the message.")}</p><div class="btn-row"><a class="btn btn-ghost" href="https://claude.ai/new" target="_blank" rel="noopener">${L("Abrir Claude","Open Claude")}</a></div>`}
      </div>
-     <label for="resp-${l.id}" class="stack" style="gap:6px"><b>Guarda lo que te dijo</b><span class="muted" style="font-size:15px">Pega aquí la respuesta de Claude, o solo el resumen «Para mi cuaderno», y se añadirá a tu cuaderno.</span></label>
+     <label for="resp-${l.id}" class="stack" style="gap:6px"><b>${L("Guarda lo que te dijo","Save what it told you")}</b><span class="muted" style="font-size:15px">${L("Pega aquí la respuesta de Claude, o solo el resumen «Para mi cuaderno», y se añadirá a tu cuaderno.","Paste Claude's reply here, or just the “For my notebook” summary, and it will be added to your notebook.")}</span></label>
      <textarea id="resp-${l.id}" class="notes" rows="4" data-resp></textarea>
-     <button type="button" class="btn btn-primary" data-keep>Guardar en el cuaderno</button>
-     <div class="btn-row"><button type="button" class="linkbtn" data-again>Enviar otra vez</button>${pickBtn("Elegir otra foto", "linkbtn")}</div>`;
+     <button type="button" class="btn btn-primary" data-keep>${L("Guardar en el cuaderno","Save to notebook")}</button>
+     <div class="btn-row"><button type="button" class="linkbtn" data-again>${L("Enviar otra vez","Send again")}</button>${pickBtn(L("Elegir otra foto","Choose another photo"), "linkbtn")}</div>`;
   }
   function msg(text){ el.querySelectorAll(".si-msg").forEach(n => n.remove()); const p = document.createElement("p"); p.className = "si-msg"; p.setAttribute("role", "alert"); p.textContent = text; el.appendChild(p); }
 
   el.addEventListener("change", async e => {
     const f = e.target.closest("[data-file]"); if(!f || !f.files[0]) return;
     const file = f.files[0];
-    el.innerHTML = `<p class="muted">Preparando la foto…</p>`;
+    el.innerHTML = `<p class="muted">${L("Preparando la foto…","Preparing the photo…")}</p>`;
     try{
       exif = /jpe?g/i.test(file.type) || !file.type ? readExif(await file.slice(0, 256 * 1024).arrayBuffer()) : null;
       photo = await shrinkPhoto(file);
@@ -2556,7 +2678,7 @@ function mountPhoto(el, l){
       if(url) URL.revokeObjectURL(url);
       url = URL.createObjectURL(photo);
       chosen();
-    }catch(err){ idle(); msg("No pude abrir esa foto. Prueba con otra."); }
+    }catch(err){ idle(); msg(L("No pude abrir esa foto. Prueba con otra.", "I couldn't open that photo. Try another one.")); }
   });
   el.addEventListener("click", async e => {
     if(e.target.closest("[data-send]") || e.target.closest("[data-again]")){
@@ -2575,13 +2697,13 @@ function mountPhoto(el, l){
     }
     if(e.target.closest("[data-keep]")){
       const t = el.querySelector("[data-resp]").value.trim(); if(!t) return;
-      const day = new Date().toLocaleDateString("es", {day: "numeric", month: "short"});
+      const day = new Date().toLocaleDateString(LANG, {day: "numeric", month: "short"});
       const prev = (S.notes[l.id] || "").trimEnd();
-      S.notes[l.id] = (prev ? prev + "\n\n" : "") + `Revisión de Claude (${day}):\n${t}`;
+      S.notes[l.id] = (prev ? prev + "\n\n" : "") + `${L("Revisión de Claude","Claude's review")} (${day}):\n${t}`;
       save();
       const ta = document.getElementById("nota-" + l.id); if(ta) ta.value = S.notes[l.id];
       el.querySelector("[data-resp]").value = "";
-      msg("Guardado en tu cuaderno.");
+      msg(L("Guardado en tu cuaderno.", "Saved to your notebook."));
       el.lastElementChild.style.color = "var(--ok)";
     }
   });
@@ -2593,11 +2715,11 @@ function reviewHTML(){
   const pool = reviewPool(); if(!pool.length) return "";
   const [l, [q, a]] = pool[S.rev % pool.length];
   return `<section class="card stack review" style="gap:10px" data-review>
-   <span class="eyebrow">Repaso rápido · de «${esc(l.title)}»</span>
+   <span class="eyebrow">${L(`Repaso rápido · de «${esc(l.title)}»`, `Quick review · from “${esc(l.title)}”`)}</span>
    <p style="font-weight:700">${fmt(q)}</p>
-   <details class="think"><summary>Piensa tu respuesta y toca para comprobarla</summary><p>${fmt(a)}</p></details>
-   <div class="btn-row"><button type="button" class="linkbtn" data-nextrev>Otra situación</button></div>
-   <p class="muted" style="font-size:14px">Recordar sin mirar es lo que fija lo aprendido. Un repaso al día basta.</p>
+   <details class="think"><summary>${L("Piensa tu respuesta y toca para comprobarla","Think of your answer, then tap to check it")}</summary><p>${fmt(a)}</p></details>
+   <div class="btn-row"><button type="button" class="linkbtn" data-nextrev>${L("Otra situación","Another situation")}</button></div>
+   <p class="muted" style="font-size:14px">${L("Recordar sin mirar es lo que fija lo aprendido. Un repaso al día basta.","Recalling without looking is what makes learning stick. One review a day is enough.")}</p>
   </section>`;
 }
 const ICON = {
@@ -2613,7 +2735,14 @@ const ICON = {
 };
 const icon = k => `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true">${ICON[k]}</svg>`;
 // What the guide offers, in the order she'll meet it. Used on the home tab and the welcome screen.
-const GUIDE = [
+const GUIDE = EN ? [
+  ["path", "#programa", "Lessons in order", "24 short lessons, from turning the camera on to taking photos with intent. Each one: you read, you do it with the camera, and you complete a mission."],
+  ["practice", null, "Practice mode", "Inside every lesson: one step per screen, with big buttons, to follow with the camera in your hand."],
+  ["camera", "#camara", "Camera map", "Tap any button or wheel in the drawing and it explains what it's for."],
+  ["sim", "#simulador", "Simulator", "Try aperture, shutter speed and ISO and see the result instantly, without using up photos."],
+  ["recipes", "#recetas", "Recipes and glossary", "Ready-made settings for portraits, landscapes, night or kids, and the words you don't remember."],
+  ["notes", null, "Your notebook", "At the end of each lesson, write down what you wanted, what you set and what happened. You'll see it all together here."]
+] : [
   ["path", "#programa", "Lecciones en orden", "24 lecciones cortas, de encender la cámara a hacer fotos con intención. Cada una: lees, lo haces con la cámara y cumples una misión."],
   ["practice", null, "Modo práctica", "Dentro de cada lección: un paso por pantalla, con botones grandes, para seguirlo con la cámara en la mano."],
   ["camera", "#camara", "Mapa de la cámara", "Toca cualquier botón o rueda del dibujo y te explica para qué sirve."],
@@ -2634,64 +2763,64 @@ function viewHome(){
   const n = doneCount(), nx = nextLesson(), last = S.last && byId(S.last) && !S.done[S.last] ? byId(S.last) : nx;
   const guide = `
    <details class="stack howto-d" style="gap:10px">
-    <summary>Cómo usar esta guía</summary>
+    <summary>${L("Cómo usar esta guía","How to use this guide")}</summary>
     ${guideRows()}
-    <p class="muted" style="font-size:15px">Ve a tu ritmo, en orden. ${Sync.on && Sync.user ? "Tu progreso y tus notas se guardan en tu cuenta, y también funcionan sin conexión." : "Tu progreso y tus notas se guardan en este dispositivo."}</p>
+    <p class="muted" style="font-size:15px">${L("Ve a tu ritmo, en orden.","Go at your own pace, in order.")} ${Sync.on && Sync.user ? L("Tu progreso y tus notas se guardan en tu cuenta, y también funcionan sin conexión.","Your progress and notes are saved to your account, and they work offline too.") : L("Tu progreso y tus notas se guardan en este dispositivo.","Your progress and notes are saved on this device.")}</p>
    </details>
   `;
   app.innerHTML = `
   <div class="stack-l">
    <section class="hero stack">
-    <span class="eyebrow">${n === 0 ? "Sony α6500 · objetivo 16-50 mm" : "Hola de nuevo"}</span>
-    <h1>Tu escuela</h1>
+    <span class="eyebrow">${n === 0 ? L("Sony α6500 · objetivo 16-50 mm","Sony α6500 · 16-50 mm lens") : L("Hola de nuevo","Welcome back")}</span>
+    <h1>${L("Tu escuela","Your school")}</h1>
     <div class="stack" style="gap:6px">
-     <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="${LESSONS.length}" aria-valuenow="${n}" aria-label="Progreso"><i style="width:${(n/LESSONS.length*100).toFixed(1)}%"></i></div>
-     <span class="muted" style="font-size:15px">${n === 0 ? "Aún no has empezado." : n === LESSONS.length ? "¡Programa completado!" : `${n} de ${LESSONS.length} lecciones completadas.`}</span>
+     <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="${LESSONS.length}" aria-valuenow="${n}" aria-label="${L("Progreso","Progress")}"><i style="width:${(n/LESSONS.length*100).toFixed(1)}%"></i></div>
+     <span class="muted" style="font-size:15px">${n === 0 ? L("Aún no has empezado.","You haven't started yet.") : n === LESSONS.length ? L("¡Programa completado!","Course complete!") : L(`${n} de ${LESSONS.length} lecciones completadas.`, `${n} of ${LESSONS.length} lessons completed.`)}</span>
     </div>
    </section>
    ${installHint()}
    ${last ? `
    <section class="continue">
-    <span class="eyebrow">${n === 0 ? "Empieza aquí" : "Continúa"} · Lección ${last.n}</span>
+    <span class="eyebrow">${n === 0 ? L("Empieza aquí","Start here") : L("Continúa","Continue")} · ${L("Lección","Lesson")} ${last.n}</span>
     <h2>${esc(last.title)}</h2>
     ${evfHTML(last.evf)}
-    <div class="btn-row"><a class="btn btn-primary" href="#leccion-${last.id}">${n === 0 ? "Empezar" : "Seguir"}</a></div>
+    <div class="btn-row"><a class="btn btn-primary" href="#leccion-${last.id}">${n === 0 ? L("Empezar","Start") : L("Seguir","Continue")}</a></div>
    </section>` : ""}
    ${reviewHTML()}
    ${guide}
    <div class="units">${UNITS.map(u => { const d = u.lessons.filter(l => S.done[l.id]).length, open = u.id in unitOpen ? unitOpen[u.id] : !!nx && nx.unit === u; return `
    <details class="unit" data-unit="${u.id}"${open ? " open" : ""}>
-    <summary class="unit-head"><h2>${u.id}. ${esc(u.title)}</h2><span class="eyebrow">${d === u.lessons.length ? "Completada" : d ? `${d} de ${u.lessons.length}` : `${u.lessons.length} lecciones`}</span></summary>
+    <summary class="unit-head"><h2>${u.id}. ${esc(u.title)}</h2><span class="eyebrow">${d === u.lessons.length ? L("Completada","Completed") : d ? L(`${d} de ${u.lessons.length}`, `${d} of ${u.lessons.length}`) : L(`${u.lessons.length} lecciones`, `${u.lessons.length} lessons`)}</span></summary>
     <ul class="lessons">${u.lessons.map(l => {
       const st = S.steps[l.id] || [], done = !!S.done[l.id], part = !done && st.length > 0;
       return `<li><a href="#leccion-${l.id}"><span class="num ${done?"done":part?"part":""} ${l.proj?"proj":""}">${done?"✓":l.proj?"★":l.n}</span><span><span class="l-title">${esc(l.title)}</span><br><span class="l-sub">${esc(l.sub)} · <span style="white-space:nowrap">${l.min} min</span></span></span><span class="chev" aria-hidden="true">›</span></a></li>`;
     }).join("")}</ul>
    </details>`; }).join("")}</div>
-   ${Object.keys(S.notes).length ? `<section class="stack" style="gap:10px"><h2>Tu cuaderno</h2>${LESSONS.filter(l => S.notes[l.id]).map(l => `<details class="card"><summary style="cursor:pointer;font-weight:700">${l.proj?"★":l.n} · ${esc(l.title)}</summary><p style="white-space:pre-wrap;margin-top:10px">${esc(S.notes[l.id])}</p><a href="#leccion-${l.id}" style="font-size:15px">Abrir ›</a></details>`).join("")}</section>` : ""}
+   ${Object.keys(S.notes).length ? `<section class="stack" style="gap:10px"><h2>${L("Tu cuaderno","Your notebook")}</h2>${LESSONS.filter(l => S.notes[l.id]).map(l => `<details class="card"><summary style="cursor:pointer;font-weight:700">${l.proj?"★":l.n} · ${esc(l.title)}</summary><p style="white-space:pre-wrap;margin-top:10px">${esc(S.notes[l.id])}</p><a href="#leccion-${l.id}" style="font-size:15px">${L("Abrir","Open")} ›</a></details>`).join("")}</section>` : ""}
    <section class="stack" style="gap:10px;border-top:1px solid var(--line);padding-top:20px">
-    <p class="muted" style="font-size:14px">Contenido comprobado con la Guía de ayuda oficial de la ILCE-6500. Los nombres de menú pueden variar un poco según la versión de software de tu cámara.</p>
-    ${Sync.on && Sync.user ? `<div class="acct"><span>Sesión: <b>${esc(Sync.user.email || "")}</b> · <span data-syncst>${syncLabel()}</span></span><button type="button" class="linkbtn" data-signout>Cerrar sesión</button></div>` : ""}
-    <div class="confirm" data-reset><button type="button" class="linkbtn" data-ask>Reiniciar mi progreso</button></div>
+    <p class="muted" style="font-size:14px">${L("Contenido comprobado con la Guía de ayuda oficial de la ILCE-6500. Los nombres de menú pueden variar un poco según la versión de software de tu cámara.", "Content checked against Sony's official ILCE-6500 Help Guide. Menu names are the camera's English ones and can differ slightly with your camera's software version.")}</p>
+    ${Sync.on && Sync.user ? `<div class="acct"><span>${L("Sesión","Signed in")}: <b>${esc(Sync.user.email || "")}</b> · <span data-syncst>${syncLabel()}</span></span><button type="button" class="linkbtn" data-signout>${L("Cerrar sesión","Sign out")}</button></div>` : ""}
+    <div class="confirm" data-reset><button type="button" class="linkbtn" data-ask>${L("Reiniciar mi progreso","Reset my progress")}</button></div>
    </section>
   </div>`;
   app.querySelectorAll("[data-unit]").forEach(d => d.addEventListener("toggle", () => { unitOpen[d.dataset.unit] = d.open; }));
   app.querySelector("[data-review]")?.addEventListener("click", e => { if(e.target.closest("[data-nextrev]")){ S.rev++; save(); viewHome(); } });
   app.querySelector("[data-signout]")?.addEventListener("click", e => {
     const box = e.target.closest(".acct");
-    box.innerHTML = `<span>${Sync.state === "ok" || Sync.state === "idle" ? "¿Cerrar sesión en este dispositivo?" : "Hay cambios sin subir todavía. Si cierras sesión ahora, se perderán."}</span><button type="button" class="btn btn-ghost" data-so-yes style="min-height:40px;padding:8px 14px">Cerrar sesión</button><button type="button" class="linkbtn" data-so-no>Cancelar</button>`;
+    box.innerHTML = `<span>${Sync.state === "ok" || Sync.state === "idle" ? L("¿Cerrar sesión en este dispositivo?","Sign out on this device?") : L("Hay cambios sin subir todavía. Si cierras sesión ahora, se perderán.","Some changes haven't been saved to your account yet. If you sign out now, they'll be lost.")}</span><button type="button" class="btn btn-ghost" data-so-yes style="min-height:40px;padding:8px 14px">${L("Cerrar sesión","Sign out")}</button><button type="button" class="linkbtn" data-so-no>${L("Cancelar","Cancel")}</button>`;
     box.querySelector("[data-so-no]").onclick = () => viewHome();
     box.querySelector("[data-so-yes]").onclick = () => { Sync.signOut(); showSignIn().login(false); };
   });
   const r = app.querySelector("[data-reset]");
   r.addEventListener("click", e => {
-    if(e.target.closest("[data-ask]")){ r.innerHTML = `<span>¿Borrar todo tu progreso?</span><button type="button" class="btn btn-ghost" data-yes style="min-height:40px;padding:8px 14px">Sí, reiniciar</button><button type="button" class="linkbtn" data-no>Cancelar</button>`; }
-    else if(e.target.closest("[data-yes]")){ S = {done:{}, steps:{}, last:null, notes:{}, zoom:S.zoom, rev:0}; save(); updateRing(); viewHome(); }
+    if(e.target.closest("[data-ask]")){ r.innerHTML = `<span>${L("¿Borrar todo tu progreso?","Erase all your progress?")}</span><button type="button" class="btn btn-ghost" data-yes style="min-height:40px;padding:8px 14px">${L("Sí, reiniciar","Yes, reset")}</button><button type="button" class="linkbtn" data-no>${L("Cancelar","Cancel")}</button>`; }
+    else if(e.target.closest("[data-yes]")){ S = {done:{}, steps:{}, last:null, notes:{}, zoom:S.zoom, rev:0, lang:S.lang}; save(); updateRing(); viewHome(); }
     else if(e.target.closest("[data-no]")){ viewHome(); }
   });
 }
 
 // A lesson is three short pages instead of one long scroll: read, do it with the camera, write it down.
-const LESSON_PAGES = ["Lee", "Hazlo", "Apunta"];
+const LESSON_PAGES = L(["Lee", "Hazlo", "Apunta"], ["Read", "Do", "Note"]);
 const lessonPage = {};
 function viewLesson(l){
   S.last = l.id; save();
@@ -2701,43 +2830,43 @@ function viewLesson(l){
   app.innerHTML = `
   <article class="stack-l">
    <div class="stack">
-    <div class="crumbs"><span class="eyebrow">Unidad ${l.unit.id} · ${l.proj ? "Proyecto" : "Lección"} ${l.n} de ${LESSONS.length}</span></div>
+    <div class="crumbs"><span class="eyebrow">${L("Unidad","Unit")} ${l.unit.id} · ${l.proj ? L("Proyecto","Project") : L("Lección","Lesson")} ${l.n} ${L("de","of")} ${LESSONS.length}</span></div>
     <h1>${esc(l.title)}</h1>
     ${evfHTML(l.evf)}
-    <p class="goal"><b>Objetivo:</b> ${esc(l.goal)}</p>
-    <span class="muted" style="font-size:15px">Unos ${l.min} minutos · Ten la cámara encendida a mano.</span>
+    <p class="goal"><b>${L("Objetivo:","Goal:")}</b> ${esc(l.goal)}</p>
+    <span class="muted" style="font-size:15px">${L(`Unos ${l.min} minutos · Ten la cámara encendida a mano.`, `About ${l.min} minutes · Keep the camera on and at hand.`)}</span>
    </div>
    <i data-pgtop aria-hidden="true"></i>
-   <div class="lesson-seg"><div class="seg" role="group" aria-label="Partes de la lección">${LESSON_PAGES.map((t, k) => `<button type="button" data-pg-to="${k}" aria-pressed="${k === pg}">${k + 1} · ${t}</button>`).join("")}</div></div>
+   <div class="lesson-seg"><div class="seg" role="group" aria-label="${L("Partes de la lección","Lesson parts")}">${LESSON_PAGES.map((t, k) => `<button type="button" data-pg-to="${k}" aria-pressed="${k === pg}">${k + 1} · ${t}</button>`).join("")}</div></div>
    <div class="stack-l" data-pg="0"${pg === 0 ? "" : " hidden"}>
    <div class="prose" id="sec-lee">${fmt(l.body)}</div>
-   ${l.think ? `<section class="stack" style="gap:10px" id="sec-piensa"><h2>Piénsalo: ¿qué harías tú?</h2><p class="muted" style="font-size:15px">Decide qué ajustes usarías y luego toca para ver lo que haría una fotógrafa.</p>${l.think.map(([q,a]) => `<details class="think"><summary>${fmt(q)}</summary><p>${fmt(a)}</p></details>`).join("")}</section>` : ""}
-   ${l.sim ? `<div class="card stack" style="gap:10px"><h3>Pruébalo en el simulador</h3><p class="muted">Ve el efecto de cada ajuste antes de hacerlo con la cámara.</p><div class="btn-row"><button type="button" class="btn btn-ghost" data-opensim="${l.sim}">Abrir el simulador en modo ${l.sim}</button></div></div>` : ""}
-   ${l.warn ? `<div class="callout c-warn"><span class="eyebrow">Ojo</span><p>${fmt(l.warn)}</p></div>` : ""}
-   <button type="button" class="btn btn-ghost pg-next" data-pg-to="1">Siguiente: hazlo con la cámara ›</button>
+   ${l.think ? `<section class="stack" style="gap:10px" id="sec-piensa"><h2>${L("Piénsalo: ¿qué harías tú?","Think it through: what would you do?")}</h2><p class="muted" style="font-size:15px">${L("Decide qué ajustes usarías y luego toca para ver lo que haría una fotógrafa.","Decide which settings you'd use, then tap to see what a photographer would do.")}</p>${l.think.map(([q,a]) => `<details class="think"><summary>${fmt(q)}</summary><p>${fmt(a)}</p></details>`).join("")}</section>` : ""}
+   ${l.sim ? `<div class="card stack" style="gap:10px"><h3>${L("Pruébalo en el simulador","Try it in the simulator")}</h3><p class="muted">${L("Ve el efecto de cada ajuste antes de hacerlo con la cámara.","See what each setting does before you do it with the camera.")}</p><div class="btn-row"><button type="button" class="btn btn-ghost" data-opensim="${l.sim}">${L(`Abrir el simulador en modo ${l.sim}`, `Open the simulator in ${l.sim} mode`)}</button></div></div>` : ""}
+   ${l.warn ? `<div class="callout c-warn"><span class="eyebrow">${L("Ojo","Watch out")}</span><p>${fmt(l.warn)}</p></div>` : ""}
+   <button type="button" class="btn btn-ghost pg-next" data-pg-to="1">${L("Siguiente: hazlo con la cámara","Next: do it with the camera")} ›</button>
    </div>
    <div class="stack-l" data-pg="1"${pg === 1 ? "" : " hidden"}>
    <section class="stack" style="gap:12px" id="sec-hazlo">
-    <h2>Hazlo con la cámara</h2>
-    <button type="button" class="btn btn-primary practice-btn" data-practice><span aria-hidden="true">▶︎</span> Modo práctica: un paso a la vez</button>
-    <p class="muted" style="font-size:14px;margin-top:-4px">Pantalla grande, botones abajo para el pulgar y la pantalla no se apaga mientras practicas. También puedes marcar los pasos aquí abajo.</p>
+    <h2>${L("Hazlo con la cámara","Do it with the camera")}</h2>
+    <button type="button" class="btn btn-primary practice-btn" data-practice><span aria-hidden="true">▶︎</span> ${L("Modo práctica: un paso a la vez","Practice mode: one step at a time")}</button>
+    <p class="muted" style="font-size:14px;margin-top:-4px">${L("Pantalla grande, botones abajo para el pulgar y la pantalla no se apaga mientras practicas. También puedes marcar los pasos aquí abajo.","Big text, buttons at the bottom for your thumb, and the screen stays on while you practice. You can also check off the steps below.")}</p>
     <ol class="steps">${l.steps.map((s, k) => `<li><input type="checkbox" id="st-${l.id}-${k}" data-k="${k}" ${st.has(k)?"checked":""}><label for="st-${l.id}-${k}"><span class="box" aria-hidden="true"></span><span>${fmt(s)}</span></label></li>`).join("")}</ol>
    </section>
    <section class="mission" id="sec-mision">
-    <span class="eyebrow">Misión de práctica</span>
+    <span class="eyebrow">${L("Misión de práctica","Practice mission")}</span>
     <p>${fmt(l.mission)}</p>
    </section>
-   <button type="button" class="btn btn-ghost pg-next" data-pg-to="2">Siguiente: apunta y revisa tu foto ›</button>
+   <button type="button" class="btn btn-ghost pg-next" data-pg-to="2">${L("Siguiente: apunta y revisa tu foto","Next: take notes and review your photo")} ›</button>
    </div>
    <div class="stack-l" data-pg="2"${pg === 2 ? "" : " hidden"}>
    <section class="stack" style="gap:8px">
-    <label for="nota-${l.id}" id="sec-cuaderno"><h2>Tu cuaderno</h2></label>
-    <p class="muted" style="font-size:15px">Apunta qué querías capturar, qué ajustes elegiste y por qué, y qué cambiarías. Releerlo te enseña tanto como las lecciones.</p>
-    <textarea id="nota-${l.id}" class="notes" rows="5" placeholder="Quería: …&#10;Ajustes: A · F5.6 · 1/250 · ISO 400, porque…&#10;Resultado: …&#10;La próxima vez: …">${esc(S.notes[l.id] || "")}</textarea>
+    <label for="nota-${l.id}" id="sec-cuaderno"><h2>${L("Tu cuaderno","Your notebook")}</h2></label>
+    <p class="muted" style="font-size:15px">${L("Apunta qué querías capturar, qué ajustes elegiste y por qué, y qué cambiarías. Releerlo te enseña tanto como las lecciones.","Write down what you wanted to capture, which settings you chose and why, and what you'd change. Rereading it teaches you as much as the lessons.")}</p>
+    <textarea id="nota-${l.id}" class="notes" rows="5" placeholder="${L("Quería: …&#10;Ajustes: A · F5.6 · 1/250 · ISO 400, porque…&#10;Resultado: …&#10;La próxima vez: …","I wanted: …&#10;Settings: A · F5.6 · 1/250 · ISO 400, because…&#10;Result: …&#10;Next time: …")}">${esc(S.notes[l.id] || "")}</textarea>
     <span class="muted" style="font-size:13px" data-saved></span>
    </section>
    <section class="stack" style="gap:12px" id="sec-foto">
-    <h2>Revisa tu foto con Claude</h2>
+    <h2>${L("Revisa tu foto con Claude","Review your photo with Claude")}</h2>
     <div class="stack" style="gap:12px" data-photo></div>
    </section>
    <div class="lesson-foot" data-foot></div>
@@ -2746,21 +2875,21 @@ function viewLesson(l){
   function foot(fresh){
     const done = !!S.done[l.id];
     app.querySelector("[data-foot]").innerHTML = `
-     ${done ? `<div class="donebar${fresh ? " in" : ""}">✓ Lección completada</div>` : ""}
+     ${done ? `<div class="donebar${fresh ? " in" : ""}">✓ ${L("Lección completada","Lesson completed")}</div>` : ""}
      <div class="btn-row">
-      ${done ? (next ? `<a class="btn btn-primary" href="#leccion-${next.id}">Siguiente: ${esc(next.title)}</a>` : `<a class="btn btn-primary" href="#programa">Volver al programa</a>`)
-             : `<button type="button" class="btn btn-primary" data-complete>Marcar como completada</button>`}
-      ${done ? `<button type="button" class="linkbtn" data-undo>Desmarcar</button>` : ""}
+      ${done ? (next ? `<a class="btn btn-primary" href="#leccion-${next.id}">${L("Siguiente","Next")}: ${esc(next.title)}</a>` : `<a class="btn btn-primary" href="#programa">${L("Volver al programa","Back to the course")}</a>`)
+             : `<button type="button" class="btn btn-primary" data-complete>${L("Marcar como completada","Mark as completed")}</button>`}
+      ${done ? `<button type="button" class="linkbtn" data-undo>${L("Desmarcar","Unmark")}</button>` : ""}
      </div>
      <div class="btn-row" style="justify-content:space-between">
       ${prev ? `<a href="#leccion-${prev.id}" class="muted" style="font-size:15px">‹ ${esc(prev.title)}</a>` : "<span></span>"}
-      ${!done && next ? `<a href="#leccion-${next.id}" class="muted" style="font-size:15px">Saltar a la siguiente ›</a>` : ""}
+      ${!done && next ? `<a href="#leccion-${next.id}" class="muted" style="font-size:15px">${L("Saltar a la siguiente","Skip to the next one")} ›</a>` : ""}
      </div>`;
   }
   foot();
   app.onchange = onStep;
   let tmr; const ta = app.querySelector(".notes");
-  ta.addEventListener("input", () => { clearTimeout(tmr); tmr = setTimeout(() => { const v = ta.value.trim(); if(v) S.notes[l.id] = ta.value; else delete S.notes[l.id]; save(); app.querySelector("[data-saved]").textContent = "Nota guardada."; }, 400); });
+  ta.addEventListener("input", () => { clearTimeout(tmr); tmr = setTimeout(() => { const v = ta.value.trim(); if(v) S.notes[l.id] = ta.value; else delete S.notes[l.id]; save(); app.querySelector("[data-saved]").textContent = L("Nota guardada.", "Note saved."); }, 400); });
   function onStep(e){
     const c = e.target.closest(".steps input"); if(!c) return;
     const set = new Set(S.steps[l.id] || []); c.checked ? set.add(+c.dataset.k) : set.delete(+c.dataset.k);
@@ -2798,11 +2927,11 @@ function celebrate(l, next){
   sh.className = "sheet-bg";
   sh.innerHTML = `<div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-t">
     <svg class="sheet-check" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="29"/><path d="M19 33l9 9 17-19"/></svg>
-    <h2 id="sheet-t">${all ? "¡Programa completado!" : `${l.proj ? "Proyecto" : "Lección"} ${l.n} completada`}</h2>
-    <p class="muted">${all ? "Has terminado las 24 lecciones. Ahora, a fotografiar lo que te guste." : `Llevas ${n} de ${LESSONS.length}. ${esc(l.title)}: hecho.`}</p>
+    <h2 id="sheet-t">${all ? L("¡Programa completado!","Course complete!") : L(`${l.proj ? "Proyecto" : "Lección"} ${l.n} completada`, `${l.proj ? "Project" : "Lesson"} ${l.n} completed`)}</h2>
+    <p class="muted">${all ? L("Has terminado las 24 lecciones. Ahora, a fotografiar lo que te guste.","You've finished all 24 lessons. Now go photograph what you love.") : L(`Llevas ${n} de ${LESSONS.length}. ${esc(l.title)}: hecho.`, `${n} of ${LESSONS.length} done. ${esc(l.title)}: done.`)}</p>
     <div class="progress" aria-hidden="true"><i style="width:${(n/LESSONS.length*100).toFixed(1)}%"></i></div>
-    ${next && !all ? `<a class="btn btn-primary" href="#leccion-${next.id}">Siguiente: ${esc(next.title)}</a>` : ""}
-    <button type="button" class="btn btn-ghost" data-close>${next && !all ? "Ahora no" : "Volver al programa"}</button>
+    ${next && !all ? `<a class="btn btn-primary" href="#leccion-${next.id}">${L("Siguiente","Next")}: ${esc(next.title)}</a>` : ""}
+    <button type="button" class="btn btn-ghost" data-close>${next && !all ? L("Ahora no","Not now") : L("Volver al programa","Back to the course")}</button>
    </div>`;
   document.body.appendChild(sh);
   sh.addEventListener("touchmove", e => e.preventDefault(), {passive: false}); // the page behind stays put
@@ -2815,20 +2944,28 @@ function celebrate(l, next){
 }
 
 function viewCamera(){
-  app.innerHTML = `<div class="stack-l"><div class="stack"><h1>Cada botón, explicado</h1><p class="muted">Toca una parte del esquema o elige su nombre en la lista.</p></div><div data-cam></div></div>`;
+  app.innerHTML = `<div class="stack-l"><div class="stack"><h1>${L("Cada botón, explicado","Every button, explained")}</h1><p class="muted">${L("Toca una parte del esquema o elige su nombre en la lista.","Tap a part of the drawing or pick its name from the list.")}</p></div><div data-cam></div></div>`;
   mountCamera(app.querySelector("[data-cam]"));
 }
 function viewSim(){
-  app.innerHTML = `<div class="stack-l"><div class="stack"><h1>Juega con la luz</h1><p class="muted">Tu α6500, con sus diales y botones. Desliza los diales, pulsa los botones y haz fotos.</p></div><div data-sim></div></div>`;
+  app.innerHTML = `<div class="stack-l"><div class="stack"><h1>${L("Juega con la luz","Play with light")}</h1><p class="muted">${L("Tu α6500, con sus diales y botones. Desliza los diales, pulsa los botones y haz fotos.","Your α6500, with its dials and buttons. Slide the dials, press the buttons and take photos.")}</p></div><div data-sim></div></div>`;
   mountSim(app.querySelector("[data-sim]"));
 }
 function viewRecipes(){
   app.innerHTML = `<div class="stack-l">
-   <div class="stack"><h1>Recetas para salir a fotografiar</h1><p class="muted">Empieza por lo que quieres capturar. El planificador te propone ajustes y te explica por qué; las recetas de abajo cubren situaciones típicas.</p>
-    <nav class="outline" aria-label="En esta página">${[["rx-plan","Planificador"],["rx-rutina","Rutina"],["rx-recetas","Recetas"],["glosario","Glosario"]].map(([id,t]) => `<button type="button" class="chip" data-jump="${id}">${t}</button>`).join("")}</nav></div>
-   <section class="stack" style="gap:10px" id="rx-plan"><h2>Planificador: ¿qué quieres capturar?</h2><div data-planner></div></section>
-   <section class="card stack" style="gap:10px;border-color:var(--accent)" id="rx-rutina"><h2 style="font-size:21px">Rutina antes de salir</h2><p class="muted" style="font-size:15px">Lo que cualquier fotógrafo revisa antes de una sesión. Un minuto que evita perder fotos.</p>
-    <ol style="margin:0;padding-left:22px;display:flex;flex-direction:column;gap:6px">
+   <div class="stack"><h1>${L("Recetas para salir a fotografiar","Recipes for going out to shoot")}</h1><p class="muted">${L("Empieza por lo que quieres capturar. El planificador te propone ajustes y te explica por qué; las recetas de abajo cubren situaciones típicas.","Start with what you want to capture. The planner suggests settings and explains why; the recipes below cover typical situations.")}</p>
+    <nav class="outline" aria-label="${L("En esta página","On this page")}">${(EN ? [["rx-plan","Planner"],["rx-rutina","Routine"],["rx-recetas","Recipes"],["glosario","Glossary"]] : [["rx-plan","Planificador"],["rx-rutina","Rutina"],["rx-recetas","Recetas"],["glosario","Glosario"]]).map(([id,t]) => `<button type="button" class="chip" data-jump="${id}">${t}</button>`).join("")}</nav></div>
+   <section class="stack" style="gap:10px" id="rx-plan"><h2>${L("Planificador: ¿qué quieres capturar?","Planner: what do you want to capture?")}</h2><div data-planner></div></section>
+   <section class="card stack" style="gap:10px;border-color:var(--accent)" id="rx-rutina"><h2 style="font-size:21px">${L("Rutina antes de salir","Routine before you go out")}</h2><p class="muted" style="font-size:15px">${L("Lo que cualquier fotógrafo revisa antes de una sesión. Un minuto que evita perder fotos.","What any photographer checks before a shoot. One minute that saves you from losing photos.")}</p>
+    <ol style="margin:0;padding-left:22px;display:flex;flex-direction:column;gap:6px">${EN ? `
+     <li>Battery charged (and the spare, if you have one).</li>
+     <li>Card in, with space. Copy and delete the photos from your last outing.</li>
+     <li>Front lens clean, no fingerprints.</li>
+     <li>Exposure compensation at <b>±0.0</b>: it stays where you left it last time.</li>
+     <li>ISO on <b>AUTO</b>, not a fixed value you left from a night shoot.</li>
+     <li>White Balance on <b>Auto</b>, unless you chose it on purpose.</li>
+     <li>Drive Mode on <b>Single Shooting</b> (or continuous if you're after action).</li>
+     <li>The right Quality: JPEG Extra fine, or RAW &amp; JPEG.</li>` : `
      <li>Batería cargada (y la de repuesto, si tienes).</li>
      <li>Tarjeta puesta y con espacio. Pasa y borra las fotos de la última salida.</li>
      <li>Lente frontal limpia, sin huellas.</li>
@@ -2836,15 +2973,15 @@ function viewRecipes(){
      <li>ISO en <b>AUTO</b>, no en un valor que dejaste fijo de noche.</li>
      <li>Balance de blancos en <b>Auto</b>, salvo que lo hayas elegido a propósito.</li>
      <li>Modo de avance en <b>Disparo único</b> (o ráfaga si vas a por acción).</li>
-     <li>Calidad correcta: JPEG Extra fino o RAW y JPEG.</li>
+     <li>Calidad correcta: JPEG Extra fino o RAW y JPEG.</li>`}
     </ol></section>
-   <section class="stack" style="gap:10px" id="rx-recetas"><h2>Recetas</h2><p class="muted" style="font-size:15px">Toca una para ver los ajustes completos.</p>
-   ${RECIPES.map(r => `<details class="card recipe"><summary><span class="r-head"><h3>${esc(r.t)}</h3></span>${evfHTML(r.evf)}</summary><dl>${r.d.map(([a,b]) => `<dt>${esc(a)}</dt><dd>${esc(b)}</dd>`).join("")}</dl><p class="muted" style="font-size:15px"><b>Consejo:</b> ${esc(r.tip)}</p><a href="#leccion-${r.l}" style="font-size:15px;font-weight:700">Repasar la lección: ${esc(byId(r.l).title)} ›</a></details>`).join("")}</section>
-   <section class="stack" style="gap:10px" id="glosario"><h2>Glosario</h2><label for="gloss-q" class="muted" style="font-size:15px">Busca una palabra que no recuerdes.</label><input id="gloss-q" type="search" class="notes" style="padding:10px 14px" placeholder="Por ejemplo: apertura, ISO, RAW" autocomplete="off"><dl class="gloss" data-gloss></dl></section>
+   <section class="stack" style="gap:10px" id="rx-recetas"><h2>${L("Recetas","Recipes")}</h2><p class="muted" style="font-size:15px">${L("Toca una para ver los ajustes completos.","Tap one to see the full settings.")}</p>
+   ${RECIPES.map(r => `<details class="card recipe"><summary><span class="r-head"><h3>${esc(r.t)}</h3></span>${evfHTML(r.evf)}</summary><dl>${r.d.map(([a,b]) => `<dt>${esc(a)}</dt><dd>${esc(b)}</dd>`).join("")}</dl><p class="muted" style="font-size:15px"><b>${L("Consejo:","Tip:")}</b> ${esc(r.tip)}</p><a href="#leccion-${r.l}" style="font-size:15px;font-weight:700">${L("Repasar la lección","Review the lesson")}: ${esc(byId(r.l).title)} ›</a></details>`).join("")}</section>
+   <section class="stack" style="gap:10px" id="glosario"><h2>${L("Glosario","Glossary")}</h2><label for="gloss-q" class="muted" style="font-size:15px">${L("Busca una palabra que no recuerdes.","Look up a word you don't remember.")}</label><input id="gloss-q" type="search" class="notes" style="padding:10px 14px" placeholder="${L("Por ejemplo: apertura, ISO, RAW","For example: aperture, ISO, RAW")}" autocomplete="off"><dl class="gloss" data-gloss></dl></section>
   </div>`;
   mountPlanner(app.querySelector("[data-planner]"));
   const box = app.querySelector("[data-gloss]"), q = app.querySelector("#gloss-q");
-  const draw = () => { const t = q.value.trim().toLowerCase(); const items = GLOSS.filter(([a,b]) => !t || (a+" "+b).toLowerCase().includes(t)); box.innerHTML = items.length ? items.map(([a,b]) => `<div><dt>${esc(a)}</dt><dd>${esc(b)}</dd></div>`).join("") : `<p class="muted">No hay ningún término con «${esc(q.value)}».</p>`; };
+  const draw = () => { const t = q.value.trim().toLowerCase(); const items = GLOSS.filter(([a,b]) => !t || (a+" "+b).toLowerCase().includes(t)); box.innerHTML = items.length ? items.map(([a,b]) => `<div><dt>${esc(a)}</dt><dd>${esc(b)}</dd></div>`).join("") : `<p class="muted">${L(`No hay ningún término con «${esc(q.value)}».`, `No term contains “${esc(q.value)}”.`)}</p>`; };
   q.addEventListener("input", draw); draw();
   app.onclick = e => { const j = e.target.closest("[data-jump]"); if(j) document.getElementById(j.dataset.jump)?.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"}); };
 }
@@ -2880,7 +3017,8 @@ function route(keepScroll){
 }
 /* ---------- sign-in screen ---------- */
 function syncLabel(){
-  return {syncing: "Guardando…", pending: "Guardando…", ok: "Guardado en tu cuenta", offline: "Sin conexión: se subirá luego", error: "No se pudo guardar, se reintentará", idle: "Guardado"}[Sync.state] || "";
+  return (EN ? {syncing: "Saving…", pending: "Saving…", ok: "Saved to your account", offline: "Offline: will upload later", error: "Couldn't save, will retry", idle: "Saved"}
+    : {syncing: "Guardando…", pending: "Guardando…", ok: "Guardado en tu cuenta", offline: "Sin conexión: se subirá luego", error: "No se pudo guardar, se reintentará", idle: "Guardado"})[Sync.state] || "";
 }
 Sync.onState(st => {
   if(st === "expired"){ showSignIn().login(false); return; }
@@ -2889,71 +3027,77 @@ Sync.onState(st => {
 
 // In Safari on an iPhone, before the app is on the home screen.
 const inSafari = () => /iPhone|iPad|iPod/.test(navigator.userAgent) && !navigator.standalone && !matchMedia("(display-mode: standalone)").matches;
-const SHARE_ICON = `<svg class="share-ico" viewBox="0 0 24 24" aria-label="Compartir"><path d="M12 3v12M8 7l4-4 4 4"/><path d="M8 10H6v11h12V10h-2"/></svg>`;
-const installHint = () => inSafari() ? `<div class="install">${icon("phone")}<span><b>Ponla en tu pantalla de inicio</b><span class="muted">Toca ${SHARE_ICON} abajo y luego «Añadir a pantalla de inicio». Se abrirá como una app, a pantalla completa. Entra desde allí: Safari y la app guardan la sesión por separado.</span></span></div>` : "";
+const SHARE_ICON = `<svg class="share-ico" viewBox="0 0 24 24" aria-label="${L("Compartir","Share")}"><path d="M12 3v12M8 7l4-4 4 4"/><path d="M8 10H6v11h12V10h-2"/></svg>`;
+const installHint = () => inSafari() ? `<div class="install">${icon("phone")}<span><b>${L("Ponla en tu pantalla de inicio","Put it on your Home Screen")}</b><span class="muted">${L(`Toca ${SHARE_ICON} abajo y luego «Añadir a pantalla de inicio». Se abrirá como una app, a pantalla completa. Entra desde allí: Safari y la app guardan la sesión por separado.`, `Tap ${SHARE_ICON} below, then “Add to Home Screen”. It opens like an app, full screen. Sign in from there: Safari and the app keep separate sessions.`)}</span></span></div>` : "";
 
 function showSignIn(){
   document.body.classList.add("signin-on");
   const host = document.getElementById("signin");
   let email = "";
-  const shell = (title, intro, form) => `<div class="signin-box stack">
-      <button type="button" class="back" data-welcome><span aria-hidden="true">‹</span>Inicio</button>
+  const langToggle = `<button type="button" class="tsize lang signin-lang" data-lang aria-label="${L("Idioma: español. Cambiar a inglés", "Language: English. Switch to Spanish")}">${langBtn()}</button>`;
+  const shell = (title, intro, form) => `${langToggle}<div class="signin-box stack">
+      <button type="button" class="back" data-welcome><span aria-hidden="true">‹</span>${L("Inicio","Start")}</button>
       <h1>${title}</h1><p class="muted">${intro}</p>
       <form class="stack" style="gap:12px" novalidate>${form}</form></div>`;
   const field = (id, label, type, ac, extra = "") => {
     const input = `<input id="${id}" type="${type}" autocomplete="${ac}" autocapitalize="off" autocorrect="off" spellcheck="false" ${extra}>`;
-    return `<div class="si-row"><label for="${id}">${label}</label>${input}${type === "password" ? `<button type="button" class="linkbtn" data-peek aria-controls="${id}" aria-pressed="false">Mostrar</button>` : ""}</div>`;
+    return `<div class="si-row"><label for="${id}">${label}</label>${input}${type === "password" ? `<button type="button" class="linkbtn" data-peek aria-controls="${id}" aria-pressed="false">${L("Mostrar","Show")}</button>` : ""}</div>`;
   };
   host.onclick = e => {
     if(e.target.closest("[data-welcome]")){ welcome(); return; }
+    if(e.target.closest("[data-lang]")){ setLang(EN ? "es" : "en"); return; }
     const b = e.target.closest("[data-peek]"); if(!b) return;
     const i = host.querySelector("#" + b.getAttribute("aria-controls")), show = i.type === "password";
-    i.type = show ? "text" : "password"; b.textContent = show ? "Ocultar" : "Mostrar"; b.setAttribute("aria-pressed", show);
+    i.type = show ? "text" : "password"; b.textContent = show ? L("Ocultar","Hide") : L("Mostrar","Show"); b.setAttribute("aria-pressed", show);
   };
   const msg = t => { host.querySelector(".si-msg").textContent = t; };
-  const why = (err, signup) => !navigator.onLine ? "Necesitas conexión a internet para entrar."
-    : err.code === "invalid_credentials" || err.code === "invalid_grant" ? "El correo o la contraseña no son correctos. La contraseña distingue mayúsculas y minúsculas."
-    : err.code === "user_already_exists" ? "Ya hay una cuenta con este correo. Usa «Entrar»."
-    : err.code === "weak_password" ? "La contraseña es demasiado corta. Usa al menos 6 caracteres."
-    : err.code === "signup_disabled" ? "Ya no se pueden crear cuentas nuevas."
-    : err.code === "confirm_needed" || err.code === "email_not_confirmed" ? "Antes de entrar hay que confirmar el correo. Pide a Jack que desactive «Confirm email» en Supabase."
-    : err.status === 429 ? "Demasiados intentos seguidos. Espera unos minutos."
-    : (signup ? "No se pudo crear la cuenta. Inténtalo otra vez." : "No se pudo entrar. Inténtalo otra vez.") + " (" + err.message + ")";
+  const why = (err, signup) => !navigator.onLine ? L("Necesitas conexión a internet para entrar.", "You need an internet connection to sign in.")
+    : err.code === "invalid_credentials" || err.code === "invalid_grant" ? L("El correo o la contraseña no son correctos. La contraseña distingue mayúsculas y minúsculas.", "The email or password is wrong. The password is case-sensitive.")
+    : err.code === "user_already_exists" ? L("Ya hay una cuenta con este correo. Usa «Entrar».", "There's already an account with this email. Use “Sign in”.")
+    : err.code === "weak_password" ? L("La contraseña es demasiado corta. Usa al menos 6 caracteres.", "The password is too short. Use at least 6 characters.")
+    : err.code === "signup_disabled" ? L("Ya no se pueden crear cuentas nuevas.", "New accounts can't be created anymore.")
+    : err.code === "confirm_needed" || err.code === "email_not_confirmed" ? L("Antes de entrar hay que confirmar el correo. Pide a Jack que desactive «Confirm email» en Supabase.", "The email has to be confirmed before signing in. Turn off “Confirm email” in Supabase.")
+    : err.status === 429 ? L("Demasiados intentos seguidos. Espera unos minutos.", "Too many attempts in a row. Wait a few minutes.")
+    : (signup ? L("No se pudo crear la cuenta. Inténtalo otra vez.", "Couldn't create the account. Try again.") : L("No se pudo entrar. Inténtalo otra vez.", "Couldn't sign in. Try again.")) + " (" + err.message + ")";
   const busy = (b, t) => { msg(""); b.disabled = true; b.dataset.t = b.textContent; b.innerHTML = `<span class="spin" aria-hidden="true"></span>${t}`; };
   const idle = b => { b.disabled = false; b.textContent = b.dataset.t; };
-  const done = async () => { host.innerHTML = `<div class="si-wait" role="status"><span class="spin" aria-hidden="true"></span><span class="muted">Preparando tu escuela…</span></div>`; await Sync.pull(); hideSignIn(); };
+  const done = async () => { host.innerHTML = `<div class="si-wait" role="status"><span class="spin" aria-hidden="true"></span><span class="muted">${L("Preparando tu escuela…","Getting your school ready…")}</span></div>`; await Sync.pull(); if(followLang()) return; hideSignIn(); };
 
   // First screen on a new device: what the guide is, before asking for anything.
   const welcome = () => {
-    host.innerHTML = `<div class="signin-box welcome">
+    host.innerHTML = `${langToggle}<div class="signin-box welcome">
       <span class="brand-mark" aria-hidden="true"></span>
-      <h1>Bienvenida a Escuela α6500</h1>
-      <p class="muted lede">Tu guía para aprender a usar tu Sony α6500, en español y con la cámara en la mano.</p>
+      <h1>${L("Bienvenida a Escuela α6500","Welcome to Escuela α6500")}</h1>
+      <p class="muted lede">${L("Tu guía para aprender a usar tu Sony α6500, en español y con la cámara en la mano.","Your guide to learning your Sony α6500, in English, with the camera in your hands.")}</p>
       ${installHint()}
       <ul class="features">
-       ${[["path","Aprende paso a paso","24 lecciones cortas, desde el primer encendido hasta hacer fotos con intención."],
+       ${(EN ? [["path","Learn step by step","24 short lessons, from first turning it on to taking photos with intent."],
+          ["camera","Know every button","A map of the camera: tap a wheel or button and it tells you what it's for."],
+          ["sim","Practice without using up photos","A simulator to see what aperture, shutter speed and ISO change."],
+          ["lock","Your progress, kept safe","With your account, your lessons and notebook are saved and nobody else can change them."]]
+        : [["path","Aprende paso a paso","24 lecciones cortas, desde el primer encendido hasta hacer fotos con intención."],
           ["camera","Conoce cada botón","Un mapa de la cámara: tocas una rueda o un botón y te dice para qué sirve."],
           ["sim","Practica sin gastar fotos","Un simulador para ver qué cambian la apertura, la velocidad y el ISO."],
-          ["lock","Tu progreso, a salvo","Con tu cuenta, tus lecciones y tu cuaderno se guardan y nadie más puede cambiarlos."]]
+          ["lock","Tu progreso, a salvo","Con tu cuenta, tus lecciones y tu cuaderno se guardan y nadie más puede cambiarlos."]])
          .map(([k,t,d]) => `<li>${icon(k)}<span><b>${t}</b><span class="muted">${d}</span></span></li>`).join("")}
       </ul>
       <div class="welcome-cta">
-       <button type="button" class="btn btn-primary" data-go="signup">Crear mi cuenta</button>
-       <button type="button" class="btn btn-ghost" data-go="login">Ya tengo cuenta</button>
+       <button type="button" class="btn btn-primary" data-go="signup">${L("Crear mi cuenta","Create my account")}</button>
+       <button type="button" class="btn btn-ghost" data-go="login">${L("Ya tengo cuenta","I have an account")}</button>
       </div></div>`;
     host.querySelectorAll("[data-go]").forEach(b => b.onclick = () => login(b.dataset.go === "signup"));
   };
   const login = (signup) => {
-    host.innerHTML = shell(signup ? "Crea tu cuenta" : "Entra en tu escuela",
-      signup ? "Elige tu correo y una contraseña. Solo tendrás que escribirla una vez en cada dispositivo."
-             : "Así tu progreso y tu cuaderno se guardan en tu cuenta y nadie más puede cambiarlos. Solo tienes que entrar una vez en cada dispositivo.",
+    host.innerHTML = shell(signup ? L("Crea tu cuenta","Create your account") : L("Entra en tu escuela","Sign in to your school"),
+      signup ? L("Elige tu correo y una contraseña. Solo tendrás que escribirla una vez en cada dispositivo.", "Choose your email and a password. You only have to type it once on each device.")
+             : L("Así tu progreso y tu cuaderno se guardan en tu cuenta y nadie más puede cambiarlos. Solo tienes que entrar una vez en cada dispositivo.", "That way your progress and notebook are saved to your account and nobody else can change them. You only have to sign in once on each device."),
       `<div class="si-group">` +
-      field("si-email", "Correo", "email", "email", `inputmode="email" placeholder="nombre@correo.com" value="${esc(email)}"`) +
-      field("si-pw", "Contraseña", "password", signup ? "new-password" : "current-password", `minlength="6" placeholder="${signup ? "Mínimo 6" : "Tu contraseña"}"`) +
-      `</div><p class="si-msg" role="alert"></p><button class="btn btn-primary" type="submit">${signup ? "Crear cuenta" : "Entrar"}</button>
+      field("si-email", L("Correo","Email"), "email", "email", `inputmode="email" placeholder="${L("nombre@correo.com","name@email.com")}" value="${esc(email)}"`) +
+      field("si-pw", L("Contraseña","Password"), "password", signup ? "new-password" : "current-password", `minlength="6" placeholder="${signup ? L("Mínimo 6","At least 6") : L("Tu contraseña","Your password")}"`) +
+      `</div><p class="si-msg" role="alert"></p><button class="btn btn-primary" type="submit">${signup ? L("Crear cuenta","Create account") : L("Entrar","Sign in")}</button>
        <div class="btn-row" style="justify-content:space-between">
-        <button class="linkbtn" type="button" data-switch>${signup ? "Ya tengo cuenta" : "Crear una cuenta"}</button>
-        ${signup ? "" : `<button class="linkbtn" type="button" data-forgot>¿Olvidaste la contraseña?</button>`}
+        <button class="linkbtn" type="button" data-switch>${signup ? L("Ya tengo cuenta","I have an account") : L("Crear una cuenta","Create an account")}</button>
+        ${signup ? "" : `<button class="linkbtn" type="button" data-forgot>${L("¿Olvidaste la contraseña?","Forgot your password?")}</button>`}
        </div>`);
     const f = host.querySelector("form");
     host.querySelector("[data-switch]").onclick = () => { email = f.querySelector("#si-email").value.trim(); login(!signup); };
@@ -2962,38 +3106,38 @@ function showSignIn(){
       e.preventDefault();
       email = f.querySelector("#si-email").value.trim().toLowerCase();
       const pw = f.querySelector("#si-pw").value, b = f.querySelector("[type=submit]");
-      if(!/^\S+@\S+\.\S+$/.test(email)) return msg("Escribe tu correo completo.");
-      if(pw.length < 6) return msg("La contraseña necesita al menos 6 caracteres.");
-      busy(b, signup ? "Creando…" : "Entrando…");
+      if(!/^\S+@\S+\.\S+$/.test(email)) return msg(L("Escribe tu correo completo.", "Type your full email."));
+      if(pw.length < 6) return msg(L("La contraseña necesita al menos 6 caracteres.", "The password needs at least 6 characters."));
+      busy(b, signup ? L("Creando…","Creating…") : L("Entrando…","Signing in…"));
       try{ await (signup ? Sync.signUp(email, pw) : Sync.signIn(email, pw)); }
       catch(err){ idle(b); return msg(why(err, signup)); }
       done();
     };
   };
   const forgot = () => {
-    host.innerHTML = shell("Recupera tu contraseña", "Te enviaremos un correo con un enlace. Ábrelo, elige una contraseña nueva y después vuelve a la app para entrar con ella.",
-      `<div class="si-group">` + field("si-email", "Correo", "email", "email", `inputmode="email" placeholder="nombre@correo.com" value="${esc(email)}"`) +
-      `</div><p class="si-msg" role="alert"></p><button class="btn btn-primary" type="submit">Enviar el enlace</button><button class="linkbtn" type="button" data-back>Volver</button>`);
+    host.innerHTML = shell(L("Recupera tu contraseña","Reset your password"), L("Te enviaremos un correo con un enlace. Ábrelo, elige una contraseña nueva y después vuelve a la app para entrar con ella.", "We'll send you an email with a link. Open it, choose a new password, then come back to the app to sign in with it."),
+      `<div class="si-group">` + field("si-email", L("Correo","Email"), "email", "email", `inputmode="email" placeholder="${L("nombre@correo.com","name@email.com")}" value="${esc(email)}"`) +
+      `</div><p class="si-msg" role="alert"></p><button class="btn btn-primary" type="submit">${L("Enviar el enlace","Send the link")}</button><button class="linkbtn" type="button" data-back>${L("Volver","Back")}</button>`);
     const f = host.querySelector("form");
     host.querySelector("[data-back]").onclick = () => login(false);
     f.onsubmit = async e => {
       e.preventDefault();
       email = f.querySelector("#si-email").value.trim().toLowerCase(); const b = f.querySelector("[type=submit]");
-      busy(b, "Enviando…");
-      try{ await Sync.recover(email); msg(""); b.textContent = "Enviado. Revisa tu correo (y Spam)."; }
-      catch(err){ idle(b); msg(err.status === 429 ? "Has pedido varios correos seguidos. Espera un rato y vuelve a intentarlo." : "No se pudo enviar. Revisa el correo e inténtalo otra vez."); }
+      busy(b, L("Enviando…","Sending…"));
+      try{ await Sync.recover(email); msg(""); b.textContent = L("Enviado. Revisa tu correo (y Spam).", "Sent. Check your email (and Spam)."); }
+      catch(err){ idle(b); msg(err.status === 429 ? L("Has pedido varios correos seguidos. Espera un rato y vuelve a intentarlo.", "You've asked for several emails in a row. Wait a while and try again.") : L("No se pudo enviar. Revisa el correo e inténtalo otra vez.", "Couldn't send it. Check the email address and try again.")); }
     };
   };
   const reset = () => {
-    host.innerHTML = shell("Elige una contraseña nueva", "Después podrás entrar con ella en la app y en cualquier dispositivo.",
-      `<div class="si-group">` + field("si-pw", "Nueva", "password", "new-password", `minlength="6" placeholder="Mínimo 6"`) +
-      `</div><p class="si-msg" role="alert"></p><button class="btn btn-primary" type="submit">Guardar y entrar</button>`);
+    host.innerHTML = shell(L("Elige una contraseña nueva","Choose a new password"), L("Después podrás entrar con ella en la app y en cualquier dispositivo.", "Then you can sign in with it in the app and on any device."),
+      `<div class="si-group">` + field("si-pw", L("Nueva","New"), "password", "new-password", `minlength="6" placeholder="${L("Mínimo 6","At least 6")}"`) +
+      `</div><p class="si-msg" role="alert"></p><button class="btn btn-primary" type="submit">${L("Guardar y entrar","Save and sign in")}</button>`);
     const f = host.querySelector("form");
     f.onsubmit = async e => {
       e.preventDefault();
       const pw = f.querySelector("#si-pw").value, b = f.querySelector("[type=submit]");
-      if(pw.length < 6) return msg("La contraseña necesita al menos 6 caracteres.");
-      busy(b, "Guardando…");
+      if(pw.length < 6) return msg(L("La contraseña necesita al menos 6 caracteres.", "The password needs at least 6 characters."));
+      busy(b, L("Guardando…","Saving…"));
       try{ await Sync.setPassword(pw); }
       catch(err){ idle(b); return msg(why(err, true)); }
       done();
@@ -3031,7 +3175,7 @@ function startApp(){
   // Tapping the tab you're already on scrolls back to the top, as in iPhone apps.
   document.querySelector(".nav").addEventListener("click", e => { const a = e.target.closest("a"); if(a && a.getAttribute("href") === (location.hash || "#programa")){ e.preventDefault(); scrollTo({top: 0, behavior: "smooth"}); } });
   // Bring in changes made on another device when the app opens or comes back to the foreground.
-  const refresh = () => Sync.pull().then(ch => { if(ch && !document.activeElement?.matches("textarea, input") && lockedY === null) route(true); });
+  const refresh = () => Sync.pull().then(ch => { if(followLang()) return; if(ch && !document.activeElement?.matches("textarea, input") && lockedY === null) route(true); });
   refresh();
   document.addEventListener("visibilitychange", () => { if(document.visibilityState === "visible") refresh(); else Sync.push(); });
   window.addEventListener("online", refresh);
@@ -3044,7 +3188,7 @@ function startApp(){
     if(link.get("type") === "recovery" && link.has("access_token")){
       try{ await Sync.fromLink(link); showSignIn().reset(); return; }catch(e){}
     }
-    if(!Sync.user){ showSignIn().login(false); document.querySelector("#signin .si-msg").textContent = "El enlace ha caducado o ya se usó. Pide otro."; return; }
+    if(!Sync.user){ showSignIn().login(false); document.querySelector("#signin .si-msg").textContent = L("El enlace ha caducado o ya se usó. Pide otro.", "The link has expired or was already used. Ask for another one."); return; }
   }
   if(Sync.on && !Sync.user) showSignIn().welcome();
   else startApp();
