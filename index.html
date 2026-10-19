@@ -221,6 +221,9 @@ td:first-child{font-weight:600;white-space:nowrap}
 .tsize span{font-size:18px;margin-left:1px}
 .outline{display:flex;gap:6px;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;margin-inline:calc(-1 * var(--gut-l)) calc(-1 * var(--gut-r));padding-inline:var(--gut-l) var(--gut-r);scroll-padding-inline:var(--gut-l) var(--gut-r)}
 .outline::-webkit-scrollbar{display:none}
+.lesson-seg{position:sticky;top:calc(env(safe-area-inset-top,0px) + 60px);z-index:6;background:var(--bg);margin:-20px calc(-1 * var(--gut-r)) -16px calc(-1 * var(--gut-l));padding:6px var(--gut-r) 6px var(--gut-l)}
+.lesson-seg .seg button{font-size:15px}
+.pg-next{width:100%}
 .outline .chip{flex:none}
 .outline .chip{font-size:15px;min-height:34px;padding:5px 14px}
 [id^="sec-"],[id^="rx-"],#glosario,[data-stage]{scroll-margin-top:72px}
@@ -2480,8 +2483,12 @@ function viewHome(){
   });
 }
 
+// A lesson is three short pages instead of one long scroll: read, do it with the camera, write it down.
+const LESSON_PAGES = ["Lee", "Hazlo", "Apunta"];
+const lessonPage = {};
 function viewLesson(l){
   S.last = l.id; save();
+  const pg = lessonPage[l.id] || 0;
   const i = LESSONS.indexOf(l), prev = LESSONS[i-1], next = LESSONS[i+1];
   const st = new Set(S.steps[l.id] || []);
   app.innerHTML = `
@@ -2492,12 +2499,17 @@ function viewLesson(l){
     ${evfHTML(l.evf)}
     <p class="goal"><b>Objetivo:</b> ${esc(l.goal)}</p>
     <span class="muted" style="font-size:15px">Unos ${l.min} minutos · Ten la cámara encendida a mano.</span>
-    <nav class="outline" aria-label="En esta lección">${[["sec-lee","Lee"], l.think ? ["sec-piensa","Piénsalo"] : null, ["sec-hazlo","Hazlo"], ["sec-mision","Misión"], ["sec-cuaderno","Cuaderno"], ["sec-foto","Tu foto"]].filter(Boolean).map(([id,t],i) => `<button type="button" class="chip" data-jump="${id}">${t}</button>`).join("")}</nav>
    </div>
+   <i data-pgtop aria-hidden="true"></i>
+   <div class="lesson-seg"><div class="seg" role="group" aria-label="Partes de la lección">${LESSON_PAGES.map((t, k) => `<button type="button" data-pg-to="${k}" aria-pressed="${k === pg}">${k + 1} · ${t}</button>`).join("")}</div></div>
+   <div class="stack-l" data-pg="0"${pg === 0 ? "" : " hidden"}>
    <div class="prose" id="sec-lee">${fmt(l.body)}</div>
    ${l.think ? `<section class="stack" style="gap:10px" id="sec-piensa"><h2>Piénsalo: ¿qué harías tú?</h2><p class="muted" style="font-size:15px">Decide qué ajustes usarías y luego toca para ver lo que haría una fotógrafa.</p>${l.think.map(([q,a]) => `<details class="think"><summary>${fmt(q)}</summary><p>${fmt(a)}</p></details>`).join("")}</section>` : ""}
    ${l.sim ? `<div class="card stack" style="gap:10px"><h3>Pruébalo en el simulador</h3><p class="muted">Ve el efecto de cada ajuste antes de hacerlo con la cámara.</p><div class="btn-row"><button type="button" class="btn btn-ghost" data-opensim="${l.sim}">Abrir el simulador en modo ${l.sim}</button></div></div>` : ""}
    ${l.warn ? `<div class="callout c-warn"><span class="eyebrow">Ojo</span><p>${fmt(l.warn)}</p></div>` : ""}
+   <button type="button" class="btn btn-ghost pg-next" data-pg-to="1">Siguiente: hazlo con la cámara ›</button>
+   </div>
+   <div class="stack-l" data-pg="1"${pg === 1 ? "" : " hidden"}>
    <section class="stack" style="gap:12px" id="sec-hazlo">
     <h2>Hazlo con la cámara</h2>
     <button type="button" class="btn btn-primary practice-btn" data-practice><span aria-hidden="true">▶︎</span> Modo práctica: un paso a la vez</button>
@@ -2508,6 +2520,9 @@ function viewLesson(l){
     <span class="eyebrow">Misión de práctica</span>
     <p>${fmt(l.mission)}</p>
    </section>
+   <button type="button" class="btn btn-ghost pg-next" data-pg-to="2">Siguiente: apunta y revisa tu foto ›</button>
+   </div>
+   <div class="stack-l" data-pg="2"${pg === 2 ? "" : " hidden"}>
    <section class="stack" style="gap:8px">
     <label for="nota-${l.id}" id="sec-cuaderno"><h2>Tu cuaderno</h2></label>
     <p class="muted" style="font-size:15px">Apunta qué querías capturar, qué ajustes elegiste y por qué, y qué cambiarías. Releerlo te enseña tanto como las lecciones.</p>
@@ -2519,6 +2534,7 @@ function viewLesson(l){
     <div class="stack" style="gap:12px" data-photo></div>
    </section>
    <div class="lesson-foot" data-foot></div>
+   </div>
   </article>`;
   function foot(fresh){
     const done = !!S.done[l.id];
@@ -2545,12 +2561,23 @@ function viewLesson(l){
     S.steps[l.id] = [...set]; save();
   }
   app.onclick = e => {
-    const j = e.target.closest("[data-jump]"); if(j){ document.getElementById(j.dataset.jump)?.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"}); return; }
+    const pt = e.target.closest("[data-pg-to]"); if(pt){ showPage(+pt.dataset.pgTo); return; }
     if(e.target.closest("[data-practice]")){ openPractice(l, () => { const done = new Set(S.steps[l.id] || []); app.querySelectorAll(".steps input").forEach(c => c.checked = done.has(+c.dataset.k)); }); return; }
     if(e.target.closest("[data-complete]")){ S.done[l.id] = true; save(); updateRing(); foot(true); celebrate(l, next); }
     else if(e.target.closest("[data-undo]")){ delete S.done[l.id]; save(); updateRing(); foot(); }
     const o = e.target.closest("[data-opensim]"); if(o){ SIM.mode = o.dataset.opensim; SIM.sel = SIM.mode === "S" ? "t" : SIM.mode === "P" ? "ev" : "N"; if(l.id === "iso"){ SIM.scene = "interior"; SIM.sel = "iso"; } location.hash = "simulador"; }
   };
+  function showPage(k){
+    lessonPage[l.id] = k;
+    app.querySelectorAll("[data-pg]").forEach(d => d.hidden = +d.dataset.pg !== k);
+    app.querySelectorAll("[data-pg-to]").forEach(b => b.closest(".seg") && b.setAttribute("aria-pressed", +b.dataset.pgTo === k));
+    // land at the start of the new page, just under the part picker
+    const mark = app.querySelector("[data-pgtop]"), stick = parseFloat(getComputedStyle(app.querySelector(".lesson-seg")).top) || 0;
+    const y = mark.getBoundingClientRect().top + scrollY - stick;
+    if(scrollY > y) scrollTo({top: y});
+    const pane = app.querySelector(`[data-pg="${k}"]`);
+    if(!calm()) pane.animate([{opacity: 0}, {opacity: 1}], {duration: 160, easing: "ease-out"});
+  }
   app.querySelectorAll("[data-widget=camera]").forEach(mountCamera);
   app.querySelectorAll("[data-widget=wb]").forEach(mountWB);
   app.querySelectorAll("[data-widget=planner]").forEach(mountPlanner);
