@@ -19,49 +19,53 @@ if(ESCUELA_LANG === "en"){ document.documentElement.lang = "en"; document.write(
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Escuela α6500">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="theme-color" content="#F2F2F7" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#FFF5F1" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#170E0C" media="(prefers-color-scheme: dark)">
 <style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
 </head>
 <body>
 <style>
 /* Layout: an iPhone-native feel. Large titles, inset grouped lists, a translucent tab bar and one accent color for anything active, as in Apple's own apps and Halide. */
 :root{
-  --bg:#F2F2F7; --surface:#FFFFFF; --fill:rgba(118,118,128,.12); --sunk:#E5E5EA; --ink:#111114; --muted:#5E5E63; --line:#C6C6C8;
-  --accent:#B53B00; --accent-ink:#FFFFFF; --accent-soft:#FCEBE0;
-  --ok:#1E7B34; --ok-ink:#FFFFFF; --ok-soft:#E2F3E6; --warn:#9A5700; --warn-soft:#FFF1D9; --bad:#D70015;
+  --bg:#FFF5F1; --surface:#FFFFFF; --fill:rgba(226,96,74,.10); --sunk:#FCE4DB; --ink:#2E1A16; --muted:#6E5450; --line:#F3D6CB;
+  --accent:#B5303F; --accent-ink:#FFFFFF; --accent-soft:#FFE2DA;
+  --ok:#17784A; --ok-ink:#FFFFFF; --ok-soft:#DFF4EA; --warn:#995200; --warn-soft:#FFF0DB; --bad:#D1003F;
   /* Controls that must stay visible in bright sun: chevrons, check circles, field edges, progress tracks. */
-  --ctl:#808086; --track:#D8D8DD; --tab-off:#636368;
+  --ctl:#A87A70; --track:#F8D5CA; --tab-off:#7D605A;
   /* Tinted cards (mission, warnings). In dark mode they become neutral cards with a colored edge, not brown fills. */
   --accent-card:var(--accent-soft); --accent-edge:transparent; --warn-card:var(--warn-soft); --warn-edge:transparent;
-  --bar:rgba(249,249,251,.94);
+  /* Playful extras: a deep salmon second accent for gradients and sparkles, salmon and peach tints behind the page, and a coral glow under main buttons. */
+  --accent-2:#D4503C; --blush:#FFDDD3; --peach:#FFE9DF; --glow:rgba(181,48,63,.30);
+  --bar:rgba(255,247,244,.94);
   --evf:#111114; --evf-ink:#F2F2F7; --evf-dim:#98989F; --evf-hot:#FFB020; --evf-green:#3FD07A;
-  --cam:#25292D; --cam-2:#3A4046; --cam-3:#4C535A; --cam-ink:#C9CFD3; --cam-hi:#FF7A1A;
-  --f-display:-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, "Segoe UI", Roboto, sans-serif;
+  --cam:#25292D; --cam-2:#3A4046; --cam-3:#4C535A; --cam-ink:#C9CFD3; --cam-hi:#FF7A6B;
+  --f-display:ui-rounded, "SF Pro Rounded", Nunito, -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, "Segoe UI", Roboto, sans-serif;
   --f-body:-apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, "Segoe UI", Roboto, sans-serif;
   --f-mono:ui-monospace, "SF Mono", SFMono-Regular, Menlo, monospace;
-  --r:12px; --nav-h:58px;
+  --r:20px; --nav-h:58px;
   --gut-l:max(16px, env(safe-area-inset-left, 0px)); --gut-r:max(16px, env(safe-area-inset-right, 0px));
 }
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
-  --bg:#000000; --surface:#1C1C1E; --fill:rgba(118,118,128,.24); --sunk:#2C2C2E; --ink:#F2F2F7; --muted:#A8A8AE; --line:#38383A;
-  --accent:#FF8A3D; --accent-ink:#1A0A00; --accent-soft:#3A2212;
-  --ok:#30D158; --ok-ink:#002A0E; --ok-soft:#0F2E19; --warn:#FFB340; --warn-soft:#33240C; --bad:#FF453A;
-  --ctl:#8D8D93; --track:#3A3A3C; --tab-off:#9A9AA0;
-  --accent-card:var(--surface); --accent-edge:rgba(255,138,61,.55); --warn-card:var(--surface); --warn-edge:rgba(255,179,64,.55);
-  --bar:rgba(22,22,24,.94);
+  --bg:#170E0C; --surface:#271A17; --fill:rgba(255,143,132,.14); --sunk:#382622; --ink:#FFF2EE; --muted:#D2B9B2; --line:#4A332E;
+  --accent:#FF8F84; --accent-ink:#3D0F0C; --accent-soft:#4A2420;
+  --ok:#4ADE95; --ok-ink:#00301A; --ok-soft:#12301F; --warn:#FFB86B; --warn-soft:#33240C; --bad:#FF5C7A;
+  --ctl:#A8857D; --track:#4A302B; --tab-off:#BBA19A;
+  --accent-card:var(--surface); --accent-edge:rgba(255,143,132,.55); --warn-card:var(--surface); --warn-edge:rgba(255,184,107,.55);
+  --accent-2:#FFB199; --blush:#3D1F1A; --peach:#33211A; --glow:rgba(255,143,132,.28);
+  --bar:rgba(34,22,19,.94);
   --evf:#000000; --evf-ink:#F2F2F7; --evf-dim:#98989F; --evf-hot:#FFB020; --evf-green:#3FD07A;
-  --cam:#2C3237; --cam-2:#41484F; --cam-3:#566068; --cam-ink:#D3D9DD; --cam-hi:#FF8A33;
+  --cam:#2C3237; --cam-2:#41484F; --cam-3:#566068; --cam-ink:#D3D9DD; --cam-hi:#FF8F84;
   color-scheme:dark }}
 :root[data-theme="dark"]{
-  --bg:#000000; --surface:#1C1C1E; --fill:rgba(118,118,128,.24); --sunk:#2C2C2E; --ink:#F2F2F7; --muted:#A8A8AE; --line:#38383A;
-  --accent:#FF8A3D; --accent-ink:#1A0A00; --accent-soft:#3A2212;
-  --ok:#30D158; --ok-ink:#002A0E; --ok-soft:#0F2E19; --warn:#FFB340; --warn-soft:#33240C; --bad:#FF453A;
-  --ctl:#8D8D93; --track:#3A3A3C; --tab-off:#9A9AA0;
-  --accent-card:var(--surface); --accent-edge:rgba(255,138,61,.55); --warn-card:var(--surface); --warn-edge:rgba(255,179,64,.55);
-  --bar:rgba(22,22,24,.94);
+  --bg:#170E0C; --surface:#271A17; --fill:rgba(255,143,132,.14); --sunk:#382622; --ink:#FFF2EE; --muted:#D2B9B2; --line:#4A332E;
+  --accent:#FF8F84; --accent-ink:#3D0F0C; --accent-soft:#4A2420;
+  --ok:#4ADE95; --ok-ink:#00301A; --ok-soft:#12301F; --warn:#FFB86B; --warn-soft:#33240C; --bad:#FF5C7A;
+  --ctl:#A8857D; --track:#4A302B; --tab-off:#BBA19A;
+  --accent-card:var(--surface); --accent-edge:rgba(255,143,132,.55); --warn-card:var(--surface); --warn-edge:rgba(255,184,107,.55);
+  --accent-2:#FFB199; --blush:#3D1F1A; --peach:#33211A; --glow:rgba(255,143,132,.28);
+  --bar:rgba(34,22,19,.94);
   --evf:#000000; --evf-ink:#F2F2F7; --evf-dim:#98989F; --evf-hot:#FFB020; --evf-green:#3FD07A;
-  --cam:#2C3237; --cam-2:#41484F; --cam-3:#566068; --cam-ink:#D3D9DD; --cam-hi:#FF8A33;
+  --cam:#2C3237; --cam-2:#41484F; --cam-3:#566068; --cam-ink:#D3D9DD; --cam-hi:#FF8F84;
   color-scheme:dark }
 
 *{box-sizing:border-box}
@@ -95,9 +99,9 @@ input[type=search],textarea{-webkit-appearance:none;appearance:none}
 
 /* iPhone "Aumentar contraste" (Accesibilidad): darker greys and firmer edges, both themes. */
 @media (prefers-contrast: more){
-  :root{--muted:#48484C; --line:#A1A1A6; --ctl:#636368; --tab-off:#48484C; --track:#C7C7CC}
-  @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--muted:#C7C7CC; --line:#636366; --ctl:#AEAEB2; --tab-off:#C7C7CC; --track:#545458}}
-  :root[data-theme="dark"]{--muted:#C7C7CC; --line:#636366; --ctl:#AEAEB2; --tab-off:#C7C7CC; --track:#545458}
+  :root{--muted:#4F3A36; --line:#CFA699; --ctl:#7F5A51; --tab-off:#4F3A36; --track:#EDBBAD}
+  @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--muted:#E8D2CB; --line:#7A5A52; --ctl:#C9AAA2; --tab-off:#E8D2CB; --track:#6A4840}}
+  :root[data-theme="dark"]{--muted:#E8D2CB; --line:#7A5A52; --ctl:#C9AAA2; --tab-off:#E8D2CB; --track:#6A4840}
 }
 
 /* top bar */
@@ -288,15 +292,15 @@ td:first-child{font-weight:600;white-space:nowrap}
 .cam-tabs,.seg{display:flex;gap:2px;background:var(--fill);border-radius:9px;padding:2px}
 .cam-tabs button,.seg button{flex:1;border:0;background:transparent;border-radius:7px;padding:6px 10px;font-size:15px;font-weight:500;cursor:pointer;min-height:34px;color:var(--ink);white-space:nowrap}
 .cam-tabs button[aria-pressed="true"],.seg button[aria-pressed="true"]{background:var(--surface);font-weight:600;box-shadow:0 3px 8px rgba(0,0,0,.12),0 3px 1px rgba(0,0,0,.04)}
-:root[data-theme="dark"] .cam-tabs button[aria-pressed="true"],:root[data-theme="dark"] .seg button[aria-pressed="true"]{background:#636366}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .cam-tabs button[aria-pressed="true"],:root:not([data-theme="light"]) .seg button[aria-pressed="true"]{background:#636366}}
+:root[data-theme="dark"] .cam-tabs button[aria-pressed="true"],:root[data-theme="dark"] .seg button[aria-pressed="true"]{background:#5C3A33}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .cam-tabs button[aria-pressed="true"],:root:not([data-theme="light"]) .seg button[aria-pressed="true"]{background:#5C3A33}}
 .cam-stage{background:var(--surface);border-radius:var(--r);padding:6px}
 .cam-stage svg{display:block;width:100%;height:auto}
 .hs{cursor:pointer}
 .hs .hl{fill:transparent;stroke:transparent;stroke-width:2.5}
 .hs:focus-visible .hl{stroke:var(--accent)}
 @media (hover:hover){.hs:hover .hl{stroke:var(--accent)}}
-.hs.on .hl{stroke:var(--cam-hi);fill:rgba(255,122,26,.18)}
+.hs.on .hl{stroke:var(--cam-hi);fill:rgba(255,122,107,.2)}
 .hs:focus{outline:none}
 .pin{fill:var(--cam-hi)}
 .pin-t{fill:#111;font:700 10px var(--f-mono)}
@@ -515,6 +519,38 @@ body.signin-on .wrap, body.signin-on .nav{display:none}
 .si-wait{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:var(--muted);font-size:15px}
 .si-wait .spin{width:26px;height:26px;margin:0}
 .acct{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:center;font-size:15px;color:var(--muted)}
+/* Cute look (her pick, Oct 2026): coral with salmon, rounded type for titles and buttons,
+   pill-shaped controls, soft coral shadows and a few sparkles. Reading text stays SF Pro and every pair still meets WCAG AA. */
+body{background:radial-gradient(70% 340px at 100% 0,var(--blush),transparent) no-repeat,radial-gradient(60% 300px at 0 0,var(--peach),transparent) no-repeat,var(--bg)}
+h1,h2,h3,.brand,.btn,.nav a,.chip,.seg button,.cam-tabs button,.num,.eyebrow,.pr-step,.tsize{font-family:var(--f-display)}
+h1{font-weight:800;letter-spacing:-.01em}
+h2{font-weight:800;letter-spacing:-.005em}
+.btn{border-radius:999px}
+.btn-primary{background:linear-gradient(135deg,var(--accent),color-mix(in srgb,var(--accent) 80%,var(--accent-2)));box-shadow:0 8px 18px -8px var(--glow)}
+.btn-primary:disabled{box-shadow:none}
+:is(.lessons,.card,.callout:not(.c-warn),.think,.steps,.gloss,.ctrls,.si-group,.table-wrap,.cam-stage){box-shadow:0 1px 2px rgba(181,48,63,.05),0 8px 20px -12px rgba(181,48,63,.22)}
+.continue{position:relative;border-radius:26px;background:linear-gradient(165deg,var(--blush),var(--surface) 58%);box-shadow:0 1px 2px rgba(181,48,63,.06),0 12px 28px -14px var(--glow)}
+.continue::after,.hero h1::after,.welcome h1::after{content:"";display:inline-block;background:var(--accent-2);-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M12 4c.8 6.5 5.5 11.2 12 12-6.5.8-11.2 5.5-12 12-.8-6.5-5.5-11.2-12-12 6.5-.8 11.2-5.5 12-12z'/%3E%3Cpath d='M27 0c.4 2.6 2.4 4.6 5 5-2.6.4-4.6 2.4-5 5-.4-2.6-2.4-4.6-5-5 2.6-.4 4.6-2.4 5-5z'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M12 4c.8 6.5 5.5 11.2 12 12-6.5.8-11.2 5.5-12 12-.8-6.5-5.5-11.2-12-12 6.5-.8 11.2-5.5 12-12z'/%3E%3Cpath d='M27 0c.4 2.6 2.4 4.6 5 5-2.6.4-4.6 2.4-5 5-.4-2.6-2.4-4.6-5-5 2.6-.4 4.6-2.4 5-5z'/%3E%3C/svg%3E") center/contain no-repeat}
+.continue::after{position:absolute;top:16px;right:18px;width:30px;height:30px;opacity:.75;pointer-events:none}
+.hero h1::after,.welcome h1::after{width:.62em;height:.62em;margin-left:.18em;vertical-align:.32em}
+.hero h1,.welcome h1{background:linear-gradient(100deg,var(--accent) 30%,var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.welcome .brand-mark{border-radius:24px;box-shadow:0 14px 28px -12px var(--glow)}
+.brand-mark{border-radius:9px}
+.progress > i{background:linear-gradient(90deg,var(--accent),var(--accent-2))}
+.ring .rf{stroke:var(--accent)}
+.nav a[aria-current="page"] svg{box-sizing:content-box;padding:1px 16px;border-radius:999px;background:var(--accent-soft)}
+.nav a{gap:1px}
+.cam-tabs,.seg{border-radius:999px;padding:3px}
+.cam-tabs button,.seg button{border-radius:999px}
+.cam-tabs button[aria-pressed="true"],.seg button[aria-pressed="true"]{color:var(--accent);box-shadow:0 3px 10px -2px rgba(181,48,63,.22)}
+.evf span{border-radius:999px;padding:4px 10px}
+.path{border-radius:8px}
+.sheet{border-radius:28px 28px 0 0}
+.pr-x{background:var(--accent-soft);color:var(--accent)}
+.notes{border-radius:var(--r)}
+.photo-prev{border-radius:var(--r)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) :is(.lessons,.card,.callout:not(.c-warn),.think,.steps,.gloss,.ctrls,.si-group,.table-wrap,.cam-stage){box-shadow:none}}
+:root[data-theme="dark"] :is(.lessons,.card,.callout:not(.c-warn),.think,.steps,.gloss,.ctrls,.si-group,.table-wrap,.cam-stage){box-shadow:none}
 </style>
 
 <div class="wrap">
@@ -539,7 +575,7 @@ body.signin-on .wrap, body.signin-on .nav{display:none}
 </nav>
 
 <script>
-const APP_BUILD = "19 oct · ES · EN";
+const APP_BUILD = "31 oct · coral";
 (function(){
 "use strict";
 
